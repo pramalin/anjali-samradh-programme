@@ -6,8 +6,7 @@ Build the interactive web version of the programme into docs/ (for GitHub Pages)
 
 Reads the same wedding.json + games.json as the print booklet, generates the same
 word searches and crossword (same seeds, so web and print match), a maze, and writes:
-    docs/index.html      the page (all game logic included)
-    docs/data.js         the content and puzzles
+    docs/index.html      the page (game logic and content included)
     docs/assets/...      images
 Then publish docs/ with GitHub Pages (see README: "Website").
 """
@@ -99,11 +98,14 @@ def main():
                                              encoding="utf-8")
         else:
             shutil.copy2(ROOT / "assets" / a, DOCS / "assets" / a)
-    (DOCS / "data.js").write_text("window.PROGRAMME = " + json.dumps(out, ensure_ascii=False, indent=1) + ";\n",
-                                  encoding="utf-8")
-    shutil.copy2(Path(__file__).with_name("index.html"), DOCS / "index.html")
+    # the content goes inside index.html, so the page is one self-contained file plus its images
+    page = Path(__file__).with_name("index.html").read_text(encoding="utf-8")
+    payload = json.dumps(out, ensure_ascii=False).replace("</", "<\\/")
+    page = page.replace('<script src="data.js"></script>', f"<script>window.PROGRAMME = {payload};</script>")
+    (DOCS / "index.html").write_text(page, encoding="utf-8")
+    (DOCS / "data.js").unlink(missing_ok=True)
     (DOCS / ".nojekyll").write_text("")
-    print(f"Wrote {DOCS}/index.html, data.js and {len(ASSETS)} images")
+    print(f"Wrote {DOCS}/index.html and {len(ASSETS)} images")
 
 
 if __name__ == "__main__":

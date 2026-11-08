@@ -67,10 +67,13 @@ nav a:hover{border-color:var(--line)}
 .ws{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start}
 @media(max-width:640px){.ws{grid-template-columns:1fr}}
 .grid{display:grid;user-select:none;-webkit-user-select:none;touch-action:none;position:relative;width:min(100%,440px)}
+.grid .c span{pointer-events:none;white-space:nowrap}
 .grid .c{aspect-ratio:1;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:50%;
   font-size:clamp(14px,4.2vw,21px);position:relative;z-index:1}
 .grid.en .c{font-family:var(--sans)} .grid.ta .c{font-family:var(--taSans);font-size:clamp(13px,3.8vw,19px)}
 .grid .c.sel{background:var(--hit)}
+.grid.ta{border:1.5px solid var(--brown);background:rgba(255,255,255,.55)}
+.grid.ta .c{border-radius:0;box-shadow:inset -1px -1px 0 var(--line)}
 .grid svg.marks{position:absolute;inset:0;pointer-events:none;z-index:0}
 .words{list-style:none;margin:0;padding:0;columns:2;column-gap:18px}
 .words li{break-inside:avoid;margin:0 0 6px;transition:opacity .3s}
@@ -250,7 +253,10 @@ function wordSearch(key, P) {
   const g = $(`#${key}Grid`), list = $(`#${key}Words`), R = P.grid.length, C = P.grid[0].length;
   g.style.gridTemplateColumns = `repeat(${C},1fr)`;
   const cells = [];
-  P.grid.forEach((row, r) => row.forEach((ch, c) => { const d = el('div', { class: 'c', text: ch }); d.dataset.r = r; d.dataset.c = c; g.append(d); cells.push(d); }));
+  P.grid.forEach((row, r) => row.forEach((ch, c) => { const d = el('div', { class: 'c' }, el('span', { text: ch })); d.dataset.r = r; d.dataset.c = c; g.append(d); cells.push(d); }));
+  const fitCells = () => cells.forEach(d => { const s = d.firstChild; s.style.fontSize = '';   // shrink only letters too wide for their box
+    const room = d.clientWidth * .86; if (s.offsetWidth > room) s.style.fontSize = (parseFloat(getComputedStyle(s).fontSize) * room / s.offsetWidth) + 'px'; });
+  fitCells(); addEventListener('resize', fitCells); document.fonts && document.fonts.ready.then(fitCells);
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); svg.classList.add('marks');
   svg.setAttribute('viewBox', `0 0 ${C} ${R}`); svg.setAttribute('preserveAspectRatio', 'none'); g.prepend(svg);
   const found = new Set(store.get(key + '-found', []));

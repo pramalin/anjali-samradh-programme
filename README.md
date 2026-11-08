@@ -22,10 +22,10 @@ a playable maze, a drawing pad you can save, Dots & Boxes and Tic-Tac-Toe for tw
 Check / Reveal, plus the verses. It is built from the same `wedding.json` + `games.json`:
 
 ```bash
-python3 web/build_web.py      # writes docs/index.html, docs/data.js, docs/assets/
+python3 web/build_web.py      # writes docs/index.html, docs/index.html, docs/assets/
 ```
 
-Only the fields the page shows are copied into `docs/data.js` (no date, time or venue from the invitation).
+Only the fields the page shows are copied into the page (no date, time or venue from the invitation).
 Publish `docs/` with GitHub Pages - see "Publishing the website" below.
 
 ### Publishing the website
