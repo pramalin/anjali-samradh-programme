@@ -1,0 +1,86 @@
+CROSSWORD
+
+  ·   எ   ·   ·   இ   ·   உ   ண்  ட   ற்  று  ·   பா 
+  ·   ன்  ·   கொ  ல்  லி  ·   ·   ·   ·   ·   ·   த் 
+  ·   னு  ·   ·   ·   ·   ·   மா  ·   ·   த   ம   து 
+  அ   ம்  ·   ·   சே  ·   ·   ·   சு  டு  ம்  ·   ·  
+  ரி  ·   ·   ·   ர்  ·   ·   ஏ   ·   ·   ·   ·   ·  
+  வை  ·   இ   ரு  ந்  து  ·   ம   ·   ·   ·   ·   பு 
+  ·   ·   ன   ·   தா  ·   ·   ·   ·   ·   ·   ·   ணை 
+  சி  ன   ம்  ·   ரை  ·   ·   மு  ய   க்  கு  ·   யை 
+
+  ACROSS
+    3. உண்டற்று
+    5. கொல்லி
+    6. மா
+    7. தமது
+    8. அம்
+   10. சுடும்
+   12. இருந்து
+   14. சினம்
+   15. முயக்கு
+  DOWN
+    1. என்னும்
+    2. இல்
+    4. பாத்து
+    7. தம்
+    8. அரிவை
+    9. சேர்ந்தாரை
+   11. ஏம
+   12. இனம்
+   13. புணையை
+
+
+TAMIL WORDS
+
+  ரு  தோ  ள்  லி  ந்  ரு  கோ  ண   ம   த  
+  டி  ம   ப   வ   தி  மெ  ல   டு  ஞ்  ரு 
+  ம   நா  தி  ப   டு  ச   ம்  மெ  ச   தோ 
+  தோ  ஸ்  ரு  ப   ந்  த   ல்  து  ள்  ரு 
+  ர   த   ம   ட்  நா  த   ஸ்  வ   ர   ம் 
+  ண   வ   ண   டு  மா  கோ  வி  ட்  தா  லி 
+  ம்  ப   ம்  லை  லை  வி  ரு  ட்  ம்  ரு 
+  து  த   மே  ள   ம்  மெ  ந்  ரு  டு  தி 
+  டி  ச   ள்  ஞ்  ர   ட்  து  த   நா  ச  
+  தா  டு  தி  ல   ம   டி  நா  வ   லி  து 
+
+  திருமணம்       row  3, col  3, down
+  தாலி           row  6, col  9, right
+  மாலை           row  6, col  5, down
+  மஞ்சள்         row  1, col  9, down
+  மேளம்          row  8, col  3, right
+  நாதஸ்வரம்      row  5, col  5, right
+  கோலம்          row  1, col  7, down
+  தோரணம்         row  4, col  1, down
+  விருந்து       row  6, col  7, down
+  பந்தல்         row  4, col  4, right
+  மெட்டி         row  8, col  6, down
+  பட்டு          row  4, col  4, down
+
+
+ENGLISH WORDS
+
+  A   J   E   V   O   L   N   H   F   T  
+  K   A   G   L   S   E   E   D   S   I  
+  R   S   Y   E   G   C   S   A   G   R  
+  I   M   E   L   N   S   E   R   A   L  
+  A   I   G   A   I   F   R   M   R   I  
+  R   N   D   L   S   M   N   A   L   L  
+  A   E   K   A   S   L   A   S   A   A  
+  D   R   E   V   E   R   O   F   N   H  
+  A   N   J   A   L   I   R   B   D   T  
+  S   T   I   A   B   E   N   H   L   O  
+
+  ANJALI         row  9, col  1, right
+  SAMRADH        row  7, col  8, up
+  LOVE           row  1, col  6, left
+  FOREVER        row  8, col  8, left
+  FAMILY         row  8, col  8, up-left
+  BLESSINGS      row 10, col  5, up
+  GARLAND        row  3, col  9, down
+  THALI          row  9, col 10, up
+  JASMINE        row  1, col  2, down
+  SILK           row  4, col  6, down-left
+  FEAST          row  5, col  6, up-right
+  DANCE          row  6, col  3, up-right
+

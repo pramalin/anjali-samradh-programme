@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" width="148mm" height="210mm" viewBox="0 0 559.370 793.701" version="1.1">
+  <title>Modern editorial - wedding programme template</title>
+  <sodipodi:namedview id="namedview" pagecolor="#e9e6e0" bordercolor="#999999" inkscape:document-units="mm" inkscape:pagecheckerboard="false">
+    <inkscape:page x="0.000" y="0" width="559.370" height="793.701" id="page1" inkscape:label="1 Cover"/>
+    <inkscape:page x="599.370" y="0" width="559.370" height="793.701" id="page2" inkscape:label="2 Programme"/>
+    <inkscape:page x="1198.740" y="0" width="559.370" height="793.701" id="page3" inkscape:label="3 Tamil puzzle"/>
+    <inkscape:page x="1798.110" y="0" width="559.370" height="793.701" id="page4" inkscape:label="4 English puzzle"/>
+  </sodipodi:namedview>
+  <g inkscape:groupmode="layer" id="layer-bg" inkscape:label="Background">
+<rect x="0.00" y="0.00" width="559.37" height="793.70" style="fill:#f4efe6" inkscape:label="Paper"/>
+<rect x="599.37" y="0.00" width="559.37" height="793.70" style="fill:#f4efe6" inkscape:label="Paper"/>
+<rect x="1198.74" y="0.00" width="559.37" height="793.70" style="fill:#f4efe6" inkscape:label="Paper"/>
+<rect x="1798.11" y="0.00" width="559.37" height="793.70" style="fill:#f4efe6" inkscape:label="Paper"/>
+  </g>
+  <g inkscape:groupmode="layer" id="layer-p1" inkscape:label="Page 1 - Cover">
+<rect x="0.00" y="0.00" width="559.37" height="476.00" style="fill:#1f3a33" inkscape:label="Colour band"/>
+<text xml:space="preserve" x="44.00" y="58.00" style="font-family:'Hind Madurai';font-size:15.00px;fill:#d6a243;text-anchor:start;font-weight:600" inkscape:label="Blessing">{{cover.blessing}}</text>
+<text xml:space="preserve" x="66.00" y="57.00" style="font-family:'Hind Madurai';font-size:9.00px;fill:#f4efe6;text-anchor:start" inkscape:label="Deity line">{{cover.deity_line}}</text>
+<text xml:space="preserve" x="515.37" y="57.00" style="font-family:'Jost';font-size:9.00px;fill:#f4efe6;text-anchor:end;letter-spacing:3.00px" inkscape:label="Date short">{{cover.date_short}}</text>
+<text xml:space="preserve" x="42.00" y="214.00" style="font-family:'Playfair Display';font-size:62.00px;fill:#f4efe6;text-anchor:start" inkscape:label="Bride name (English)">{{cover.bride_en}}</text>
+<text xml:space="preserve" x="46.00" y="266.00" style="font-family:'Playfair Display';font-size:40.00px;fill:#d6a243;text-anchor:start;font-style:italic" inkscape:label="Ampersand">&amp;</text>
+<text xml:space="preserve" x="42.00" y="326.00" style="font-family:'Playfair Display';font-size:62.00px;fill:#f4efe6;text-anchor:start" inkscape:label="Groom name (English)">{{cover.groom_en}}</text>
+<text xml:space="preserve" x="44.00" y="372.00" style="font-family:'Hind Madurai';font-size:20.00px;fill:#f4efe6;text-anchor:start;font-weight:300" inkscape:label="Names (Tamil)">{{cover.bride_ta}}  &amp;  {{cover.groom_ta}}</text>
+<line x1="44.00" y1="400.00" x2="84.00" y2="400.00" style="stroke:#d6a243;stroke-width:2" inkscape:label="Accent"/>
+<text xml:space="preserve" x="44.00" y="428.00" style="font-family:'Jost';font-size:8.50px;fill:#d6a243;text-anchor:start;font-weight:500;letter-spacing:4.00px" inkscape:label="Title (English)">{{cover.title_en}}</text>
+<text xml:space="preserve" x="44.00" y="448.00" style="font-family:'Hind Madurai';font-size:11.00px;fill:#f4efe6;text-anchor:start" inkscape:label="Title (Tamil)">{{cover.title_ta}}</text>
+<g inkscape:label="When"><text xml:space="preserve" x="44.00" y="516.00" style="font-family:'Hind Madurai';font-size:8.00px;fill:#d6a243;text-anchor:start;font-weight:600;letter-spacing:3.00px" inkscape:label="Label">WHEN · நாள்</text>
+<text xml:space="preserve" x="44.00" y="540.00" style="font-family:'Playfair Display';font-size:15.00px;fill:#22201c;text-anchor:start" inkscape:label="Date (English) [w=226]">{{cover.date_en}}</text>
+<text xml:space="preserve" x="44.00" y="558.00" style="font-family:'Hind Madurai';font-size:10.50px;fill:#22201c;text-anchor:start" inkscape:label="Date (Tamil) [w=226]">{{cover.date_ta}}</text>
+<text xml:space="preserve" x="44.00" y="578.00" style="font-family:'Jost';font-size:10.50px;fill:#6d6a63;text-anchor:start" inkscape:label="Time (English) [w=226]">{{cover.time_en}}</text>
+<text xml:space="preserve" x="44.00" y="594.00" style="font-family:'Hind Madurai';font-size:10.00px;fill:#6d6a63;text-anchor:start" inkscape:label="Time (Tamil) [w=226]">{{cover.time_ta}}</text></g>
+<g inkscape:label="Where"><text xml:space="preserve" x="289.69" y="516.00" style="font-family:'Hind Madurai';font-size:8.00px;fill:#d6a243;text-anchor:start;font-weight:600;letter-spacing:3.00px" inkscape:label="Label">WHERE · இடம்</text>
+<text xml:space="preserve" x="289.69" y="540.00" style="font-family:'Jost';font-size:9.00px;fill:#22201c;text-anchor:start;font-weight:500;letter-spacing:1.00px" inkscape:label="Venue (English) [w=226]">{{cover.venue_en}}</text>
+<text xml:space="preserve" x="289.69" y="558.00" style="font-family:'Hind Madurai';font-size:10.50px;fill:#22201c;text-anchor:start" inkscape:label="Venue (Tamil) [w=226]">{{cover.venue_ta}}</text></g>
+<g inkscape:label="Cover verse"><rect x="44.00" y="630.00" width="3.00" height="98.00" style="fill:#d6a243" inkscape:label="Bar"/>
+<text xml:space="preserve" x="60.00" y="650.00" style="font-family:'Hind Madurai';font-size:11.00px;fill:#1f3a33;text-anchor:start;font-weight:500" inkscape:label="?Tamil 1">{{cover.verse_ta.0}}</text>
+<text xml:space="preserve" x="60.00" y="667.00" style="font-family:'Hind Madurai';font-size:11.00px;fill:#1f3a33;text-anchor:start;font-weight:500" inkscape:label="?Tamil 2">{{cover.verse_ta.1}}</text>
+<text xml:space="preserve" x="60.00" y="685.00" style="font-family:'Hind Madurai';font-size:8.50px;fill:#6d6a63;text-anchor:start" inkscape:label="Source">{{cover.verse_source}}</text>
+<text xml:space="preserve" x="60.00" y="707.00" style="font-family:'Jost';font-size:10.00px;fill:#22201c;text-anchor:start;font-style:italic" inkscape:label="?English 1">{{cover.verse_en.0}}</text>
+<text xml:space="preserve" x="60.00" y="721.00" style="font-family:'Jost';font-size:10.00px;fill:#22201c;text-anchor:start;font-style:italic" inkscape:label="?English 2">{{cover.verse_en.1}}</text></g>
+  </g>
+  <g inkscape:groupmode="layer" id="layer-p2" inkscape:label="Page 2 - Programme">
+<rect x="599.37" y="0.00" width="559.37" height="150.00" style="fill:#1f3a33" inkscape:label="Colour band"/>
+<text xml:space="preserve" x="643.37" y="86.00" style="font-family:'Hind Madurai';font-size:26.00px;fill:#f4efe6;text-anchor:start;font-weight:600" inkscape:label="Title (Tamil)">{{programme.title_ta}}</text>
+<text xml:space="preserve" x="643.37" y="118.00" style="font-family:'Playfair Display';font-size:20.00px;fill:#d6a243;text-anchor:start;font-style:italic" inkscape:label="Title (English)">{{programme.title_en}}</text>
+<g inkscape:label="Order of ceremony"><g inkscape:label="?Item 1"><text xml:space="preserve" x="643.37" y="202.00" style="font-family:'Playfair Display';font-size:22.00px;fill:#d6a243;text-anchor:start" inkscape:label="Number">1</text>
+<text xml:space="preserve" x="681.37" y="196.00" style="font-family:'Hind Madurai';font-size:12.50px;fill:#22201c;text-anchor:start;font-weight:500" inkscape:label="Tamil">{{programme.items.0.ta}}</text>
+<text xml:space="preserve" x="681.37" y="211.00" style="font-family:'Jost';font-size:10.50px;fill:#6d6a63;text-anchor:start" inkscape:label="English">{{programme.items.0.en}}</text></g>
+<g inkscape:label="?Item 2"><text xml:space="preserve" x="643.37" y="240.00" style="font-family:'Playfair Display';font-size:22.00px;fill:#d6a243;text-anchor:start" inkscape:label="Number">2</text>
+<text xml:space="preserve" x="681.37" y="234.00" style="font-family:'Hind Madurai';font-size:12.50px;fill:#22201c;text-anchor:start;font-weight:500" inkscape:label="Tamil">{{programme.items.1.ta}}</text>
+<text xml:space="preserve" x="681.37" y="249.00" style="font-family:'Jost';font-size:10.50px;fill:#6d6a63;text-anchor:start" inkscape:label="English">{{programme.items.1.en}}</text></g>
+<g inkscape:label="?Item 3"><text xml:space="preserve" x="643.37" y="278.00" style="font-family:'Playfair Display';font-size:22.00px;fill:#d6a243;text-anchor:start" inkscape:label="Number">3</text>
+<text xml:space="preserve" x="681.37" y="272.00" style="font-family:'Hind Madurai';font-size:12.50px;fill:#22201c;text-anchor:start;font-weight:500" inkscape:label="Tamil">{{programme.items.2.ta}}</text>
+<text xml:space="preserve" x="681.37" y="287.00" style="font-family:'Jost';font-size:10.50px;fill:#6d6a63;text-anchor:start" inkscape:label="English">{{programme.items.2.en}}</text></g>
+<g inkscape:label="?Item 4"><text xml:space="preserve" x="643.37" y="316.00" style="font-family:'Playfair Display';font-size:22.00px;fill:#d6a243;text-anchor:start" inkscape:label="Number">4</text>
+<text xml:space="preserve" x="681.37" y="310.00" style="font-family:'Hind Madurai';font-size:12.50px;fill:#22201c;text-anchor:start;font-weight:500" inkscape:label="Tamil">{{programme.items.3.ta}}</text>
+<text xml:space="preserve" x="681.37" y="325.00" style="font-family:'Jost';font-size:10.50px;fill:#6d6a63;text-anchor:start" inkscape:label="English">{{programme.items.3.en}}</text></g>
+<g inkscape:label="?Item 5"><text xml:space="preserve" x="643.37" y="354.00" style="font-family:'Playfair Display';font-size:22.00px;fill:#d6a243;text-anchor:start" inkscape:label="Number">5</text>
+<text xml:space="preserve" x="681.37" y="348.00" style="font-family:'Hind Madurai';font-size:12.50px;fill:#22201c;text-anchor:start;font-weight:500" inkscape:label="Tamil">{{programme.items.4.ta}}</text>
+<text xml:space="preserve" x="681.37" y="363.00" style="font-family:'Jost';font-size:10.50px;fill:#6d6a63;text-anchor:start" inkscape:label="English">{{programme.items.4.en}}</text></g>
+<g inkscape:label="?Item 6"><text xml:space="preserve" x="643.37" y="392.00" style="font-family:'Playfair Display';font-size:22.00px;fill:#d6a243;text-anchor:start" inkscape:label="Number">6</text>
+<text xml:space="preserve" x="681.37" y="386.00" style="font-family:'Hind Madurai';font-size:12.50px;fill:#22201c;text-anchor:start;font-weight:500" inkscape:label="Tamil">{{programme.items.5.ta}}</text>
+<text xml:space="preserve" x="681.37" y="401.00" style="font-family:'Jost';font-size:10.50px;fill:#6d6a63;text-anchor:start" inkscape:label="English">{{programme.items.5.en}}</text></g>
+<g inkscape:label="?Item 7"><text xml:space="preserve" x="643.37" y="430.00" style="font-family:'Playfair Display';font-size:22.00px;fill:#d6a243;text-anchor:start" inkscape:label="Number">7</text>
+<text xml:space="preserve" x="681.37" y="424.00" style="font-family:'Hind Madurai';font-size:12.50px;fill:#22201c;text-anchor:start;font-weight:500" inkscape:label="Tamil">{{programme.items.6.ta}}</text>
+<text xml:space="preserve" x="681.37" y="439.00" style="font-family:'Jost';font-size:10.50px;fill:#6d6a63;text-anchor:start" inkscape:label="English">{{programme.items.6.en}}</text></g>
+<g inkscape:label="?Item 8"><text xml:space="preserve" x="643.37" y="468.00" style="font-family:'Playfair Display';font-size:22.00px;fill:#d6a243;text-anchor:start" inkscape:label="Number">8</text>
+<text xml:space="preserve" x="681.37" y="462.00" style="font-family:'Hind Madurai';font-size:12.50px;fill:#22201c;text-anchor:start;font-weight:500" inkscape:label="Tamil">{{programme.items.7.ta}}</text>
+<text xml:space="preserve" x="681.37" y="477.00" style="font-family:'Jost';font-size:10.50px;fill:#6d6a63;text-anchor:start" inkscape:label="English">{{programme.items.7.en}}</text></g></g>
+<line x1="643.37" y1="496.00" x2="1114.74" y2="496.00" style="stroke:#1f3a33;stroke-width:0.6;stroke-opacity:0.4" inkscape:label="Rule"/>
+<g inkscape:label="Officiant"><text xml:space="preserve" x="643.37" y="522.00" style="font-family:'Jost';font-size:9.50px;fill:#6d6a63;text-anchor:start;font-style:italic" inkscape:label="Label (English)">{{programme.officiant_label_en}}</text>
+<text xml:space="preserve" x="643.37" y="544.00" style="font-family:'Hind Madurai';font-size:14.00px;fill:#1f3a33;text-anchor:start;font-weight:600" inkscape:label="Name (Tamil)">{{programme.officiant_ta}}</text>
+<text xml:space="preserve" x="643.37" y="562.00" style="font-family:'Jost';font-size:10.00px;fill:#22201c;text-anchor:start" inkscape:label="Name (English)">{{programme.officiant_en}}</text></g>
+<g inkscape:label="Family: bride"><text xml:space="preserve" x="643.37" y="604.00" style="font-family:'Hind Madurai';font-size:8.50px;fill:#d6a243;text-anchor:start;font-weight:600" inkscape:label="Label [w=224]">{{programme.bride.label_en}} · {{programme.bride.label_ta}}</text>
+<text xml:space="preserve" x="643.37" y="634.00" style="font-family:'Playfair Display';font-size:20.00px;fill:#1f3a33;text-anchor:start" inkscape:label="Name (English) [w=224]">{{programme.bride.name_en}}</text>
+<text xml:space="preserve" x="643.37" y="654.00" style="font-family:'Hind Madurai';font-size:12.50px;fill:#22201c;text-anchor:start;font-weight:500" inkscape:label="Name (Tamil) [w=224]">{{programme.bride.name_ta}}</text>
+<text xml:space="preserve" x="643.37" y="676.00" style="font-family:'Hind Madurai';font-size:10.00px;fill:#22201c;text-anchor:start" inkscape:label="Parents (Tamil) 1 [w=224]">{{programme.bride.parents_ta_1}}</text>
+<text xml:space="preserve" x="643.37" y="691.00" style="font-family:'Hind Madurai';font-size:10.00px;fill:#22201c;text-anchor:start" inkscape:label="Parents (Tamil) 2 [w=224]">{{programme.bride.parents_ta_2}}</text>
+<text xml:space="preserve" x="643.37" y="710.00" style="font-family:'Jost';font-size:9.50px;fill:#6d6a63;text-anchor:start;font-style:italic" inkscape:label="Parents (English) [w=224]">{{programme.bride.parents_en}}</text>
+<text xml:space="preserve" x="643.37" y="724.00" style="font-family:'Jost';font-size:9.50px;fill:#6d6a63;text-anchor:start;font-style:italic" inkscape:label="Place [w=224]">{{programme.bride.place}}</text></g>
+<g inkscape:label="Family: groom"><text xml:space="preserve" x="885.06" y="604.00" style="font-family:'Hind Madurai';font-size:8.50px;fill:#d6a243;text-anchor:start;font-weight:600" inkscape:label="Label [w=224]">{{programme.groom.label_en}} · {{programme.groom.label_ta}}</text>
+<text xml:space="preserve" x="885.06" y="634.00" style="font-family:'Playfair Display';font-size:20.00px;fill:#1f3a33;text-anchor:start" inkscape:label="Name (English) [w=224]">{{programme.groom.name_en}}</text>
+<text xml:space="preserve" x="885.06" y="654.00" style="font-family:'Hind Madurai';font-size:12.50px;fill:#22201c;text-anchor:start;font-weight:500" inkscape:label="Name (Tamil) [w=224]">{{programme.groom.name_ta}}</text>
+<text xml:space="preserve" x="885.06" y="676.00" style="font-family:'Hind Madurai';font-size:10.00px;fill:#22201c;text-anchor:start" inkscape:label="Parents (Tamil) 1 [w=224]">{{programme.groom.parents_ta_1}}</text>
+<text xml:space="preserve" x="885.06" y="691.00" style="font-family:'Hind Madurai';font-size:10.00px;fill:#22201c;text-anchor:start" inkscape:label="Parents (Tamil) 2 [w=224]">{{programme.groom.parents_ta_2}}</text>
+<text xml:space="preserve" x="885.06" y="710.00" style="font-family:'Jost';font-size:9.50px;fill:#6d6a63;text-anchor:start;font-style:italic" inkscape:label="Parents (English) [w=224]">{{programme.groom.parents_en}}</text>
+<text xml:space="preserve" x="885.06" y="724.00" style="font-family:'Jost';font-size:9.50px;fill:#6d6a63;text-anchor:start;font-style:italic" inkscape:label="Place [w=224]">{{programme.groom.place}}</text></g>
+  </g>
+  <g inkscape:groupmode="layer" id="layer-p3" inkscape:label="Page 3 - Tamil puzzle">
+<rect x="1198.74" y="0.00" width="559.37" height="122.00" style="fill:#1f3a33" inkscape:label="Colour band"/>
+<text xml:space="preserve" x="1242.74" y="72.00" style="font-family:'Hind Madurai';font-size:30.00px;fill:#f4efe6;text-anchor:start;font-weight:600" inkscape:label="Title (Tamil)">{{tamil_puzzle.title_ta}}</text>
+<text xml:space="preserve" x="1242.74" y="100.00" style="font-family:'Playfair Display';font-size:17.00px;fill:#d6a243;text-anchor:start;font-style:italic" inkscape:label="Title (English)">{{tamil_puzzle.title_en}}</text>
+<text xml:space="preserve" x="1242.74" y="146.00" style="font-family:'Hind Madurai';font-size:10.00px;fill:#22201c;text-anchor:start" inkscape:label="?Instructions (Tamil) 1">{{tamil_puzzle.instructions_ta.0}}</text>
+<text xml:space="preserve" x="1242.74" y="161.00" style="font-family:'Hind Madurai';font-size:10.00px;fill:#22201c;text-anchor:start" inkscape:label="?Instructions (Tamil) 2">{{tamil_puzzle.instructions_ta.1}}</text>
+<text xml:space="preserve" x="1242.74" y="176.00" style="font-family:'Hind Madurai';font-size:10.00px;fill:#22201c;text-anchor:start" inkscape:label="?Instructions (Tamil) 3">{{tamil_puzzle.instructions_ta.2}}</text>
+<text xml:space="preserve" x="1242.74" y="194.00" style="font-family:'Jost';font-size:9.50px;fill:#6d6a63;text-anchor:start;font-style:italic" inkscape:label="Instructions (English)">{{tamil_puzzle.instructions_en}}</text>
+<g inkscape:label="#puzzle tamil_puzzle lines=on scale=0.37"><rect x="1283.43" y="210.00" width="390.00" height="390.00" style="fill:#ffffff;fill-opacity:0.5;stroke:#1f3a33;stroke-width:1.5" inkscape:label="area"/><text xml:space="preserve" x="1305.43" y="240.00" style="font-family:'Hind Madurai';font-size:14.00px;fill:#1f3a33;text-anchor:middle;font-weight:500" inkscape:label="letter">அ</text><line x1="1363.43" y1="235.00" x2="1403.43" y2="235.00" style="stroke:#1f3a33;stroke-opacity:0.25;stroke-width:0.6" inkscape:label="cell line"/><circle cx="1653.43" cy="230.00" r="6" style="fill:#d6a243" inkscape:label="answer"/><text xml:space="preserve" x="1478.43" y="405.00" style="font-family:'Jost';font-size:11.00px;fill:#6d6a63;text-anchor:middle;font-style:italic" inkscape:label="hint">word search (tamil_puzzle) is drawn here</text></g>
+<g inkscape:label="#wordlist tamil_puzzle columns=3"><rect x="1236.74" y="616.00" width="483.37" height="150.00" style="fill:none;stroke:#999999;stroke-width:0.5;stroke-dasharray:3,3" inkscape:label="area"/><g inkscape:label="entry"><rect x="1238.74" y="620.00" width="8" height="8" rx="1" style="fill:none;stroke:#d6a243;stroke-width:0.9" inkscape:label="checkbox"/><text xml:space="preserve" x="1254.74" y="628.00" style="font-family:'Hind Madurai';font-size:11.00px;fill:#22201c;text-anchor:start;font-weight:500" inkscape:label="word">{{word}}</text><text xml:space="preserve" x="1254.74" y="638.00" style="font-family:'Jost';font-size:8.50px;fill:#6d6a63;text-anchor:start;font-style:italic" inkscape:label="gloss">{{gloss}}</text></g></g>
+  </g>
+  <g inkscape:groupmode="layer" id="layer-p4" inkscape:label="Page 4 - English puzzle &amp; verse">
+<rect x="1798.11" y="0.00" width="559.37" height="112.00" style="fill:#1f3a33" inkscape:label="Colour band"/>
+<text xml:space="preserve" x="1842.11" y="66.00" style="font-family:'Playfair Display';font-size:30.00px;fill:#f4efe6;text-anchor:start" inkscape:label="Title (English)">{{english_puzzle.title_en}}</text>
+<text xml:space="preserve" x="1842.11" y="92.00" style="font-family:'Hind Madurai';font-size:10.50px;fill:#d6a243;text-anchor:start" inkscape:label="Title (Tamil)">{{english_puzzle.title_ta}}</text>
+<text xml:space="preserve" x="1842.11" y="136.00" style="font-family:'Jost';font-size:10.00px;fill:#6d6a63;text-anchor:start;font-style:italic" inkscape:label="Instructions">{{english_puzzle.instructions_en}}</text>
+<g inkscape:label="#puzzle english_puzzle lines=on scale=0.5"><rect x="1927.80" y="150.00" width="300.00" height="300.00" style="fill:#ffffff;fill-opacity:0.5;stroke:#1f3a33;stroke-width:1.5" inkscape:label="area"/><text xml:space="preserve" x="1949.80" y="180.00" style="font-family:'Jost';font-size:14.00px;fill:#1f3a33;text-anchor:middle;font-weight:500" inkscape:label="letter">A</text><line x1="2007.80" y1="175.00" x2="2047.80" y2="175.00" style="stroke:#1f3a33;stroke-opacity:0.25;stroke-width:0.6" inkscape:label="cell line"/><circle cx="2207.80" cy="170.00" r="6" style="fill:#d6a243" inkscape:label="answer"/><text xml:space="preserve" x="2077.80" y="300.00" style="font-family:'Jost';font-size:11.00px;fill:#6d6a63;text-anchor:middle;font-style:italic" inkscape:label="hint">word search (english_puzzle) is drawn here</text></g>
+<g inkscape:label="#wordlist english_puzzle columns=4"><rect x="1836.11" y="468.00" width="483.37" height="68.00" style="fill:none;stroke:#999999;stroke-width:0.5;stroke-dasharray:3,3" inkscape:label="area"/><g inkscape:label="entry"><rect x="1838.11" y="472.00" width="8" height="8" rx="1" style="fill:none;stroke:#d6a243;stroke-width:0.9" inkscape:label="checkbox"/><text xml:space="preserve" x="1854.11" y="480.00" style="font-family:'Jost';font-size:9.50px;fill:#22201c;text-anchor:start;font-weight:500;letter-spacing:1.50px" inkscape:label="word">{{word}}</text></g></g>
+<rect x="1798.11" y="560.00" width="559.37" height="233.70" style="fill:#1f3a33" inkscape:label="Colour band (bottom)"/>
+<g inkscape:label="Back verse (Tamil)"><text xml:space="preserve" x="1961.95" y="596.00" style="font-family:'Hind Madurai';font-size:10.00px;fill:#f4efe6;text-anchor:middle" inkscape:label="?Line 1 [w=220]">{{back.verse_ta.0}}</text>
+<text xml:space="preserve" x="1961.95" y="613.00" style="font-family:'Hind Madurai';font-size:10.00px;fill:#f4efe6;text-anchor:middle" inkscape:label="?Line 2 [w=220]">{{back.verse_ta.1}}</text>
+<text xml:space="preserve" x="1961.95" y="630.00" style="font-family:'Hind Madurai';font-size:10.00px;fill:#f4efe6;text-anchor:middle" inkscape:label="?Line 3 [w=220]">{{back.verse_ta.2}}</text>
+<text xml:space="preserve" x="1961.95" y="647.00" style="font-family:'Hind Madurai';font-size:10.00px;fill:#f4efe6;text-anchor:middle" inkscape:label="?Line 4 [w=220]">{{back.verse_ta.3}}</text>
+<text xml:space="preserve" x="1961.95" y="664.00" style="font-family:'Hind Madurai';font-size:10.00px;fill:#f4efe6;text-anchor:middle" inkscape:label="?Line 5 [w=220]">{{back.verse_ta.4}}</text>
+<text xml:space="preserve" x="1961.95" y="685.00" style="font-family:'Hind Madurai';font-size:8.50px;fill:#d6a243;text-anchor:middle" inkscape:label="Source">{{back.verse_source_ta}}</text></g><g inkscape:label="Back verse (English)"><text xml:space="preserve" x="2193.64" y="596.00" style="font-family:'Jost';font-size:10.00px;fill:#f4efe6;text-anchor:middle;font-style:italic" inkscape:label="?Line 1 [w=220]">{{back.verse_en.0}}</text>
+<text xml:space="preserve" x="2193.64" y="613.00" style="font-family:'Jost';font-size:10.00px;fill:#f4efe6;text-anchor:middle;font-style:italic" inkscape:label="?Line 2 [w=220]">{{back.verse_en.1}}</text>
+<text xml:space="preserve" x="2193.64" y="630.00" style="font-family:'Jost';font-size:10.00px;fill:#f4efe6;text-anchor:middle;font-style:italic" inkscape:label="?Line 3 [w=220]">{{back.verse_en.2}}</text>
+<text xml:space="preserve" x="2193.64" y="647.00" style="font-family:'Jost';font-size:10.00px;fill:#f4efe6;text-anchor:middle;font-style:italic" inkscape:label="?Line 4 [w=220]">{{back.verse_en.3}}</text>
+<text xml:space="preserve" x="2193.64" y="664.00" style="font-family:'Jost';font-size:10.00px;fill:#f4efe6;text-anchor:middle;font-style:italic" inkscape:label="?Line 5 [w=220]">{{back.verse_en.4}}</text>
+<text xml:space="preserve" x="2193.64" y="685.00" style="font-family:'Jost';font-size:9.00px;fill:#d6a243;text-anchor:middle;font-weight:500" inkscape:label="Source">{{back.verse_source_en}}</text></g>
+<text xml:space="preserve" x="2077.80" y="747.70" style="font-family:'Playfair Display';font-size:20.00px;fill:#d6a243;text-anchor:middle;font-style:italic" inkscape:label="Thanks (English)">{{back.thanks_en}}</text>
+<text xml:space="preserve" x="2077.80" y="767.70" style="font-family:'Hind Madurai';font-size:11.00px;fill:#f4efe6;text-anchor:middle" inkscape:label="Thanks (Tamil)">{{back.thanks_ta}}</text>
+  </g>
+</svg>

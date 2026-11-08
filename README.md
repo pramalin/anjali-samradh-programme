@@ -14,7 +14,43 @@ fonts/                       ← OFL fonts used by the template
 
 ```bash
 python3 build.py             # template + wedding.json  →  output/wedding-programme.svg
+python3 build.py --all       # every templates/*.svg     →  output/<template-name>.svg
 ```
+
+### Designs in `templates/`
+
+| Template | Look |
+|---|---|
+| `programme-a5.svg` | Classic: maroon and gold, mango-leaf thoranam, kolam dividers |
+| `modern-minimal.svg` | Black on warm white, light sans-serif, thin rules |
+| `modern-arch.svg` | Terracotta, blush and sage, arch-framed cover, tiled puzzle grid |
+| `modern-editorial.svg` | Deep green colour blocks, mustard accents, large serif names |
+
+| `games-booklet.svg` | **Games booklet**: one A4 sheet folded to four A5 pages. 1: order of ceremony · 2: Thirukkural crossword, its clues, and both verses in Tamil with English phonetics · 3: Tamil word search and Tamil–English matching · 4: English word search, word scramble, thank-you, answers upside down |
+
+The games booklet reads `wedding.json` (the order of ceremony) and **`games.json`** (everything else, including the verses and their phonetics under `verses`). By default `build.py` loads both files; you can also name them yourself with `-d wedding.json -d games.json`.
+
+**Phonetics:** `games.json` → `phonetics` maps Tamil text to its English pronunciation, for example `"தாலி": "thaali"`. Inside any `#list` entry, `{{ph}}` shows the phonetic form of the item's `ta` or `word`, and `{{ph_paren}}` shows the same with a leading space and brackets (empty when there is none). The ceremony steps in `wedding.json` are looked up the same way, so that file needs no changes. If an entry uses `{{ph}}` and a word has no phonetic form, the build lists the missing words.
+
+**Crossword:** in `games.json` → `crossword.grid`, write one row per line, letters separated by spaces, and `x` for an empty square. Numbering is automatic. Clues are matched by answer word in `crossword.clues`, and the build warns about any answer with no clue. The answers go to the hidden Answer Keys layer and to `output/games-booklet-answer-key.txt`.
+
+The new template markers:
+- `#list path.to.list` repeats an `entry` for every item.
+  - Inside the entry, use the item's fields (`{{q}}`, `{{a}}`, …) and `{{n}}`.
+  - `{{letter}}` gives A, B, C… and `{{scrambled}}` gives the item's `word` with its letters shuffled.
+  - The `shuffle=11` option mixes the order; the matching game uses it.
+  - Answer strings appear automatically, such as `{{trivia.questions_answers}}`, `{{match.pairs_match}}` and `{{scramble.words_answers}}`.
+- `#crossword key` draws the grid, using the samples labelled `cell`, `number` and `letter`. Its clue lists are `#list key.across` and `#list key.down`.
+
+The modern booklet templates read the same `wedding.json`. The modern ones also use `cover.bride_en`, `cover.groom_en` and `cover.date_short`. Build one design on its own with `python3 build.py -t templates/modern-arch.svg -o output/modern-arch.svg`.
+
+Puzzle styling belongs to each template and goes in the marker label. Settings there override `wedding.json`:
+- `#puzzle tamil_puzzle lines=off scale=0.36 inset=0.06`: no grid lines, letter size relative to the cell, and the gap around each tile.
+- Inside the `#puzzle` group:
+  - a rect labelled `cell` is drawn behind every letter (rounded tiles);
+  - a line labelled `cell line` sets the grid-line style;
+  - a shape labelled `answer` sets the answer-key colour.
+- `#wordlist tamil_puzzle columns=3` sets the number of word-list columns.
 
 Run `python3 build.py --help` to use another template or data file, for example a second design or a different couple.
 
@@ -54,6 +90,16 @@ Running `build.py` only writes to `output/` and never changes the template.
 - **Word counts:** `{{tamil_puzzle.count}}` gives the number of words automatically.
 
 After a build, the script lists any placeholder with no matching value, which helps catch typos.
+
+## PDF from the command line
+
+```bash
+python3 build.py --pdf                        # output/wedding-programme.svg + .pdf
+python3 build.py --all --pdf                  # a PDF for every template
+python3 build.py --all --pdf --text-to-path   # text as outlines, for a print shop
+```
+
+This uses Inkscape 1.2 or newer. Under WSL it automatically uses the Windows install in `C:\Program Files\Inkscape` and the fonts installed in Windows. If Inkscape is somewhere else, point to it: `export INKSCAPE="/mnt/d/Apps/Inkscape/bin/inkscape.com"`. Before exporting, the build warns about any font a template uses that isn't in `fonts/`.
 
 ## Printing
 

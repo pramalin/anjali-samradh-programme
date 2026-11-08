@@ -1,0 +1,267 @@
+{
+  "_help": "Content for the games booklet (templates/games-booklet.svg), loaded together with wedding.json.",
+  "welcome": {
+    "line_en": "WELCOME TO THE WEDDING OF",
+    "line_ta": "எங்கள் திருமணத்திற்கு அன்புடன் வரவேற்கிறோம்",
+    "names_en": "Anjali & Samradh",
+    "names_ta": "அஞ்சலி & சம்ரத்"
+  },
+  "match": {
+    "title_en": "Match the Words",
+    "title_ta": "பொருத்துக",
+    "instructions": "Draw a line from each Tamil word to its meaning.",
+    "pairs": [
+      {
+        "ta": "தாலி",
+        "en": "sacred wedding necklace"
+      },
+      {
+        "ta": "மாலை",
+        "en": "flower garland"
+      },
+      {
+        "ta": "மஞ்சள்",
+        "en": "turmeric"
+      },
+      {
+        "ta": "மேளம்",
+        "en": "drum"
+      },
+      {
+        "ta": "விருந்து",
+        "en": "feast"
+      },
+      {
+        "ta": "பந்தல்",
+        "en": "wedding canopy"
+      }
+    ]
+  },
+  "crossword": {
+    "title_ta": "குறள் குறுக்கெழுத்து",
+    "title_en": "Thirukkural Crossword",
+    "instructions_ta": "எல்லா விடைகளும் கீழே உள்ள இரண்டு குறள்களின் சொற்கள் · ஒரு கட்டத்தில் ஓர் எழுத்து",
+    "instructions_en": "Every answer is a word from the two Thirukkural verses below. One Tamil letter per box.",
+    "_grid_help": "One row per line, letters separated by spaces, x for an empty square. Numbering is automatic.",
+    "grid": [
+      "x எ x x இ x உ ண் ட ற் று x பா",
+      "x ன் x கொ ல் லி x x x x x x த்",
+      "x னு x x x x x மா x x த ம து",
+      "அ ம் x x சே x x x சு டு ம் x x",
+      "ரி x x x ர் x x ஏ x x x x x",
+      "வை x இ ரு ந் து x ம x x x x பு",
+      "x x ன x தா x x x x x x x ணை",
+      "சி ன ம் x ரை x x மு ய க் கு x யை"
+    ],
+    "clues": {
+      "சினம்": "கோபம் · anger",
+      "என்னும்": "எனப்படும் · so-called",
+      "சேர்ந்தாரை": "சார்ந்தவர்களை · those who come close",
+      "கொல்லி": "அழிப்பது · the killer",
+      "இனம்": "சுற்றம் · one's kin",
+      "ஏம": "பாதுகாப்பான · protecting",
+      "புணையை": "தெப்பத்தை · the raft",
+      "சுடும்": "எரிக்கும் · will burn",
+      "தம்": "தங்களுடைய · one's own",
+      "இல்": "வீடு · home",
+      "இருந்து": "தங்கி · staying",
+      "தமது": "தம்முடைய · their own",
+      "பாத்து": "பகிர்ந்து · sharing out",
+      "உண்டற்று": "உண்டதைப் போன்றது · like having eaten",
+      "அம்": "அழகிய · beautiful",
+      "மா": "மாமை நிறம் · dark-hued",
+      "அரிவை": "இளம்பெண் · young woman",
+      "முயக்கு": "தழுவல் · embrace"
+    }
+  },
+  "verses": {
+    "title_ta": "குறள்கள்",
+    "title_en": "The verses",
+    "_note": "Tamil text verbatim. 'split' = combined words separated (as used in the crossword). 'phonetic' = English pronunciation. 'urai' = Kalaignar Mu. Karunanidhi's explanation (one line per list item). 'english' = G.U. Pope's translation (1886).",
+    "items": [
+      {
+        "source": "(குறள் எண்: 306, அதிகாரம்: வெகுளாமை, அறத்துப்பால்)",
+        "ta": [
+          "சினமென்னும் சேர்ந்தாரைக் கொல்லி இனமென்னும்",
+          "ஏமப் புணையைச் சுடும்"
+        ],
+        "split": "சினம் · என்னும் · சேர்ந்தாரை · கொல்லி · இனம் · என்னும் · ஏம · புணையை · சுடும்",
+        "phonetic": [
+          "Sinamennum Saerndhaaraik Kolli Inamennum",
+          "Aemap Punaiyaich Chudum"
+        ],
+        "urai": [
+          "சினங்கொண்டவரை அழிக்கக் கூடியதாகச் சினமென்னும் தீயே இருப்பதால், அது அவரை மட்டுமின்றி,",
+          "அவரைப் பாதுகாக்கும் தோணி போன்ற சுற்றத்தையும் அழித்துவிடும்."
+        ],
+        "english": [
+          "Wrath, the fire that slayeth whose draweth near,",
+          "Will burn the helpful 'raft' of kindred dear."
+        ]
+      },
+      {
+        "source": "(அதிகாரம்: புணர்ச்சி மகிழ்தல், குறள் எண்: 1107)",
+        "ta": [
+          "தம்மில் இருந்து தமதுபாத்து உண்டற்றால்",
+          "அம்மா அரிவை முயக்கு"
+        ],
+        "split": "தம் · இல் · இருந்து · தமது · பாத்து · உண்டற்று · ஆல் · அம் · மா · அரிவை · முயக்கு",
+        "phonetic": [
+          "Thammil Irundhu Thamadhupaaththu Undatraal",
+          "Ammaa Arivai Muyakku"
+        ],
+        "urai": [
+          "தானே உழைத்துச் சேர்த்ததைப் பலருக்கும் பகுத்து வழங்கி உண்டு களிப்பதில் ஏற்படும் இன்பம்,",
+          "தனது அழகிய காதல் மனைவியைத் தழுவுகின்ற இன்பத்துக்கு ஒப்பானது."
+        ],
+        "english": [
+          "As when one eats from household store, with kindly grace",
+          "Sharing his meal: such is this golden maid's embrace."
+        ]
+      }
+    ],
+    "urai_label": "கலைஞர் உரை: ",
+    "english_label": "G.U. Pope: "
+  },
+  "tamil_words": {
+    "title_ta": "சொல் தேடல்",
+    "title_en": "Tamil Word Search",
+    "instructions": "இடமிருந்து வலம் · மேலிருந்து கீழ் · Left to right or top to bottom",
+    "words": [
+      {
+        "word": "திருமணம்",
+        "gloss": "wedding"
+      },
+      {
+        "word": "தாலி",
+        "gloss": "wedding necklace"
+      },
+      {
+        "word": "மாலை",
+        "gloss": "garland"
+      },
+      {
+        "word": "மஞ்சள்",
+        "gloss": "turmeric"
+      },
+      {
+        "word": "மேளம்",
+        "gloss": "drum"
+      },
+      {
+        "word": "நாதஸ்வரம்",
+        "gloss": "wedding pipe"
+      },
+      {
+        "word": "கோலம்",
+        "gloss": "floor art"
+      },
+      {
+        "word": "தோரணம்",
+        "gloss": "festoon"
+      },
+      {
+        "word": "விருந்து",
+        "gloss": "feast"
+      },
+      {
+        "word": "பந்தல்",
+        "gloss": "canopy"
+      },
+      {
+        "word": "மெட்டி",
+        "gloss": "toe ring"
+      },
+      {
+        "word": "பட்டு",
+        "gloss": "silk"
+      }
+    ],
+    "rows": 10,
+    "cols": 10,
+    "seed": 1107,
+    "directions": [
+      "right",
+      "down"
+    ]
+  },
+  "english_words": {
+    "title_en": "Word Search",
+    "title_ta": "ஆங்கிலச் சொல் தேடல்",
+    "instructions": "Across, down, diagonal and backwards!",
+    "words": [
+      "ANJALI",
+      "SAMRADH",
+      "LOVE",
+      "FOREVER",
+      "FAMILY",
+      "BLESSINGS",
+      "GARLAND",
+      "THALI",
+      "JASMINE",
+      "SILK",
+      "FEAST",
+      "DANCE"
+    ],
+    "rows": 10,
+    "cols": 10,
+    "seed": 306,
+    "directions": [
+      "right",
+      "down",
+      "down-right",
+      "up-right",
+      "left",
+      "up",
+      "up-left",
+      "down-left"
+    ]
+  },
+  "scramble": {
+    "title_en": "Word Scramble",
+    "title_ta": "கலைந்த சொற்கள்",
+    "words": [
+      "BRIDE",
+      "GROOM",
+      "GARLAND",
+      "TURMERIC",
+      "BLESSING",
+      "JASMINE"
+    ]
+  },
+  "thanks": {
+    "title_en": "Thank You",
+    "title_ta": "நன்றி",
+    "message_en": [
+      "Thank you for being part of our special day.",
+      "Your love and blessings mean the world to us."
+    ],
+    "message_ta": "எங்கள் இனிய நாளில் பங்கேற்றதற்கு மனமார்ந்த நன்றி."
+  },
+  "answers": {
+    "label": "ANSWERS · விடைகள்"
+  },
+  "phonetics": {
+    "_help": "English phonetic forms, looked up by the exact Tamil text. Used as {{ph}} in lists.",
+    "மங்கல இசை": "Mangala Isai",
+    "திருவிளக்கு ஏற்றுதல்": "Thiruvilakku Aetrudhal",
+    "திருமுறை ஓதுதல்": "Thirumurai Odhudhal",
+    "மணமக்கள் வருகை": "Manamakkal Varugai",
+    "மாலை மாற்றுதல்": "Maalai Maatrudhal",
+    "திருமாங்கல்யம் அணிவித்தல்": "Thirumaangalyam Anivitthal",
+    "பெரியோர் வாழ்த்து": "Periyor Vaazhthu",
+    "திருமண விருந்து": "Thirumana Virundhu",
+    "திருமணம்": "thirumanam",
+    "தாலி": "thaali",
+    "மாலை": "maalai",
+    "மஞ்சள்": "manjal",
+    "மேளம்": "maelam",
+    "நாதஸ்வரம்": "naadhaswaram",
+    "கோலம்": "kolam",
+    "தோரணம்": "thoranam",
+    "விருந்து": "virundhu",
+    "பந்தல்": "pandhal",
+    "மெட்டி": "metti",
+    "பட்டு": "pattu"
+  }
+}
