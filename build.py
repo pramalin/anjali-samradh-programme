@@ -360,6 +360,8 @@ def scale_font(el, factor):
 
 
 def fit_text(el, tree, fonts, pages):
+    if "[nofit]" in label(el):
+        return
     s = "".join(el.itertext())
     if not s.strip():
         return
@@ -382,7 +384,17 @@ def fit_text(el, tree, fonts, pages):
         left, right = page[0] + PAGE_MARGIN, page[0] + page[2] - PAGE_MARGIN
         avail_abs = {"middle": 2 * min(ax - left, right - ax), "end": ax - left}.get(anchor, right - ax)
         avail = avail_abs / (math.hypot(ctm[0], ctm[1]) or 1)
-    w = fonts.width(s, st.get("font-family", ""), size, italic, weight_of(st)) + spacing * len(s)
+    spans = [c for c in el if c.tag == SVG + "tspan" and (c.text or "")]
+    if len(spans) > 1:   # mixed styles (e.g. Tamil + phonetic): measure each part in its own font
+        base = style_dict(el)
+        w = 0
+        for c in spans:
+            cs = {**base, **style_dict(c)}
+            w += fonts.width(c.text, cs.get("font-family", ""), num(cs.get("font-size"), size),
+                             "italic" in cs.get("font-style", ""), weight_of(cs))
+        w += spacing * len(s)
+    else:
+        w = fonts.width(s, st.get("font-family", ""), size, italic, weight_of(st)) + spacing * len(s)
     if avail > 0 and w > avail:
         scale_font(el, max(avail / w, 0.3))
 
@@ -458,9 +470,15 @@ def expand_puzzle(group, key, data, tree, answers_layer, key_lines, opts=None):
     for r in range(rows):
         rg = ET.SubElement(holder, SVG + "g", {LABEL: f"Row {r+1}"})
         for c in range(cols):
+            st_cell = lst
+            if FONTS is not None:   # shrink only letters too wide for their box (e.g. லை, கோ)
+                fam = lst.get("font-family", "")
+                wdt = FONTS.width(grid[r][c], fam, size, "italic" in lst.get("font-style", ""), weight_of(lst))
+                if wdt > cell * 0.86:
+                    st_cell = dict(lst, **{"font-size": f"{size * cell * 0.86 / wdt:.2f}px"})
             t = ET.SubElement(rg, SVG + "text", {
                 "x": f"{gx + cell*(c+.5):.2f}", "y": f"{gy + cell*(r+.5) + size*0.36:.2f}",
-                "style": style_str(lst), "{http://www.w3.org/XML/1998/namespace}space": "preserve"})
+                "style": style_str(st_cell), "{http://www.w3.org/XML/1998/namespace}space": "preserve"})
             t.text = grid[r][c]
     # answer key, drawn in absolute coordinates on the hidden layer
     acolor = "#e8962e"
@@ -502,6 +520,8 @@ def scramble(word):
 def entry_fit_labels(e, x, colw):
     """Give every text in a repeated entry a [w=] so it stays inside its column."""
     for el in e.iter(SVG + "text"):
+        if "[nofit]" in label(el):
+            continue
         tx = num(next((d.get("x") for d in el.iter() if d.get("x")), x))
         anchor = text_style(el).get("text-anchor", "start")
         if anchor == "middle":
@@ -514,6 +534,35 @@ def entry_fit_labels(e, x, colw):
         if m:  # a width set in the template wins if it is tighter
             w = min(w, float(m.group(1)))
         el.set(LABEL, re.sub(r"\s*\[w=[\d.]+\]", "", label(el)) + f" [w={max(w, 10):.0f}]")
+
+
+FONTS = None   # set in build(); used to measure text when stacking phonetics
+
+
+def stack_phonetic(e, stack, local):
+    """Turn 'Tamil (First' into 'Tamil (First' over 'Second)': the second half goes on a line below,
+    starting where the first half starts, so a long phonetic keeps the normal size."""
+    first = f" ({stack[0]}"
+    for t in e.iter(SVG + "text"):
+        spans = [s for s in t if s.tag == SVG + "tspan"]
+        for i, sp in enumerate(spans):
+            if sp.text == first and i > 0:
+                main = spans[i - 1]
+                ms, ps = {**text_style(t), **style_dict(main)}, {**text_style(t), **style_dict(sp)}
+                f = FONTS or Fonts(HERE / "fonts")
+                w_main = f.width(main.text or "", ms.get("font-family", ""), num(ms.get("font-size"), 12),
+                                 "italic" in ms.get("font-style", ""), weight_of(ms))
+                psize = num(ps.get("font-size"), 10)
+                w_paren = f.width(" (", ps.get("font-family", ""), psize, True, weight_of(ps))
+                x0 = num(t.get("x"))
+                sp.text = f" ({stack[0]}"
+                sp.set("dy", f"{-psize * 0.45:.2f}")
+                nxt = ET.Element(SVG + "tspan", {"x": f"{x0 + w_main + w_paren:.2f}", "dy": f"{psize * 0.95:.2f}",
+                                                 "style": sp.get("style", "")})
+                nxt.text = f"{stack[1]})"
+                t.insert(list(t).index(sp) + 1, nxt)
+                t.set(LABEL, label(t) + " [nofit]")
+                return
 
 
 def expand_list(group, path, data, opts=None):
@@ -554,11 +603,17 @@ def expand_list(group, path, data, opts=None):
             local.setdefault(k, v)   # an item's own field (e.g. a crossword clue number) wins
         if "word" in it:
             local["scrambled"] = scramble(str(it["word"]))
+        stack = None
         if "ph" not in local:  # phonetic form from the shared "phonetics" dictionary
             key_text = str(it.get("ta", it.get("word", "")))
-            local["ph"] = phon.get(key_text, "")
+            raw = phon.get(key_text, "")
+            if "|" in raw:     # two-line phonetic, stacked inside the brackets
+                stack = [p.strip() for p in raw.split("|", 1)]
+            local["ph"] = raw.replace("|", " ").replace("  ", " ")
             if not local["ph"] and uses_ph and key_text:
                 missing_ph.append(key_text)
+        if stack:
+            local.setdefault("ph_paren", f" ({stack[0]}")
         local.setdefault("ph_paren", f" ({local['ph']})" if local.get("ph") else "")
         letter_of[idx] = chr(65 + pos)
         e = copy.deepcopy(entry)
@@ -570,6 +625,8 @@ def expand_list(group, path, data, opts=None):
                 v = getattr(el, attr)
                 if v and "{{" in v:
                     setattr(el, attr, data.fill(v, local))
+        if stack:
+            stack_phonetic(e, stack, local)
         entry_fit_labels(e, x, colw)
         group.append(e)
     if missing_ph:
@@ -582,6 +639,8 @@ def expand_list(group, path, data, opts=None):
             parent[f"{leaf}_answers"] = "  ".join(f"{i+1}-{it.get('answer', '?')}" for i, it in enumerate(items))
         elif any("word" in it for it in items):
             parent[f"{leaf}_answers"] = "  ".join(f"{i+1}. {it['word']}" for i, it in enumerate(items))
+        if any("ta" in it and "en" in it for it in items):
+            parent[f"{leaf}_pairs"] = "  ·  ".join(f"{it['ta']} = {it['en']}" for it in items)
         if "shuffle" in opts:
             parent[f"{leaf}_match"] = "  ".join(f"{i+1}-{letter_of[i]}" for i in range(len(items)))
 
@@ -809,6 +868,8 @@ def build(template, data_paths, out_path):
               "fixed in the output. Run with --fix-template to fix the template too.")
     tree = Tree(root)
     fonts = Fonts(HERE / "fonts")
+    global FONTS
+    FONTS = fonts
     check_fonts(root, fonts)
     pages = [(num(p.get("x")), num(p.get("y")), num(p.get("width")), num(p.get("height")))
              for p in root.iter("{%s}page" % NS["inkscape"])]
@@ -859,8 +920,8 @@ def build(template, data_paths, out_path):
     for t in filled:
         fit_text(t, tree, fonts, pages)
     for el in root.iter():  # tidy fit markers out of labels
-        if "[w=" in label(el):
-            el.set(LABEL, re.sub(r"\s*\[w=[\d.]+\]", "", label(el)))
+        if "[w=" in label(el) or "[nofit]" in label(el):
+            el.set(LABEL, re.sub(r"\s*\[(w=[\d.]+|nofit)\]", "", label(el)))
 
     out = Path(out_path)
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -877,11 +938,11 @@ def build(template, data_paths, out_path):
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description="Fill an SVG template from JSON.")
-    ap.add_argument("-t", "--template", default=HERE / "templates" / "programme-a5.svg")
+    ap.add_argument("-t", "--template", default=HERE / "templates" / "programme-booklet.svg")
     ap.add_argument("-d", "--data", action="append",
                     help="JSON content file(s); later files add to / override earlier ones "
                          "(default: wedding.json plus games.json if present)")
-    ap.add_argument("-o", "--output", default=HERE / "output" / "wedding-programme.svg")
+    ap.add_argument("-o", "--output", default=HERE / "output" / "programme-booklet.svg")
     ap.add_argument("--fix-template", action="store_true",
                     help="repair page 1 / document size in the template file itself, then build")
     ap.add_argument("--all", action="store_true",

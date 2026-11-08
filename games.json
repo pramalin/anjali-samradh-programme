@@ -4,7 +4,8 @@
     "line_en": "WELCOME TO THE WEDDING OF",
     "line_ta": "எங்கள் திருமணத்திற்கு அன்புடன் வரவேற்கிறோம்",
     "names_en": "Anjali & Samradh",
-    "names_ta": "அஞ்சலி & சம்ரத்"
+    "names_ta": "அஞ்சலி & சம்ரத்",
+    "line_en_short": "Welcome to the wedding of"
   },
   "match": {
     "title_en": "Match the Words",
@@ -183,7 +184,8 @@
     "directions": [
       "right",
       "down"
-    ]
+    ],
+    "title_en_short": "Word Search"
   },
   "english_words": {
     "title_en": "Word Search",
@@ -242,13 +244,13 @@
     "label": "ANSWERS · விடைகள்"
   },
   "phonetics": {
-    "_help": "English phonetic forms, looked up by the exact Tamil text. Used as {{ph}} in lists.",
+    "_help": "English phonetic forms, looked up by the exact Tamil text. Used as {{ph}} / {{ph_paren}} in lists. A '|' splits a long phonetic into two lines stacked inside the brackets.",
     "மங்கல இசை": "Mangala Isai",
     "திருவிளக்கு ஏற்றுதல்": "Thiruvilakku Aetrudhal",
     "திருமுறை ஓதுதல்": "Thirumurai Odhudhal",
     "மணமக்கள் வருகை": "Manamakkal Varugai",
     "மாலை மாற்றுதல்": "Maalai Maatrudhal",
-    "திருமாங்கல்யம் அணிவித்தல்": "Thirumaangalyam Anivitthal",
+    "திருமாங்கல்யம் அணிவித்தல்": "Thirumaangalyam|Anivitthal",
     "பெரியோர் வாழ்த்து": "Periyor Vaazhthu",
     "திருமண விருந்து": "Thirumana Virundhu",
     "திருமணம்": "thirumanam",
@@ -263,5 +265,47 @@
     "பந்தல்": "pandhal",
     "மெட்டி": "metti",
     "பட்டு": "pattu"
+  },
+  "maze": {
+    "title_en": [
+      "Help the groom",
+      "reach his bride"
+    ],
+    "title_ta": [
+      "மணமகன் மணமகளைச்",
+      "சென்றடைய உதவுங்கள்"
+    ]
+  },
+  "drawing": {
+    "title_en": "Draw a picture of the bride and groom",
+    "title_ta": "மணமக்களை வரையுங்கள்"
+  },
+  "monogram": {
+    "_note": "Text around the monogram circle: names arched over the top, date along the bottom (both centred and upright).",
+    "ring_names": "ANJALI & SAMRADH",
+    "ring_date": "15.11.2026"
+  },
+  "cover": {
+    "title": "Ceremony & Celebrations",
+    "subtitle": [
+      "Enjoy some puzzles while we wait",
+      "for the happy couple."
+    ]
+  },
+  "map": {
+    "_note": "Labels for the journey map on the cover (Aruppukkottai -> Coimbatore -> Mangaluru).",
+    "mangaluru": "Mangaluru",
+    "coimbatore": "Coimbatore",
+    "aruppukkottai": "Aruppukkottai"
+  },
+  "dots_boxes": {
+    "title_en": "Dots & Boxes",
+    "title_ta": "புள்ளிகளும் பெட்டிகளும்",
+    "instructions": "Take turns joining dots; close a box to claim it and go again.",
+    "cols": 14,
+    "rows": 6
+  },
+  "tictactoe": {
+    "title_en": "Tic-Tac-Toe"
   }
 }

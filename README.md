@@ -1,4 +1,22 @@
-# Anjali & Samradh: Bilingual Wedding Programme (Tamil + English)
+# Anjali & Samradh — Wedding Programme (Tamil + English)
+
+**The final design is `templates/programme-booklet.svg`** — one A4 sheet folded to four A5 pages:
+1. Cover: AS monogram, *Ceremony & Celebrations*, order of ceremony, kuthuvilakku drawing
+2. Tamil word search + maze ("Help the groom reach his bride") + cat
+3. Draw-the-couple frame with paw prints, Dots & Boxes, English word search, Tic-Tac-Toe
+4. Thirukkural crossword, both verses (separated words, phonetics, Kalaignar உரை, G.U. Pope), thank-you
+
+```bash
+python3 build.py --pdf          # builds the final booklet -> output/programme-booklet.svg + .pdf
+python3 build.py --all --pdf    # builds every design in templates/
+```
+
+Content comes from `wedding.json` (order of ceremony) and `games.json` (everything else).
+**Fonts:** install every `.ttf` in `fonts/` in Windows (right-click → *Install for all users*) before opening any template in Inkscape.
+Close any open PDF before building — Windows locks open files.
+
+---
+
 
 This is a 4-page A5 booklet made from an **Inkscape template** and a **JSON content file**. You don't need to touch the code to change the design or the wording.
 
@@ -26,6 +44,7 @@ python3 build.py --all       # every templates/*.svg     →  output/<template-n
 | `modern-arch.svg` | Terracotta, blush and sage, arch-framed cover, tiled puzzle grid |
 | `modern-editorial.svg` | Deep green colour blocks, mustard accents, large serif names |
 
+| `programme-booklet.svg` | **Final booklet** (based on Anjali's layout): parchment pages · 1: AS monogram, welcome, order of ceremony · 2: Tamil word search + "help the groom reach his bride" maze · 3: drawing frame, Match the Words, English word search · 4: Thirukkural crossword, verses with phonetics, Kalaignar urai and Pope translation |
 | `games-booklet.svg` | **Games booklet**: one A4 sheet folded to four A5 pages. 1: order of ceremony · 2: Thirukkural crossword, its clues, and both verses in Tamil with English phonetics · 3: Tamil word search and Tamil–English matching · 4: English word search, word scramble, thank-you, answers upside down |
 
 The games booklet reads `wedding.json` (the order of ceremony) and **`games.json`** (everything else, including the verses and their phonetics under `verses`). By default `build.py` loads both files; you can also name them yourself with `-d wedding.json -d games.json`.
@@ -90,6 +109,15 @@ Running `build.py` only writes to `output/` and never changes the template.
 - **Word counts:** `{{tamil_puzzle.count}}` gives the number of words automatically.
 
 After a build, the script lists any placeholder with no matching value, which helps catch typos.
+
+## Images used by the booklet
+
+`assets/` holds the images the final booklet links to (the template and output refer to them as `../assets/...`, so keep the folders side by side):
+- `parchment.jpg` - background (from Rawpixel: "Simple tribal pattern in doodle style frame" by Yanin - check its licence on rawpixel.com)
+- `drawing-frame.png` - the ornate frame for the drawing box
+- `maze.svg` / `maze-solution.svg` - regenerate with `python3 maze.py --size 27 --hardest 300 --color "#3a2c24" --out assets/maze.svg`
+
+The AS monogram and the groom/bride silhouettes are drawn inside the template itself.
 
 ## PDF from the command line
 

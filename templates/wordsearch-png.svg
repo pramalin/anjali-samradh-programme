@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" width="960px" height="960px" viewBox="0 0 960 960" version="1.1">
+  <title>Word search grids only - black, transparent background</title>
+  <sodipodi:namedview id="namedview" pagecolor="#ffffff" inkscape:pagecheckerboard="true">
+    <inkscape:page x="0" y="0" width="960" height="960" id="page1" inkscape:label="Tamil word search"/>
+    <inkscape:page x="1020" y="0" width="960" height="960" id="page2" inkscape:label="English word search"/>
+  </sodipodi:namedview>
+  <g inkscape:groupmode="layer" id="layer-ta" inkscape:label="Tamil word search">
+<g inkscape:label="#puzzle tamil_words lines=off scale=0.36"><rect x="30.00" y="30.00" width="900.00" height="900.00" style="fill:none;stroke:none" inkscape:label="area"/><text xml:space="preserve" x="52.00" y="60.00" style="font-family:'Hind Madurai';font-size:14.00px;fill:#000000;text-anchor:middle;font-weight:400" inkscape:label="letter">அ</text><circle cx="910.00" cy="50.00" r="6" style="fill:#999999" inkscape:label="answer"/><text xml:space="preserve" x="480.00" y="480.00" style="font-family:'Jost';font-size:11.00px;fill:#999999;text-anchor:middle;font-style:italic" inkscape:label="hint">word search (tamil_words) is drawn here</text></g>
+  </g>
+  <g inkscape:groupmode="layer" id="layer-en" inkscape:label="English word search">
+<g inkscape:label="#puzzle english_words lines=off scale=0.5"><rect x="1050.00" y="30.00" width="900.00" height="900.00" style="fill:none;stroke:none" inkscape:label="area"/><text xml:space="preserve" x="1072.00" y="60.00" style="font-family:'Jost';font-size:14.00px;fill:#000000;text-anchor:middle;font-weight:400" inkscape:label="letter">A</text><circle cx="1930.00" cy="50.00" r="6" style="fill:#999999" inkscape:label="answer"/><text xml:space="preserve" x="1500.00" y="480.00" style="font-family:'Jost';font-size:11.00px;fill:#999999;text-anchor:middle;font-style:italic" inkscape:label="hint">word search (english_words) is drawn here</text></g>
+  </g>
+</svg>
