@@ -1,6 +1,5 @@
 {
   "_help": "Every value here can be shown in the template as {{path.to.value}}, e.g. {{cover.bride_ta}} or {{programme.items.0.en}} (lists count from 0). Values may themselves contain placeholders.",
-
   "cover": {
     "blessing": "உ",
     "deity_line": "ஸ்ரீ சௌடேஸ்வரி அம்மன் துணை",
@@ -18,45 +17,78 @@
     "time_en": "Muhurtham 9:00 – 10:30 am",
     "venue_ta": "ஸ்ரீ ஜஸ்மா தேவி மஹால், ஈச்சனாரி, கோவை",
     "venue_en": "SRI JASMA DEVI MAHAL · EACHANARI · COIMBATORE",
-    "verse_ta": ["அன்பும் அறனும் உடைத்தாயின் இல்வாழ்க்கை", "பண்பும் பயனும் அது."],
+    "verse_ta": [
+      "அன்பும் அறனும் உடைத்தாயின் இல்வாழ்க்கை",
+      "பண்பும் பயனும் அது."
+    ],
     "verse_source": "— திருக்குறள் 45",
-    "verse_en": ["When love and virtue dwell in the heart and home,",
-                 "Blessings, Joy and Harmony find its room to bloom."]
+    "verse_en": [
+      "When love and virtue dwell in the heart and home,",
+      "Blessings, Joy and Harmony find its room to bloom."
+    ]
   },
-
   "programme": {
     "title_ta": "நிகழ்ச்சி நிரல்",
     "title_en": "Order of Ceremony",
     "items": [
-      {"ta": "மங்கல இசை", "en": "Nadaswaram & welcome of guests"},
-      {"ta": "திருவிளக்கு ஏற்றுதல்", "en": "Lighting of the sacred lamp"},
-      {"ta": "திருமுறை ஓதுதல்", "en": "Recital of Thirumurai hymns"},
-      {"ta": "மணமக்கள் வருகை", "en": "Arrival of the bride and groom"},
-      {"ta": "மாலை மாற்றுதல்", "en": "Exchange of garlands"},
-      {"ta": "திருமாங்கல்யம் அணிவித்தல்", "en": "Tying of the Thali"},
-      {"ta": "பெரியோர் வாழ்த்து", "en": "Blessings from the elders"},
-      {"ta": "திருமண விருந்து", "en": "Wedding feast"}
+      {
+        "ta": "திருவிளக்கு ஏற்றுதல்",
+        "en": "Lighting of the sacred lamp"
+      },
+      {
+        "ta": "விநாயகர் வழிபாடு",
+        "en": "Prayer to Lord Ganesha"
+      },
+      {
+        "ta": "கலச வழிபாடு",
+        "en": "Worship of the sacred kalasam"
+      },
+      {
+        "ta": "வேள்வி / திருமுறை ஓதுதல்",
+        "en": "Sacred fire and Thirumurai hymns"
+      },
+      {
+        "ta": "மாங்கல்யம் அணிவித்தல்",
+        "en": "Tying of the Thali"
+      },
+      {
+        "ta": "மணவறை வலம்",
+        "en": "Circling the wedding dais"
+      },
+      {
+        "ta": "கதிரவன் வழிபாடு",
+        "en": "Prayer to the Sun"
+      },
+      {
+        "ta": "மணமக்கள் வாழ்த்து",
+        "en": "Blessing the couple"
+      }
     ],
     "officiant_label_ta": "தமிழ்முறைத் திருமணம் · தலைமை",
     "officiant_label_en": "A Tamil-tradition wedding conducted by",
     "officiant_ta": "சிவத்திரு. ஆரூரன்",
     "officiant_en": "Sivathiru Aarooran · Niraimozhi Maanthar Thirumurai Thirumadam, Bhavani",
     "bride": {
-      "label_ta": "மணமகள்", "label_en": "THE BRIDE",
-      "name_ta": "அஞ்சலி", "name_en": "Anjali Padmanaban",
-      "parents_ta_1": "திரு. பத்மநாபன் –", "parents_ta_2": "திருமதி. சாந்தகுமாரி",
+      "label_ta": "மணமகள்",
+      "label_en": "THE BRIDE",
+      "name_ta": "அஞ்சலி",
+      "name_en": "Anjali Padmanaban",
+      "parents_ta_1": "திரு. பத்மநாபன் –",
+      "parents_ta_2": "திருமதி. சாந்தகுமாரி",
       "parents_en": "D/o Mr. Padmanaban & Mrs. Shanthakumari",
       "place": "Aruppukottai"
     },
     "groom": {
-      "label_ta": "மணமகன்", "label_en": "THE GROOM",
-      "name_ta": "சம்ரத்", "name_en": "Samradh Bhovi",
-      "parents_ta_1": "திரு. விஷ்ணு –", "parents_ta_2": "திருமதி. மஞ்சுளா",
+      "label_ta": "மணமகன்",
+      "label_en": "THE GROOM",
+      "name_ta": "சம்ரத்",
+      "name_en": "Samradh Bhovi",
+      "parents_ta_1": "திரு. விஷ்ணு –",
+      "parents_ta_2": "திருமதி. மஞ்சுளா",
       "parents_en": "S/o Mr. Vishnu & Mrs. Manjula",
       "place": "Mangaluru"
     }
   },
-
   "tamil_puzzle": {
     "title_ta": "சொல் தேடல்",
     "title_en": "Tamil Word Search",
@@ -67,57 +99,139 @@
     ],
     "instructions_en": "Find {{tamil_puzzle.count}} words from the two verses on this card. Words run left to right or top to bottom, one Tamil letter per box.",
     "words": [
-      {"word": "அன்பும்", "gloss": "love"},
-      {"word": "அறனும்", "gloss": "virtue"},
-      {"word": "உடைத்தாயின்", "gloss": "if it holds"},
-      {"word": "இல்வாழ்க்கை", "gloss": "married life"},
-      {"word": "பண்பும்", "gloss": "grace"},
-      {"word": "பயனும்", "gloss": "fulfilment"},
-      {"word": "யாயும்", "gloss": "my mother"},
-      {"word": "ஞாயும்", "gloss": "your mother"},
-      {"word": "எந்தையும்", "gloss": "my father"},
-      {"word": "நுந்தையும்", "gloss": "your father"},
-      {"word": "கேளிர்", "gloss": "kin"},
-      {"word": "யானும்", "gloss": "I"},
-      {"word": "நீயும்", "gloss": "you"},
-      {"word": "செம்புலப்", "gloss": "red earth"},
-      {"word": "பெயல்நீர்", "gloss": "rain water"},
-      {"word": "அன்புடை", "gloss": "loving"},
-      {"word": "நெஞ்சம்", "gloss": "heart"},
-      {"word": "கலந்தனவே", "gloss": "became one"}
+      {
+        "word": "அன்பும்",
+        "gloss": "love"
+      },
+      {
+        "word": "அறனும்",
+        "gloss": "virtue"
+      },
+      {
+        "word": "உடைத்தாயின்",
+        "gloss": "if it holds"
+      },
+      {
+        "word": "இல்வாழ்க்கை",
+        "gloss": "married life"
+      },
+      {
+        "word": "பண்பும்",
+        "gloss": "grace"
+      },
+      {
+        "word": "பயனும்",
+        "gloss": "fulfilment"
+      },
+      {
+        "word": "யாயும்",
+        "gloss": "my mother"
+      },
+      {
+        "word": "ஞாயும்",
+        "gloss": "your mother"
+      },
+      {
+        "word": "எந்தையும்",
+        "gloss": "my father"
+      },
+      {
+        "word": "நுந்தையும்",
+        "gloss": "your father"
+      },
+      {
+        "word": "கேளிர்",
+        "gloss": "kin"
+      },
+      {
+        "word": "யானும்",
+        "gloss": "I"
+      },
+      {
+        "word": "நீயும்",
+        "gloss": "you"
+      },
+      {
+        "word": "செம்புலப்",
+        "gloss": "red earth"
+      },
+      {
+        "word": "பெயல்நீர்",
+        "gloss": "rain water"
+      },
+      {
+        "word": "அன்புடை",
+        "gloss": "loving"
+      },
+      {
+        "word": "நெஞ்சம்",
+        "gloss": "heart"
+      },
+      {
+        "word": "கலந்தனவே",
+        "gloss": "became one"
+      }
     ],
     "rows": 11,
     "cols": 11,
     "seed": 15112026,
-    "directions": ["right", "down"],
+    "directions": [
+      "right",
+      "down"
+    ],
     "letter_scale": 0.37,
     "cell_lines": true,
     "list_columns": 3
   },
-
   "english_puzzle": {
     "title_en": "Word Search",
     "title_ta": "ஆங்கிலச் சொல் தேடல்",
     "instructions_en": "Find these {{english_puzzle.count}} words across, down or diagonally.",
-    "words": ["ANJALI", "SAMRADH", "LOVE", "VIRTUE", "HARMONY", "BLESSINGS", "THALI",
-              "GARLAND", "KURAL", "HEARTS", "RAIN", "FAMILY", "COIMBATORE", "MANGALURU"],
+    "words": [
+      "ANJALI",
+      "SAMRADH",
+      "LOVE",
+      "VIRTUE",
+      "HARMONY",
+      "BLESSINGS",
+      "THALI",
+      "GARLAND",
+      "KURAL",
+      "HEARTS",
+      "RAIN",
+      "FAMILY",
+      "COIMBATORE",
+      "MANGALURU"
+    ],
     "rows": 11,
     "cols": 11,
     "seed": 2026,
-    "directions": ["right", "down", "down-right", "up-right"],
+    "directions": [
+      "right",
+      "down",
+      "down-right",
+      "up-right"
+    ],
     "letter_scale": 0.6,
     "cell_lines": true,
     "list_columns": 4
   },
-
   "back": {
-    "verse_ta": ["யாயும் ஞாயும் யார் ஆகியரோ?", "எந்தையும் நுந்தையும் எம்முறைக் கேளிர்?",
-                 "யானும் நீயும் எவ்வழி அறிதும்?", "செம்புலப் பெயல்நீர் போல",
-                 "அன்புடை நெஞ்சம் தாம் கலந்தனவே."],
+    "verse_ta": [
+      "யாயும் ஞாயும் யார் ஆகியரோ?",
+      "எந்தையும் நுந்தையும் எம்முறைக் கேளிர்?",
+      "யானும் நீயும் எவ்வழி அறிதும்?",
+      "செம்புலப் பெயல்நீர் போல",
+      "அன்புடை நெஞ்சம் தாம் கலந்தனவே."
+    ],
     "verse_source_ta": "— குறுந்தொகை 40",
-    "verse_en": ["My mom and yours, what are they to each other?", "My dad and yours, how are they related?",
-                 "You and I, how do we know each other?", "Yet, like rain fall on red earth,",
-                 "our hearts in love merged into one."],
+    "verse_en": [
+      "My mom and yours, what are they to each other?",
+      "My dad and yours, how are they related?",
+      "You and I, how do we know each other?",
+      "Yet, like rain fall on red earth,",
+      "our hearts in love merged into one."
+    ],
     "verse_source_en": "— Kurunthokai 40",
     "thanks_ta": "வருகைக்கும் வாழ்த்துக்கும் நன்றி",
     "thanks_en": "Thank you for blessing us"

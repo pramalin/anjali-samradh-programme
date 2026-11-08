@@ -539,30 +539,38 @@ def entry_fit_labels(e, x, colw):
 FONTS = None   # set in build(); used to measure text when stacking phonetics
 
 
-def stack_phonetic(e, stack, local):
-    """Turn 'Tamil (First' into 'Tamil (First' over 'Second)': the second half goes on a line below,
-    starting where the first half starts, so a long phonetic keeps the normal size."""
-    first = f" ({stack[0]}"
+def multiline_entry(e, ta_parts, ph_parts, lh):
+    """Break a 'Tamil (phonetic)' line over several lines: extra Tamil parts go on new lines at the
+    left edge; a two-part phonetic continues on the next line, starting just inside its bracket.
+    Returns the number of extra lines added."""
     for t in e.iter(SVG + "text"):
         spans = [s for s in t if s.tag == SVG + "tspan"]
-        for i, sp in enumerate(spans):
-            if sp.text == first and i > 0:
-                main = spans[i - 1]
-                ms, ps = {**text_style(t), **style_dict(main)}, {**text_style(t), **style_dict(sp)}
-                f = FONTS or Fonts(HERE / "fonts")
-                w_main = f.width(main.text or "", ms.get("font-family", ""), num(ms.get("font-size"), 12),
-                                 "italic" in ms.get("font-style", ""), weight_of(ms))
-                psize = num(ps.get("font-size"), 10)
-                w_paren = f.width(" (", ps.get("font-family", ""), psize, True, weight_of(ps))
-                x0 = num(t.get("x"))
-                sp.text = f" ({stack[0]}"
-                sp.set("dy", f"{-psize * 0.45:.2f}")
-                nxt = ET.Element(SVG + "tspan", {"x": f"{x0 + w_main + w_paren:.2f}", "dy": f"{psize * 0.95:.2f}",
-                                                 "style": sp.get("style", "")})
-                nxt.text = f"{stack[1]})"
-                t.insert(list(t).index(sp) + 1, nxt)
-                t.set(LABEL, label(t) + " [nofit]")
-                return
+        if len(spans) < 2 or not (spans[1].text or "").startswith(" ("):
+            continue
+        main, paren = spans[0], spans[1]
+        ms, ps = {**text_style(t), **style_dict(main)}, {**text_style(t), **style_dict(paren)}
+        f = FONTS or Fonts(HERE / "fonts")
+        x0 = num(t.get("x"))
+        main.text = ta_parts[0]
+        prev = main
+        for part in ta_parts[1:]:
+            nt = ET.Element(SVG + "tspan", {"x": f"{x0:.2f}", "dy": f"{lh:.2f}", "style": main.get("style", "")})
+            nt.text = part
+            t.insert(list(t).index(prev) + 1, nt)
+            prev = nt
+        paren.text = f" ({ph_parts[0]}" + (")" if len(ph_parts) == 1 else "")
+        if len(ph_parts) > 1:
+            w_last = f.width(ta_parts[-1], ms.get("font-family", ""), num(ms.get("font-size"), 12),
+                             "italic" in ms.get("font-style", ""), weight_of(ms))
+            psize = num(ps.get("font-size"), 10)
+            w_paren = f.width(" (", ps.get("font-family", ""), psize, True, weight_of(ps))
+            nxt = ET.Element(SVG + "tspan", {"x": f"{x0 + w_last + w_paren:.2f}", "dy": f"{lh:.2f}",
+                                             "style": paren.get("style", "")})
+            nxt.text = f"{ph_parts[1]})"
+            t.insert(list(t).index(paren) + 1, nxt)
+        t.set(LABEL, label(t) + " [nofit]")
+        return (len(ta_parts) - 1) + (len(ph_parts) - 1)
+    return 0
 
 
 def expand_list(group, path, data, opts=None):
@@ -593,6 +601,17 @@ def expand_list(group, path, data, opts=None):
     group.remove(entry)
     letter_of = {}
     phon = data.root.get("phonetics", {}) if isinstance(data.root.get("phonetics"), dict) else {}
+    breaks = data.root.get("tamil_line_breaks", {}) if isinstance(data.root.get("tamil_line_breaks"), dict) else {}
+    flow = num(opts.get("flow"), 0)          # flow=LH: rows grow by LH per extra line and share the area
+    shift_label = opts.get("shift", "English")
+    extras = []
+    if flow:                                  # count each item's extra lines first, to size the rows
+        for it in items:
+            k = str(it.get("ta", it.get("word", "")))
+            extras.append(max(0, len(str(breaks.get(k, "")).split("|")) - 1 if "|" in str(breaks.get(k, "")) else 0)
+                          + (1 if "|" in str(phon.get(k, "")) else 0))
+        rowh = (h - flow * sum(extras)) / max(len(items), 1)
+    yacc = 0.0
     uses_ph = re.search(r"\{\{ph(_paren)?\}\}", ET.tostring(entry, encoding="unicode")) is not None
     missing_ph = []
     for pos, idx in enumerate(order):
@@ -603,7 +622,7 @@ def expand_list(group, path, data, opts=None):
             local.setdefault(k, v)   # an item's own field (e.g. a crossword clue number) wins
         if "word" in it:
             local["scrambled"] = scramble(str(it["word"]))
-        stack = None
+        stack, ta_parts = None, None
         if "ph" not in local:  # phonetic form from the shared "phonetics" dictionary
             key_text = str(it.get("ta", it.get("word", "")))
             raw = phon.get(key_text, "")
@@ -612,21 +631,30 @@ def expand_list(group, path, data, opts=None):
             local["ph"] = raw.replace("|", " ").replace("  ", " ")
             if not local["ph"] and uses_ph and key_text:
                 missing_ph.append(key_text)
-        if stack:
-            local.setdefault("ph_paren", f" ({stack[0]}")
+            brk = breaks.get(key_text, "")
+            if "|" in brk:     # Tamil text too wide for one line: break it where the '|' is
+                ta_parts = [p.strip() for p in brk.split("|")]
         local.setdefault("ph_paren", f" ({local['ph']})" if local.get("ph") else "")
         letter_of[idx] = chr(65 + pos)
         e = copy.deepcopy(entry)
         e.set(LABEL, f"Item {pos+1}")
-        t = f"translate({col*colw:.2f},{row*rowh:.2f})"
+        t = f"translate({col*colw:.2f},{(yacc if flow else row*rowh):.2f})"
         e.set("transform", t + (" " + entry.get("transform") if entry.get("transform") else ""))
         for el in e.iter():
             for attr in ("text", "tail"):
                 v = getattr(el, attr)
                 if v and "{{" in v:
                     setattr(el, attr, data.fill(v, local))
-        if stack:
-            stack_phonetic(e, stack, local)
+        if stack or ta_parts:
+            lh = flow or 13
+            n_extra = multiline_entry(e, ta_parts or [local.get("ta", local.get("word", ""))],
+                                      stack or [local["ph"]], lh)
+            if n_extra:
+                for el in e.iter(SVG + "text"):
+                    if label(el).startswith(shift_label):
+                        el.set("transform", f"translate(0,{n_extra * lh:.2f})")
+        if flow:
+            yacc += rowh + flow * extras[pos]
         entry_fit_labels(e, x, colw)
         group.append(e)
     if missing_ph:

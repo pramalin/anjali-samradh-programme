@@ -134,8 +134,8 @@
         "gloss": "wedding"
       },
       {
-        "word": "தாலி",
-        "gloss": "wedding necklace"
+        "word": "சந்தனம்",
+        "gloss": "sandal paste"
       },
       {
         "word": "மாலை",
@@ -150,8 +150,8 @@
         "gloss": "drum"
       },
       {
-        "word": "நாதஸ்வரம்",
-        "gloss": "wedding pipe"
+        "word": "நாகசுரம்",
+        "gloss": "wind instrument"
       },
       {
         "word": "கோலம்",
@@ -199,7 +199,7 @@
       "FAMILY",
       "BLESSINGS",
       "GARLAND",
-      "THALI",
+      "KOLAM",
       "JASMINE",
       "SILK",
       "FEAST",
@@ -258,13 +258,27 @@
     "மாலை": "maalai",
     "மஞ்சள்": "manjal",
     "மேளம்": "maelam",
-    "நாதஸ்வரம்": "naadhaswaram",
     "கோலம்": "kolam",
     "தோரணம்": "thoranam",
     "விருந்து": "virundhu",
     "பந்தல்": "pandhal",
     "மெட்டி": "metti",
-    "பட்டு": "pattu"
+    "பட்டு": "pattu",
+    "மஞ்சள் விநாயகர் வழிபாடு": "Manjal Vinaayagar|Vazhipaadu",
+    "சம்பந்தி மாலை அணிவித்தல்": "Sambandhi Maalai|Anivitthal",
+    "கலச வழிபாடு": "Kalasa Vazhipaadu",
+    "தாய் தந்தையர் வழிபாடு": "Thaai Thandhaiyar|Vazhipaadu",
+    "வேள்வி யாகம் / திருமுறை ஓதுதல் / பூரண ஆகுதி": "Velvi Yaagam / Thirumurai|Odhudhal / Poorana Aahuthi",
+    "மாங்கல்ய பூசை": "Maangalya Poosai",
+    "மாங்கல்யம் அணிவித்தல்": "Maangalyam Anivitthal",
+    "மணவறை வலம் வருதல்": "Manavarai Valam|Varudhal",
+    "கதிரவன் வழிபாடு": "Kadhiravan Vazhipaadu",
+    "மணமக்கள் வாழ்த்து": "Manamakkal Vaazhthu",
+    "விநாயகர் வழிபாடு": "Vinaayagar Vazhipaadu",
+    "வேள்வி / திருமுறை ஓதுதல்": "Velvi / Thirumurai|Odhudhal",
+    "மணவறை வலம்": "Manavarai Valam",
+    "சந்தனம்": "sandhanam",
+    "நாகசுரம்": "naagasuram"
   },
   "maze": {
     "title_en": [
@@ -307,5 +321,9 @@
   },
   "tictactoe": {
     "title_en": "Tic-Tac-Toe"
+  },
+  "tamil_line_breaks": {
+    "_help": "Where a Tamil list item is too wide for one line, give it here with '|' at the break.",
+    "வேள்வி யாகம் / திருமுறை ஓதுதல் / பூரண ஆகுதி": "வேள்வி யாகம் / திருமுறை ஓதுதல் /|பூரண ஆகுதி"
   }
 }
