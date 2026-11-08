@@ -15,6 +15,37 @@ Content comes from `wedding.json` (order of ceremony) and `games.json` (everythi
 **Fonts:** install every `.ttf` in `fonts/` in Windows (right-click → *Install for all users*) before opening any template in Inkscape.
 Close any open PDF before building — Windows locks open files.
 
+## Website (interactive version)
+
+`web/` holds an interactive, phone-friendly version of the booklet: tap-or-drag word searches,
+a playable maze, a drawing pad you can save, Dots & Boxes and Tic-Tac-Toe for two players, and the crossword with
+Check / Reveal, plus the verses. It is built from the same `wedding.json` + `games.json`:
+
+```bash
+python3 web/build_web.py      # writes docs/index.html, docs/data.js, docs/assets/
+```
+
+Only the fields the page shows are copied into `docs/data.js` (no date, time or venue from the invitation).
+Publish `docs/` with GitHub Pages - see "Publishing the website" below.
+
+### Publishing the website
+
+GitHub Pages is free for **public** repositories. Keep this project private and publish only the site
+from a small public repository:
+
+```bash
+python3 web/build_web.py
+mkdir -p ~/sources/anjali-samradh-games && cp -r docs/. ~/sources/anjali-samradh-games/
+cd ~/sources/anjali-samradh-games
+git init -b main && git add -A && git commit -m "Wedding games site"
+gh repo create anjali-samradh-games --public --source=. --push
+gh api -X POST repos/{owner}/anjali-samradh-games/pages -f "source[branch]=main" -f "source[path]=/"
+```
+
+The site appears at `https://<your-github-username>.github.io/anjali-samradh-games/` within a minute or two.
+To update it later: rebuild, copy `docs/` across again, then `git add -A && git commit -m update && git push`
+in the site folder.
+
 ---
 
 

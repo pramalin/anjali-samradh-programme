@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anjali &amp; Samradh · Ceremony &amp; Celebrations</title>
+<meta name="description" content="Order of ceremony and wedding puzzles for Anjali & Samradh, 15.11.2026">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Hind+Madurai:wght@400;500&family=Italianno&family=Jost:wght@400;500&family=Noto+Serif+Tamil:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#3a2c24; --brown:#6c5d53; --soft:#8a7a6e; --paper:#f4efe6; --card:#fbf8f2; --line:#cdbfae;
+  --hit:#d9b48f; --found:#c9a27e; --p1:#b5651d; --p2:#4f6b3a;
+  --serif:'Cormorant Garamond',Georgia,serif; --ta:'Noto Serif Tamil','Hind Madurai',serif;
+  --taSans:'Hind Madurai','Noto Serif Tamil',sans-serif; --sans:'Jost',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font-family:var(--serif);font-size:18px;line-height:1.45;
+  background:var(--paper) url(assets/parchment.jpg) center/cover fixed}
+body::before{content:"";position:fixed;inset:0;background:rgba(255,255,255,.45);z-index:-1}
+.wrap{max-width:860px;margin:0 auto;padding:0 18px 60px}
+a{color:inherit}
+.ta{font-family:var(--ta)}
+.soft{color:var(--soft)} .brown{color:var(--brown)}
+h2{font-family:var(--serif);font-weight:600;font-size:30px;margin:0;line-height:1.15}
+h2 .ta{font-size:.62em;font-weight:500;color:var(--brown);display:block;margin-top:2px}
+.sub{color:var(--soft);font-style:italic;margin:.3em 0 1em}
+section{background:rgba(251,248,242,.82);border:1px solid var(--line);border-radius:14px;padding:22px 22px 26px;margin:22px 0;
+  box-shadow:0 1px 0 rgba(0,0,0,.03)}
+button{font:inherit;font-size:16px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:999px;
+  padding:6px 14px;cursor:pointer}
+button:hover{background:#f6efe4} button.primary{background:var(--ink);color:#fff;border-color:var(--ink)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.done{animation:pop .5s ease}
+@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.04)}100%{transform:scale(1)}}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;
+  border-radius:999px;font-size:17px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:9}
+.toast.on{opacity:1}
+
+/* nav */
+nav{position:sticky;top:0;z-index:5;background:rgba(244,239,230,.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;gap:6px;overflow-x:auto;padding:8px 18px;scrollbar-width:none}
+nav a{white-space:nowrap;text-decoration:none;font-size:15px;padding:4px 10px;border-radius:999px;border:1px solid transparent}
+nav a:hover{border-color:var(--line)}
+
+/* cover */
+.cover{text-align:center;padding:34px 0 8px}
+.mono{position:relative;width:190px;height:190px;margin:0 auto}
+.mono img{position:absolute;left:50%;top:50%;width:72px;transform:translate(-50%,-52%)}
+.mono svg{position:absolute;inset:0}
+.cover h1{font-family:'Italianno',cursive;font-weight:400;font-size:64px;margin:6px 0 0;line-height:1;-webkit-text-stroke:.4px var(--ink)}
+.cover p{font-style:italic;color:var(--brown);font-size:20px;margin:.4em 0}
+
+/* ceremony */
+.ceremony{display:grid;grid-template-columns:minmax(80px,180px) 1fr;gap:18px;align-items:center}
+.ceremony img{width:100%;max-height:520px;object-fit:contain}
+.steps{list-style:none;margin:0;padding:0 0 0 18px;border-left:3px solid var(--ink)}
+.steps li{margin:0 0 14px}
+.steps .t{font-family:var(--ta);font-size:19px;font-weight:500}
+.steps .p{font-style:italic;color:var(--brown);font-size:16px}
+.steps .e{font-size:17px}
+@media(max-width:560px){.ceremony{grid-template-columns:70px 1fr;gap:10px}}
+
+/* word search */
+.ws{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start}
+@media(max-width:640px){.ws{grid-template-columns:1fr}}
+.grid{display:grid;user-select:none;-webkit-user-select:none;touch-action:none;position:relative;width:min(100%,440px)}
+.grid .c{aspect-ratio:1;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:50%;
+  font-size:clamp(14px,4.2vw,21px);position:relative;z-index:1}
+.grid.en .c{font-family:var(--sans)} .grid.ta .c{font-family:var(--taSans);font-size:clamp(13px,3.8vw,19px)}
+.grid .c.sel{background:var(--hit)}
+.grid svg.marks{position:absolute;inset:0;pointer-events:none;z-index:0}
+.words{list-style:none;margin:0;padding:0;columns:2;column-gap:18px}
+.words li{break-inside:avoid;margin:0 0 6px;transition:opacity .3s}
+.words li.got{opacity:.45;text-decoration:line-through}
+.words .w{font-family:var(--ta);font-size:17px}
+.words.en .w{font-family:var(--sans);letter-spacing:.06em;font-size:15px}
+.words .g{display:block;font-size:14px;color:var(--soft);font-style:italic;line-height:1.2}
+.count{font-size:15px;color:var(--brown);margin-top:8px}
+
+/* maze */
+.mazebox{display:grid;grid-template-columns:1fr;justify-items:center;gap:10px}
+.mazewrap{position:relative;width:min(100%,460px)}
+.mazewrap canvas{width:100%;height:auto;display:block;touch-action:none}
+.pad{display:grid;grid-template-columns:repeat(3,48px);grid-template-rows:repeat(2,44px);gap:6px}
+.pad button{border-radius:10px;padding:0;font-size:20px}
+.pad .u{grid-column:2} .pad .l{grid-column:1;grid-row:2} .pad .d{grid-column:2;grid-row:2} .pad .r{grid-column:3;grid-row:2}
+
+/* drawing */
+.drawwrap{position:relative;max-width:620px;margin:0 auto}
+.drawwrap img{width:100%;display:block;pointer-events:none;position:relative;z-index:2}
+.drawwrap canvas{position:absolute;left:5%;top:7%;width:90%;height:86%;background:#fff;touch-action:none;z-index:1;cursor:crosshair}
+.swatch{width:28px;height:28px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px var(--line);padding:0}
+.swatch.on{box-shadow:0 0 0 2px var(--ink)}
+
+/* dots & boxes */
+.dbwrap{max-width:560px;margin:0 auto}
+.dbwrap svg{width:100%;height:auto;touch-action:manipulation}
+.score{display:flex;gap:14px;justify-content:center;font-size:18px;margin:6px 0 10px}
+.score span{padding:2px 12px;border-radius:999px}
+.score .on{outline:2px solid currentColor}
+
+/* tic tac toe */
+.ttt{display:grid;grid-template-columns:repeat(3,min(26vw,96px));grid-template-rows:repeat(3,min(26vw,96px));margin:10px auto;width:max-content}
+.ttt button{border:0;border-radius:0;background:transparent;font-family:var(--serif);font-size:min(16vw,62px);line-height:1;padding:0}
+.ttt button:nth-child(-n+6){border-bottom:2px solid var(--brown)}
+.ttt button:not(:nth-child(3n)){border-right:2px solid var(--brown)}
+.ttt .x{color:var(--p1)} .ttt .o{color:var(--p2)} .ttt .win{background:rgba(201,162,126,.35)}
+
+/* crossword */
+.cw{display:grid;gap:2px;margin:0 auto 16px;width:max-content;max-width:100%}
+.cw div{width:var(--cs);height:var(--cs);position:relative}
+.cw input{width:100%;height:100%;border:1.5px solid var(--brown);background:#fff;text-align:center;font-family:var(--taSans);
+  font-size:calc(var(--cs) * .46);padding:calc(var(--cs) * .22) 0 0;border-radius:3px;color:var(--ink)}
+.cw input:focus{outline:2px solid var(--p1)} .cw input.hl{background:#f6ead9}
+.cw input.ok{background:#e4ecd9} .cw input.bad{background:#f4d9d2}
+.cw b{position:absolute;left:3px;top:1px;font-size:calc(var(--cs) * .26);font-family:var(--sans);color:var(--brown);pointer-events:none;z-index:1}
+.clues{display:grid;grid-template-columns:1fr 1fr;gap:6px 26px}
+@media(max-width:560px){.clues{grid-template-columns:1fr}}
+.clues h3{font-family:var(--ta);font-size:16px;margin:0 0 4px;color:var(--brown)}
+.clues ol{list-style:none;margin:0;padding:0}
+.clues li{font-family:var(--ta);font-size:15.5px;margin:0 0 4px;cursor:pointer;border-radius:6px;padding:1px 4px}
+.clues li.on{background:#f6ead9}
+.verse{border-top:1px dashed var(--line);margin-top:18px;padding-top:14px}
+.verse .src{font-family:var(--ta);font-size:14px;color:var(--brown);font-weight:600}
+.verse .k{font-family:var(--ta);font-weight:600;font-size:19px;line-height:1.6}
+.verse .sp{font-family:var(--ta);color:var(--brown);font-size:15px}
+.verse .ph{font-style:italic;font-size:17px}
+.verse .ur,.verse .en{font-size:16px;margin-top:4px}
+.verse .ur{font-family:var(--ta);font-size:15px}
+.verse b{color:var(--brown)}
+
+footer{text-align:center;padding:20px 0 40px}
+footer .ta{font-size:20px} footer p{margin:.2em 0}
+</style>
+</head>
+<body>
+<nav><div class="wrap">
+  <a href="#ceremony">Ceremony</a><a href="#tamil">சொல் தேடல்</a><a href="#maze">Maze</a><a href="#draw">Draw</a>
+  <a href="#dots">Dots &amp; Boxes</a><a href="#english">Word Search</a><a href="#ttt">Tic-Tac-Toe</a><a href="#crossword">குறள் குறுக்கெழுத்து</a>
+</div></nav>
+
+<div class="wrap">
+  <header class="cover">
+    <div class="mono">
+      <svg viewBox="0 0 190 190" aria-hidden="true">
+        <defs><path id="rt" d="M 23,95 A 72,72 0 0 1 167,95"/><path id="rb" d="M 15,95 A 80,80 0 0 0 175,95"/></defs>
+        <circle cx="95" cy="95" r="62" fill="none" stroke="#3a2c24" stroke-width="1.6"/>
+        <text font-family="Bodoni Moda" font-size="14" letter-spacing="3.2" fill="#3a2c24" text-anchor="middle"><textPath href="#rt" startOffset="50%" id="ringNames"></textPath></text>
+        <text font-family="Bodoni Moda" font-size="14" letter-spacing="3.2" fill="#3a2c24" text-anchor="middle"><textPath href="#rb" startOffset="50%" id="ringDate"></textPath></text>
+      </svg>
+      <img src="assets/monogram.svg" alt="AS monogram">
+    </div>
+    <h1 id="coverTitle"></h1>
+    <p id="coverSub"></p>
+  </header>
+
+  <section id="ceremony">
+    <h2><span id="progEn"></span><span class="ta" id="progTa"></span></h2>
+    <div class="ceremony" style="margin-top:14px">
+      <img src="assets/kuthuvilakku.png" alt="Kuthuvilakku (traditional lamp)">
+      <ol class="steps" id="steps"></ol>
+    </div>
+  </section>
+
+  <section id="tamil">
+    <h2><span class="ta" style="display:inline;font-size:1em;color:var(--ink);font-weight:600" id="twTitle"></span> <i class="brown" style="font-size:.7em" id="twTitleEn"></i></h2>
+    <p class="sub ta" id="twInstr"></p>
+    <div class="ws"><div class="grid ta" id="twGrid"></div><div><ul class="words" id="twWords"></ul><div class="count" id="twCount"></div>
+      <div class="row" style="margin-top:10px"><button data-reveal="tw">Show answers</button></div></div></div>
+  </section>
+
+  <section id="maze">
+    <h2><span id="mzTitle"></span><span class="ta" id="mzTitleTa"></span></h2>
+    <p class="sub">Use the arrow keys, swipe on the maze, or the buttons below.</p>
+    <div class="mazebox">
+      <div class="mazewrap"><canvas id="mz" width="920" height="920"></canvas></div>
+      <div class="pad"><button class="u" data-mv="0,-1" aria-label="up">↑</button><button class="l" data-mv="-1,0" aria-label="left">←</button>
+        <button class="d" data-mv="0,1" aria-label="down">↓</button><button class="r" data-mv="1,0" aria-label="right">→</button></div>
+      <div class="row"><button id="mzReset">Start again</button><button id="mzShow">Show the way</button></div>
+    </div>
+  </section>
+
+  <section id="draw">
+    <h2><span id="drTitle"></span><span class="ta" id="drTitleTa"></span></h2>
+    <p class="sub">Draw with your finger or mouse, then save your picture.</p>
+    <div class="row" id="palette" style="justify-content:center;margin-bottom:10px"></div>
+    <div class="drawwrap"><canvas id="dr"></canvas><img src="assets/drawing-frame.png" alt=""></div>
+    <div class="row" style="justify-content:center;margin-top:12px">
+      <button id="drSize">Thin pen</button><button id="drUndo">Undo</button><button id="drClear">Clear</button><button class="primary" id="drSave">Save picture</button>
+    </div>
+  </section>
+
+  <section id="dots">
+    <h2><span id="dbTitle"></span><span class="ta" id="dbTitleTa"></span></h2>
+    <p class="sub" id="dbInstr"></p>
+    <div class="score" id="dbScore"></div>
+    <div class="dbwrap"><svg id="db"></svg></div>
+    <div class="row" style="justify-content:center;margin-top:8px"><button id="dbNew">New game</button></div>
+  </section>
+
+  <section id="english">
+    <h2><span id="ewTitle"></span><span class="ta" id="ewTitleTa"></span></h2>
+    <p class="sub" id="ewInstr"></p>
+    <div class="ws"><div class="grid en" id="ewGrid"></div><div><ul class="words en" id="ewWords"></ul><div class="count" id="ewCount"></div>
+      <div class="row" style="margin-top:10px"><button data-reveal="ew">Show answers</button></div></div></div>
+  </section>
+
+  <section id="ttt">
+    <h2><span id="tTitle"></span></h2>
+    <div class="row" style="justify-content:center;margin-top:10px"><button id="tMode">Playing: 2 players</button><button id="tNew">New game</button></div>
+    <div class="score" id="tScore"></div>
+    <div class="ttt" id="tBoard"></div>
+  </section>
+
+  <section id="crossword">
+    <h2><span class="ta" style="display:inline;font-size:1em;color:var(--ink);font-weight:600" id="cwTitle"></span><i class="brown" style="display:block;font-size:.65em" id="cwTitleEn"></i></h2>
+    <p class="sub"><span class="ta" id="cwInstrTa" style="font-style:normal"></span><br><span id="cwInstrEn"></span></p>
+    <div class="cw" id="cw"></div>
+    <div class="row" style="justify-content:center;margin-bottom:16px"><button id="cwCheck">Check</button><button id="cwReveal">Reveal</button><button id="cwClear">Clear</button></div>
+    <div class="clues"><div><h3>ACROSS · இடமிருந்து வலம்</h3><ol id="cwAcross"></ol></div><div><h3>DOWN · மேலிருந்து கீழ்</h3><ol id="cwDown"></ol></div></div>
+    <div id="verses"></div>
+  </section>
+
+  <footer><p class="ta" id="thTa"></p><p id="thEn"></p></footer>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="data.js"></script>
+<script>
+const D = window.PROGRAMME, $ = s => document.querySelector(s), el = (t, a = {}, ...k) => {
+  const e = document.createElement(t); for (const [n, v] of Object.entries(a)) (n === 'class' ? e.className = v : n === 'text' ? e.textContent = v : e.setAttribute(n, v));
+  k.forEach(c => e.append(c)); return e; };
+const toast = msg => { const t = $('#toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove('on'), 2600); };
+const store = { get(k, d) { try { return JSON.parse(localStorage.getItem('as-' + k)) ?? d; } catch { return d; } },
+                set(k, v) { try { localStorage.setItem('as-' + k, JSON.stringify(v)); } catch {} } };
+const txt = (id, s) => { const e = $(id); if (e) e.textContent = s || ''; };
+
+/* ---------- cover & ceremony ---------- */
+txt('#ringNames', D.monogram.ring_names); txt('#ringDate', D.monogram.ring_date);
+txt('#coverTitle', D.cover.title); $('#coverSub').textContent = (D.cover.subtitle || []).join(' ');
+txt('#progEn', D.programme.title_en); txt('#progTa', D.programme.title_ta);
+D.programme.items.forEach(it => $('#steps').append(el('li', {}, el('div', {}, el('span', { class: 't', text: it.ta }), ' ',
+  el('span', { class: 'p', text: it.ph ? `(${it.ph})` : '' })), el('div', { class: 'e', text: it.en }))));
+
+/* ---------- word search ---------- */
+function wordSearch(key, P) {
+  const g = $(`#${key}Grid`), list = $(`#${key}Words`), R = P.grid.length, C = P.grid[0].length;
+  g.style.gridTemplateColumns = `repeat(${C},1fr)`;
+  const cells = [];
+  P.grid.forEach((row, r) => row.forEach((ch, c) => { const d = el('div', { class: 'c', text: ch }); d.dataset.r = r; d.dataset.c = c; g.append(d); cells.push(d); }));
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); svg.classList.add('marks');
+  svg.setAttribute('viewBox', `0 0 ${C} ${R}`); svg.setAttribute('preserveAspectRatio', 'none'); g.prepend(svg);
+  const found = new Set(store.get(key + '-found', []));
+  const items = P.words.map(w => { const li = el('li', {}, el('span', { class: 'w', text: w.word }));
+    if (w.ph || w.gloss) li.append(el('span', { class: 'g', text: [w.ph, w.gloss].filter(Boolean).join(' · ') })); list.append(li); return li; });
+  const mark = (w, i, reveal) => {
+    const l = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    const x2 = w.col + w.dc * (w.len - 1), y2 = w.row + w.dr * (w.len - 1);
+    Object.entries({ x1: w.col + .5, y1: w.row + .5, x2: x2 + .5, y2: y2 + .5, stroke: reveal ? '#d8c3a5' : '#c9a27e',
+      'stroke-width': .78, 'stroke-linecap': 'round', 'stroke-opacity': .75 }).forEach(([a, v]) => l.setAttribute(a, v));
+    svg.append(l); items[i].classList.add('got');
+  };
+  const count = () => { $(`#${key}Count`).textContent = `${found.size} of ${P.words.length} found`;
+    if (found.size === P.words.length) toast('All words found! 🎉'); };
+  P.words.forEach((w, i) => found.has(i) && mark(w, i)); count();
+  let start = null, cur = [];
+  const at = e => { const t = document.elementFromPoint(e.clientX, e.clientY); return t && t.classList.contains('c') && g.contains(t) ? t : null; };
+  const line = (a, b) => { const r0 = +a.dataset.r, c0 = +a.dataset.c, r1 = +b.dataset.r, c1 = +b.dataset.c;
+    const dr = Math.sign(r1 - r0), dc = Math.sign(c1 - c0), n = Math.max(Math.abs(r1 - r0), Math.abs(c1 - c0));
+    if (!(r0 === r1 || c0 === c1 || Math.abs(r1 - r0) === Math.abs(c1 - c0))) return [a];
+    return Array.from({ length: n + 1 }, (_, k) => cells[(r0 + dr * k) * C + c0 + dc * k]); };
+  const paint = s => { cur.forEach(c => c.classList.remove('sel')); cur = s; cur.forEach(c => c.classList.add('sel')); };
+  const check = () => {
+    if (cur.length < 2) return false;
+    const a = cur[0], b = cur[cur.length - 1];
+    const hit = P.words.findIndex((w, i) => { const er = w.row + w.dr * (w.len - 1), ec = w.col + w.dc * (w.len - 1);
+      const s = [+a.dataset.r, +a.dataset.c, +b.dataset.r, +b.dataset.c].join();
+      return w.len === cur.length && (s === [w.row, w.col, er, ec].join() || s === [er, ec, w.row, w.col].join()); });
+    if (hit >= 0 && !found.has(hit)) { found.add(hit); store.set(key + '-found', [...found]); mark(P.words[hit], hit); items[hit].classList.add('done'); count(); }
+    return true;
+  };
+  let tapStart = null, moved = false;
+  g.addEventListener('pointerdown', e => { const c = at(e); if (!c) return; e.preventDefault(); start = c; moved = false; paint([c]); });
+  g.addEventListener('pointermove', e => { if (!start) return; const c = at(e); if (c && c !== start) { moved = true; paint(line(start, c)); } });
+  const up = e => { if (!start) return;
+    if (!moved) {                               // tap-tap selection
+      if (tapStart && tapStart !== start) { paint(line(tapStart, start)); check(); setTimeout(() => paint([]), 250); tapStart = null; }
+      else { tapStart = start; paint([start]); }
+    } else { check(); setTimeout(() => paint([]), 200); tapStart = null; }
+    start = null; };
+  g.addEventListener('pointerup', up); g.addEventListener('pointercancel', up);
+  document.querySelector(`[data-reveal="${key}"]`).onclick = () => P.words.forEach((w, i) => { if (!found.has(i)) { found.add(i); mark(w, i, true); } }) || count();
+}
+txt('#twTitle', D.tamil_words.title_ta); txt('#twTitleEn', D.tamil_words.title_en_short); txt('#twInstr', D.tamil_words.instructions);
+txt('#ewTitle', D.english_words.title_en); txt('#ewTitleTa', D.english_words.title_ta); txt('#ewInstr', 'Find the words across, down, diagonally and backwards. Drag across a word, or tap its first and last letter.');
+$('#twInstr').textContent += ' · Drag across a word, or tap its first and last letter.';
+wordSearch('tw', D.tamil_words); wordSearch('ew', D.english_words);
+
+/* ---------- maze ---------- */
+(function () {
+  const M = D.maze, n = M.n, cv = $('#mz'), ctx = cv.getContext('2d'), S = cv.width, pad = S * 0.09, cs = (S - 2 * pad) / n;
+  const groom = new Image(), bride = new Image(); groom.src = 'assets/groom.svg'; bride.src = 'assets/bride.svg';
+  let pos = [0, 0], trail = [[0, 0]], show = false, won = false;
+  txt('#mzTitle', (M.title_en || []).join(' ')); txt('#mzTitleTa', (M.title_ta || []).join(' '));
+  const open = (c, r, dc, dr) => { const nc = c + dc, nr = r + dr; if (nc < 0 || nr < 0 || nc >= n || nr >= n) return false;
+    if (dc === 1) return !M.right[r][c]; if (dc === -1) return !M.right[r][nc]; if (dr === 1) return !M.down[r][c]; return !M.down[nr][c]; };
+  const X = c => pad + (c + .5) * cs, Y = r => pad + (r + .5) * cs;
+  function draw() {
+    ctx.clearRect(0, 0, S, S); ctx.fillStyle = 'rgba(255,255,255,.55)'; ctx.fillRect(pad, pad, n * cs, n * cs);
+    const path = (pts, col, w) => { ctx.strokeStyle = col; ctx.lineWidth = w; ctx.lineCap = ctx.lineJoin = 'round'; ctx.beginPath();
+      pts.forEach(([c, r], i) => (i ? ctx.lineTo : ctx.moveTo).call(ctx, X(c), Y(r))); ctx.stroke(); };
+    if (show) path(M.solution.map(([r, c]) => [c, r]), 'rgba(201,162,126,.6)', cs * .55);
+    path(trail, '#b5651d', cs * .28);
+    ctx.strokeStyle = '#3a2c24'; ctx.lineWidth = Math.max(3, cs / 7); ctx.lineCap = 'square'; ctx.beginPath();
+    const L = (a, b, c, d) => { ctx.moveTo(a, b); ctx.lineTo(c, d); };
+    L(pad, pad, pad + n * cs, pad); L(pad, pad + n * cs, pad + n * cs, pad + n * cs);
+    L(pad, pad + cs, pad, pad + n * cs); L(pad + n * cs, pad, pad + n * cs, pad + (n - 1) * cs);
+    for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) {
+      if (c < n - 1 && M.right[r][c]) L(pad + (c + 1) * cs, pad + r * cs, pad + (c + 1) * cs, pad + (r + 1) * cs);
+      if (r < n - 1 && M.down[r][c]) L(pad + c * cs, pad + (r + 1) * cs, pad + (c + 1) * cs, pad + (r + 1) * cs); }
+    ctx.stroke();
+    const gh = pad * 1.7, gw = gh * .45;
+    if (groom.complete) ctx.drawImage(groom, pad - gw * 1.05, Y(0) - gh * .62, gw, gh);
+    if (bride.complete) ctx.drawImage(bride, pad + n * cs + 4, Y(n - 1) - gh * .55, gw * 1.05, gh);
+    ctx.fillStyle = '#b5651d'; ctx.beginPath(); ctx.arc(X(pos[0]), Y(pos[1]), cs * .33, 0, 7); ctx.fill();
+  }
+  function move(dc, dr) {
+    if (won) return;
+    let [c, r] = pos, steps = 0;
+    do {                                                  // keep going along a corridor until a junction
+      if (!open(c, r, dc, dr)) break; c += dc; r += dr; steps++;
+      const back = trail.length > 1 && trail[trail.length - 2][0] === c && trail[trail.length - 2][1] === r;
+      back ? trail.pop() : trail.push([c, r]);
+      const exits = [[1,0],[-1,0],[0,1],[0,-1]].filter(([a, b]) => open(c, r, a, b)).length;
+      if (exits !== 2 || (c === n - 1 && r === n - 1)) break;
+      if (!open(c, r, dc, dr)) { const turn = [[1,0],[-1,0],[0,1],[0,-1]].find(([a, b]) => open(c, r, a, b) && !(a === -dc && b === -dr)); if (!turn) break; [dc, dr] = turn; }
+    } while (steps < 200);
+    pos = [c, r]; draw();
+    if (c === n - 1 && r === n - 1) { won = true; toast('The groom reached his bride! 💐'); }
+  }
+  addEventListener('keydown', e => { const k = { ArrowUp: [0, -1], ArrowDown: [0, 1], ArrowLeft: [-1, 0], ArrowRight: [1, 0] }[e.key];
+    if (!k) return; const r = cv.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) return; e.preventDefault(); move(...k); });
+  document.querySelectorAll('[data-mv]').forEach(b => b.onclick = () => move(...b.dataset.mv.split(',').map(Number)));
+  let sx, sy; cv.addEventListener('pointerdown', e => { sx = e.clientX; sy = e.clientY; });
+  cv.addEventListener('pointerup', e => { const dx = e.clientX - sx, dy = e.clientY - sy; if (Math.hypot(dx, dy) < 18) return;
+    Math.abs(dx) > Math.abs(dy) ? move(Math.sign(dx), 0) : move(0, Math.sign(dy)); });
+  $('#mzReset').onclick = () => { pos = [0, 0]; trail = [[0, 0]]; won = false; show = false; draw(); };
+  $('#mzShow').onclick = () => { show = !show; draw(); };
+  groom.onload = bride.onload = draw; draw();
+})();
+
+/* ---------- drawing ---------- */
+(function () {
+  txt('#drTitle', D.drawing.title_en); txt('#drTitleTa', D.drawing.title_ta);
+  const cv = $('#dr'), ctx = cv.getContext('2d'), cols = ['#3a2c24', '#a3223a', '#d18a2c', '#e8b923', '#4f7a3a', '#2f6f8f', '#c7579a', '#ffffff'];
+  let col = cols[0], size = 3, strokes = [], curS = null;
+  const fit = () => { const r = cv.getBoundingClientRect(); cv.width = r.width * 2; cv.height = r.height * 2; redraw(); };
+  const redraw = () => { ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, cv.width, cv.height);
+    strokes.forEach(s => { ctx.strokeStyle = s.c; ctx.lineWidth = s.w * cv.width / 1000; ctx.lineCap = ctx.lineJoin = 'round'; ctx.beginPath();
+      s.p.forEach(([x, y], i) => (i ? ctx.lineTo : ctx.moveTo).call(ctx, x * cv.width, y * cv.height)); ctx.stroke(); }); };
+  cols.forEach((c, i) => { const b = el('button', { class: 'swatch' + (i ? '' : ' on'), 'aria-label': 'colour ' + c }); b.style.background = c;
+    b.onclick = () => { col = c; document.querySelectorAll('.swatch').forEach(s => s.classList.remove('on')); b.classList.add('on'); }; $('#palette').append(b); });
+  const pt = e => { const r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; };
+  cv.addEventListener('pointerdown', e => { cv.setPointerCapture(e.pointerId); curS = { c: col, w: col === '#ffffff' ? size * 5 : size, p: [pt(e)] }; strokes.push(curS); redraw(); });
+  cv.addEventListener('pointermove', e => { if (!curS) return; curS.p.push(pt(e)); redraw(); });
+  ['pointerup', 'pointercancel'].forEach(t => cv.addEventListener(t, () => curS = null));
+  $('#drSize').onclick = e => { size = size === 3 ? 8 : 3; e.target.textContent = size === 3 ? 'Thin pen' : 'Thick pen'; };
+  $('#drUndo').onclick = () => { strokes.pop(); redraw(); };
+  $('#drClear').onclick = () => { strokes = []; redraw(); };
+  $('#drSave').onclick = () => { const a = el('a', { download: 'anjali-samradh-drawing.png', href: cv.toDataURL('image/png') }); document.body.append(a); a.click(); a.remove(); };
+  addEventListener('resize', fit); fit();
+})();
+
+/* ---------- dots & boxes ---------- */
+(function () {
+  const B = D.dots_boxes; txt('#dbTitle', B.title_en); txt('#dbTitleTa', B.title_ta); txt('#dbInstr', B.instructions);
+  const C = 7, R = 6, g = 50, m = 20, svg = $('#db'), NS = 'http://www.w3.org/2000/svg';
+  svg.setAttribute('viewBox', `0 0 ${(C - 1) * g + 2 * m} ${(R - 1) * g + 2 * m}`);
+  let lines, boxes, turn, score;
+  const mk = (t, a) => { const e = document.createElementNS(NS, t); Object.entries(a).forEach(([k, v]) => e.setAttribute(k, v)); svg.append(e); return e; };
+  const cols = ['#b5651d', '#4f6b3a'];
+  function scoreUI() { $('#dbScore').innerHTML = ''; [0, 1].forEach(p => { const s = el('span', { text: `Player ${p + 1}: ${score[p]}` }); s.style.color = cols[p]; if (p === turn) s.className = 'on'; $('#dbScore').append(s); }); }
+  function newGame() {
+    svg.innerHTML = ''; lines = {}; boxes = {}; turn = 0; score = [0, 0];
+    for (let r = 0; r < R - 1; r++) for (let c = 0; c < C - 1; c++) boxes[r + ',' + c] = mk('rect', { x: m + c * g + 3, y: m + r * g + 3, width: g - 6, height: g - 6, fill: 'transparent', rx: 4 });
+    const edge = (x1, y1, x2, y2, id) => { const v = mk('line', { x1, y1, x2, y2, stroke: '#e3d8c8', 'stroke-width': 4, 'stroke-linecap': 'round' });
+      const hit = mk('line', { x1, y1, x2, y2, stroke: 'transparent', 'stroke-width': 22, style: 'cursor:pointer' }); hit.onclick = () => play(id, v); };
+    for (let r = 0; r < R; r++) for (let c = 0; c < C - 1; c++) edge(m + c * g, m + r * g, m + (c + 1) * g, m + r * g, `h${r},${c}`);
+    for (let r = 0; r < R - 1; r++) for (let c = 0; c < C; c++) edge(m + c * g, m + r * g, m + c * g, m + (r + 1) * g, `v${r},${c}`);
+    for (let r = 0; r < R; r++) for (let c = 0; c < C; c++) mk('circle', { cx: m + c * g, cy: m + r * g, r: 4.5, fill: '#3a2c24', 'pointer-events': 'none' });
+    scoreUI();
+  }
+  function play(id, v) {
+    if (lines[id]) return; lines[id] = 1; v.setAttribute('stroke', cols[turn]);
+    let got = 0;
+    for (const key in boxes) { const [r, c] = key.split(',').map(Number), b = boxes[key];
+      if (b.dataset && b.dataset.owner) continue;
+      if (lines[`h${r},${c}`] && lines[`h${r + 1},${c}`] && lines[`v${r},${c}`] && lines[`v${r},${c + 1}`] && !b.getAttribute('data-owner')) {
+        b.setAttribute('data-owner', turn); b.setAttribute('fill', cols[turn] + '33');
+        const t = document.createElementNS(NS, 'text'); Object.entries({ x: +b.getAttribute('x') + (g - 6) / 2, y: +b.getAttribute('y') + (g - 6) / 2 + 7,
+          'text-anchor': 'middle', 'font-size': 20, fill: cols[turn], 'font-family': 'Cormorant Garamond', 'pointer-events': 'none' }).forEach(([k, val]) => t.setAttribute(k, val));
+        t.textContent = 'P' + (turn + 1); svg.append(t); score[turn]++; got++; } }
+    if (!got) turn = 1 - turn;
+    scoreUI();
+    if (score[0] + score[1] === (R - 1) * (C - 1)) toast(score[0] === score[1] ? "It's a tie!" : `Player ${score[0] > score[1] ? 1 : 2} wins! 🎉`);
+  }
+  $('#dbNew').onclick = newGame; newGame();
+})();
+
+/* ---------- tic-tac-toe ---------- */
+(function () {
+  txt('#tTitle', D.tictactoe.title_en);
+  const W = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+  let b, turn, over, cpu = false, wins = { X: 0, O: 0, draw: 0 };
+  const cells = [...Array(9)].map((_, i) => { const c = el('button', { 'aria-label': 'square ' + (i + 1) }); c.onclick = () => go(i); $('#tBoard').append(c); return c; });
+  const winner = s => W.find(([a, b2, c]) => s[a] && s[a] === s[b2] && s[a] === s[c]);
+  const scoreUI = () => { $('#tScore').innerHTML = `<span style="color:var(--p1)">X: ${wins.X}</span><span>Draws: ${wins.draw}</span><span style="color:var(--p2)">O${cpu ? ' (computer)' : ''}: ${wins.O}</span>`; };
+  const ui = () => { cells.forEach((c, i) => { c.textContent = b[i] || ''; c.className = b[i] ? b[i].toLowerCase() : ''; }); scoreUI(); };
+  function best(s, p) {          // minimax for the computer (O)
+    const w = winner(s); if (w) return { v: s[w[0]] === 'O' ? 1 : -1 }; if (s.every(Boolean)) return { v: 0 };
+    let r = { v: p === 'O' ? -2 : 2 };
+    s.forEach((x, i) => { if (x) return; s[i] = p; const v = best(s, p === 'O' ? 'X' : 'O').v; s[i] = null;
+      if (p === 'O' ? v > r.v : v < r.v) r = { v, i }; }); return r;
+  }
+  function end() {               // call after ui(): highlights the winning line and updates the score
+    const w = winner(b);
+    if (w) { over = true; w.forEach(i => cells[i].classList.add('win')); wins[b[w[0]]]++; scoreUI(); toast(`${b[w[0]]} wins!`); }
+    else if (b.every(Boolean)) { over = true; wins.draw++; scoreUI(); toast("It's a draw"); }
+  }
+  function place(i, p) { b[i] = p; turn = p === 'X' ? 'O' : 'X'; ui(); end(); }
+  function go(i) {
+    if (over || b[i] || (cpu && turn === 'O')) return;
+    place(i, turn);
+    if (!over && cpu && turn === 'O') setTimeout(() => {
+      const free = b.map((x, j) => x ? -1 : j).filter(j => j >= 0);
+      place(Math.random() < .15 ? free[Math.floor(Math.random() * free.length)] : best(b.slice(), 'O').i, 'O');
+    }, 350);
+  }
+  const reset = () => { b = Array(9).fill(null); turn = 'X'; over = false; ui(); };
+  $('#tNew').onclick = reset;
+  $('#tMode').onclick = e => { cpu = !cpu; e.target.textContent = cpu ? 'Playing: vs computer' : 'Playing: 2 players'; wins = { X: 0, O: 0, draw: 0 }; reset(); };
+  reset();
+})();
+
+/* ---------- crossword + verses ---------- */
+(function () {
+  const X = D.crossword; txt('#cwTitle', X.title_ta); txt('#cwTitleEn', X.title_en); txt('#cwInstrTa', X.instructions_ta); txt('#cwInstrEn', X.instructions_en);
+  const box = $('#cw'); box.style.gridTemplateColumns = `repeat(${X.cols},auto)`;
+  box.style.setProperty('--cs', `min(40px, calc((100vw - 92px) / ${X.cols} - 2px))`);
+  const saved = store.get('cw', {}), inputs = {};
+  for (let r = 0; r < X.rows; r++) for (let c = 0; c < X.cols; c++) {
+    const d = el('div'); box.append(d); if (!X.cells[r][c]) continue;
+    if (X.numbers[r][c]) d.append(el('b', { text: X.numbers[r][c] }));
+    const i = el('input', { 'aria-label': `row ${r + 1} column ${c + 1}`, autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false' });
+    i.value = saved[r + ',' + c] || ''; i.oninput = () => { i.classList.remove('ok', 'bad'); saved[r + ',' + c] = i.value.trim(); store.set('cw', saved); };
+    d.append(i); inputs[r + ',' + c] = i;
+  }
+  const cellsOf = (e, dir) => [...Array(e.len)].map((_, k) => inputs[dir === 'across' ? `${e.row},${e.col + k}` : `${e.row + k},${e.col}`]);
+  ['across', 'down'].forEach(dir => X[dir].forEach(e => { const li = el('li', { text: `${e.n}. ${e.clue}` }); $('#cw' + dir[0].toUpperCase() + dir.slice(1)).append(li);
+    li.onclick = () => { document.querySelectorAll('.clues li').forEach(x => x.classList.remove('on')); li.classList.add('on');
+      Object.values(inputs).forEach(i => i.classList.remove('hl')); const cs = cellsOf(e, dir); cs.forEach(i => i.classList.add('hl')); cs[0].focus(); }; }));
+  const norm = s => (s || '').normalize('NFC').replace(/\s/g, '');
+  $('#cwCheck').onclick = () => { let ok = 0, all = 0; for (const k in inputs) { const [r, c] = k.split(',').map(Number), i = inputs[k]; if (!i.value) { i.classList.remove('ok', 'bad'); continue; }
+      all++; const good = norm(i.value) === norm(X.cells[r][c]); i.classList.toggle('ok', good); i.classList.toggle('bad', !good); ok += good; }
+    toast(ok === Object.keys(inputs).length ? 'Crossword complete! 🎉' : `${ok} of ${all} filled boxes are right`); };
+  $('#cwReveal').onclick = () => { for (const k in inputs) { const [r, c] = k.split(',').map(Number); inputs[k].value = X.cells[r][c]; saved[k] = X.cells[r][c]; inputs[k].classList.add('ok'); } store.set('cw', saved); };
+  $('#cwClear').onclick = () => { for (const k in inputs) { inputs[k].value = ''; inputs[k].classList.remove('ok', 'bad'); } store.set('cw', {}); };
+
+  const V = D.verses;
+  (V.items || []).forEach(v => $('#verses').append(el('div', { class: 'verse' },
+    el('div', { class: 'src', text: v.source }), el('div', { class: 'k', text: v.ta.join('\n') }),
+    el('div', { class: 'sp', text: v.split }), el('div', { class: 'ph', text: v.phonetic.join(' / ') }),
+    el('div', { class: 'ur' }, el('b', { text: V.urai_label || '' }), v.urai.join(' ')),
+    el('div', { class: 'en' }, el('b', { text: V.english_label || '' }), el('i', { text: v.english.join(' / ') })))));
+  document.querySelectorAll('.verse .k').forEach(k => k.style.whiteSpace = 'pre-line');
+})();
+
+txt('#thTa', D.thanks.title_ta); txt('#thEn', (D.thanks.message_en || []).join(' '));
+</script>
+</body>
+</html>

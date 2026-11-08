@@ -838,6 +838,19 @@ def to_pdf(svg_path, text_to_path=False):
         cmd.append("--export-text-to-path")
     started = time.time()
     r = subprocess.run(cmd, capture_output=True, text=True)
+    if windows and (r.returncode != 0 or not pdf.exists()):
+        # Windows Inkscape can be refused write access to \\wsl.localhost paths: export to a Windows
+        # folder instead, then move the PDF into place from the WSL side.
+        import shutil
+        for d in (Path("/mnt/c/Users/Public/Documents"), Path("/mnt/c/Users/Public"), Path("/mnt/c/tmp")):
+            if d.is_dir():
+                tmp = d / f"_build_{pdf.name}"
+                cmd2 = [c if not c.startswith("--export-filename=") else f"--export-filename={arg(tmp)}" for c in cmd]
+                r = subprocess.run(cmd2, capture_output=True, text=True)
+                if tmp.exists():
+                    shutil.move(str(tmp), str(pdf))
+                    print(f"  (Inkscape could not write into the WSL folder; exported via {d} instead)")
+                break
     if r.returncode != 0 or not pdf.exists() or pdf.stat().st_mtime < started - 2:
         print("  ! Inkscape did not write a new PDF (is the file open in a viewer?)")
         msg = (r.stderr or r.stdout or "").strip()
