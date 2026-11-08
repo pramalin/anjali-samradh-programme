@@ -1,4 +1,4 @@
-TAMIL WORD SEARCH
+TAMIL PUZZLE
 
   யு  யு  ப   அ   அ   ற   னு  ம்  ம்  ல   டை 
   நீ  ன்  ல்  பு  ன்  ல்  யு  ல   டை  யு  பு 
@@ -32,7 +32,7 @@ TAMIL WORD SEARCH
   கலந்தனவே       row  9, col  5, right
 
 
-ENGLISH WORD SEARCH
+ENGLISH PUZZLE
 
   F   R   L   H   A   R   A   I   N   A   E  
   A   A   S   A   M   R   A   D   H   E   S  

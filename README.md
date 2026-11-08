@@ -1,60 +1,69 @@
 # Anjali & Samradh: Bilingual Wedding Programme (Tamil + English)
 
-A 4-page A5 booklet for Inkscape. It prints on one A4 sheet, double-sided, folded in half.
+This is a 4-page A5 booklet made from an **Inkscape template** and a **JSON content file**. You don't need to touch the code to change the design or the wording.
 
-| Page | Contents |
-|---|---|
-| 1 Cover | உ, the title, names in Tamil and English, date and muhurtham, venue, and Thirukkural 45 with its English rendering |
-| 2 Programme | நிகழ்ச்சி நிரல் / Order of Ceremony (8 bilingual steps), the officiant, and both families |
-| 3 சொல் தேடல் | Tamil word search: one Tamil letter per box, words run left to right or top to bottom, and 18 words from the two verses with tick boxes and English meanings |
-| 4 Word Search | English word search, Kurunthokai 40 in Tamil and English side by side, and the thank-you line |
-
-## Files
-
-| File | Purpose |
-|---|---|
-| `wedding-programme.svg` | The design. Open it in **Inkscape 1.2+**; the pages are listed under Document → Pages. |
-| `wedding.json` | All the wording (each item has a Tamil `ta` and an English `en` line), the puzzle words and the colours. |
-| `build.py` | Rebuilds the SVG and fresh puzzles from `wedding.json`. Runs on plain Python 3. If Pillow is installed, it uses the real fonts to shrink long lines to fit. |
-| `wedding-programme-answer-key.txt` | Solutions to both puzzles. |
-| `wedding-programme-proof.pdf` | The 4 pages as a PDF, for checking or a quick print. |
-| `fonts/` | Noto Serif Tamil, Kavivanar (Tamil display), Great Vibes and Cormorant Garamond. All are free under the SIL Open Font License. |
-
-## 1. Install the fonts
-
-Install every `.ttf` in `fonts/`, then restart Inkscape. Without Noto Serif Tamil and Kavivanar, the Tamil text falls back to a system font.
-
-## 2. Change the wording: edit `wedding.json`, then rebuild
+![preview](preview.png)
 
 ```
-python3 build.py
+templates/programme-a5.svg   ← the design: edit in Inkscape
+wedding.json                 ← the words: names, ceremony, puzzle words
+build.py                     ← fills the template (no changes needed)
+output/                      ← generated: SVG, answer key, proof PDF
+fonts/                       ← OFL fonts used by the template
 ```
 
-- **Order of ceremony:** `programme.items`. I wrote a typical Tamil-tradition sequence, so please confirm it with Sivathiru Aarooran's actual order. 6 to 9 items fit.
-- **Families:** `programme.families[].lines`. Each line is `["ta", "…"]` or `["en", "…"]`. Add lines for grandparents or siblings (for example `["ta", "இளவல்: ஆதீஸ்வர்"]`); keep each column to about 6 lines.
-- **Tamil puzzle:** `tamil_puzzle.words` holds `[word, English meaning]` pairs.
-  - Tamil letters are split the way a reader sees them, so க், கா and கொ each take one box.
-  - Changing `seed` gives a new layout with the same words.
-  - Add `"down-right"` to `directions` for a harder puzzle.
-- **English puzzle:** `english_puzzle.words`. COIMBATORE has 10 letters, so the grid needs to stay at least 10 × 10.
-- **Colours:** `theme`. The maroon, gold, leaf green and marigold colours are each a single setting.
+```bash
+python3 build.py             # template + wedding.json  →  output/wedding-programme.svg
+```
 
-Running `build.py` overwrites the SVG. Do your wording changes first, then hand edits in Inkscape, or save the Inkscape version under a new name.
+Run `python3 build.py --help` to use another template or data file, for example a second design or a different couple.
 
-## 3. Edit directly in Inkscape
+## Editing the design (template)
 
-- **Layers:** Background (paper and frames), one layer per page, and **Answer Keys (hidden)**. Turn on the eye icon on the answer-key layer to see highlighted solutions, and turn it off before printing guest copies.
-- **Names:** every object is named in the Layers and Objects panel (Ctrl+Shift+L), for example "Bride name (Tamil)", "Item 6 (English)" and "Thoranam (mango-leaf garland)".
-- **Text:** all text is live, so double-click to retype.
-- **Artwork:** File → Import adds a photo, a monogram or the venue QR code.
+Open `templates/programme-a5.svg` in Inkscape 1.2+ after installing the fonts in `fonts/`. Move, restyle, recolour, add artwork or delete anything, then save and rebuild. The template follows a few simple conventions.
 
-## 4. Printing as a folded booklet
+| In the template | What build.py does |
+|---|---|
+| Text containing `{{cover.bride_ta}}` | Replaces it with that value from `wedding.json`. Lists count from 0: `{{programme.items.2.en}}`. Mixing placeholders with fixed text is fine: `Date: {{cover.date_en}}`. |
+| Label starting with `?` (for example `?Item 7`) | Removes the object when its placeholders have no value, so unused ceremony slots vanish. |
+| Text label containing `[w=200]` | Shrinks the text to fit 200 units wide. Other filled-in text is automatically kept within its page margins. |
+| Group labelled `#puzzle tamil_puzzle` | Draws the word-search grid inside its rect labelled `area`, using the font and colour of its text labelled `letter`. |
+| Group labelled `#wordlist tamil_puzzle` | Repeats its group labelled `entry` for every word, in `list_columns` columns across its rect labelled `area`. Inside the entry, `{{word}}` and `{{gloss}}` are filled per word. |
 
-1. Use File → Save a Copy → PDF and choose *Convert text to paths* for the print shop. This gives 4 A5 pages in reading order.
-2. Print on A4 in **Booklet** mode. Adobe Reader and most printer drivers offer it. One sheet carries pages 4 | 1 on the outside and 2 | 3 on the inside; fold it, and the pages fall in order.
-3. Alternatively, ask the print shop for "A5 4-page folded programme, A4 sheet". They can impose it from the PDF.
+Labels are the names in Inkscape's **Layers and Objects** panel (Ctrl+Shift+L); double-click a name to rename it.
 
-## Text sources
+### Common changes
 
-- Thirukkural 45 and Kurunthokai 40 are from the invitation, with the family's English renderings.
-- The English meanings beside the Tamil puzzle words are short glosses written for this card.
+- **More ceremony steps:** duplicate the `?Item 8` group (Ctrl+D), move it down, and change its placeholders to `items.8`. Then add the item to `wedding.json`.
+- **Show a new field:** add it to `wedding.json` (for example `"cover": { "hashtag": "#AnjaliWedsSamradh" }`), then add a text in Inkscape that says `{{cover.hashtag}}`.
+- **Move or resize a puzzle:** move or resize its `area` rect. The grid is fitted inside it with square cells.
+- **Restyle puzzle letters:** change the font or colour of the `letter` sample text.
+- **Restyle the word list:** edit the sample `entry` (tick box, word and gloss styles, and their positions).
+- **Answer-key colour:** add any small shape labelled `answer` inside the `#puzzle` group; its colour is used.
+- **Other page sizes or layouts:** copy the template, redesign it, and build with `-t templates/your-template.svg`.
+
+Running `build.py` only writes to `output/` and never changes the template.
+
+## Editing the words (`wedding.json`)
+
+- **Text on the card:** each item on the card is a named value, usually with `_ta` and `_en` versions.
+- **Puzzle settings:**
+  - `rows` and `cols` set the grid size; `seed` gives a different shuffle; `directions` are any of `right down left up down-right up-right down-left up-left`.
+  - `letter_scale` sets letter size relative to the box; `cell_lines` turns the grid lines on or off; `list_columns` sets the number of word-list columns.
+- **Tamil word splitting:** Tamil words are split into letters as readers see them, so க், கா and கொ each take one box.
+- **Word counts:** `{{tamil_puzzle.count}}` gives the number of words automatically.
+
+After a build, the script lists any placeholder with no matching value, which helps catch typos.
+
+## Printing
+
+> **Page sizes.** Inkscape uses the document's own size as page 1. When the template is saved in Inkscape, page 1 can get stretched to the whole 4-page canvas, and the PDF then has a giant first page. `build.py` repairs this in the output automatically. `python3 build.py --fix-template` also repairs the template file itself. To check, open Inkscape's **Pages** tool (Shift+F7) and click page 1: the toolbar should show A5 (148 × 210 mm).
+
+1. Open `output/wedding-programme.svg` in Inkscape.
+2. Use File → Save a Copy → PDF and choose *Convert text to paths* for the print shop. You get 4 A5 pages in reading order.
+3. Print on A4 in **Booklet** mode and fold.
+4. The **Answer Keys (hidden)** layer is off by default. Turn it on to check the puzzles.
+
+## Requirements
+
+Python 3 is enough. With Pillow installed (`pip install pillow`), text fitting measures the real fonts instead of estimating.
