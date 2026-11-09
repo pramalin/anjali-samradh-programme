@@ -29,7 +29,8 @@ ASSETS = ["parchment.jpg", "monogram.svg", "groom.svg", "bride.svg", "kuthuvilak
 def word_search(cfg, phon):
     words = build.puzzle_words(cfg)
     grid, placed = build.make_word_search([w["word"] for w in words], int(cfg["rows"]), int(cfg["cols"]),
-                                          int(cfg["seed"]), cfg.get("directions", ["right", "down"]))
+                                          int(cfg["seed"]), cfg.get("directions", ["right", "down"]),
+                                          int(cfg.get("decoys", 0)))
     gl = {w["word"]: w for w in words}
     return {
         "grid": grid,
@@ -40,16 +41,20 @@ def word_search(cfg, phon):
     }
 
 
-def make_maze(size, seed, tries):
-    best = None
-    for s in range(seed, seed + tries):
-        right, down = maze.carve(size, s)
-        path = maze.solve(size, right, down)
-        if best is None or len(path) > best[0]:
-            best = (len(path), right, down, path)
-    _, right, down, path = best
-    return {"n": size, "right": [[int(v) for v in r] for r in right],
-            "down": [[int(v) for v in r] for r in down], "solution": path}
+def make_maze(seed, n=21):
+    """The standard maze with story stops (same as the booklet's): python3 maze.py --story --size 21 --seed 686 --report"""
+    import maze_icons
+    m = maze.story_maze(seed, n)
+    edges = m["edges"]
+    opened = lambda a, b: frozenset((a, b)) in edges
+    print("maze: story,", len(m["path"]), "squares on the route")
+    return {"rows": n, "cols": n,
+            "cells": [[1] * n for _ in range(n)],
+            "right": [[int(not opened((r, c), (r, c + 1))) for c in range(n)] for r in range(n)],
+            "down": [[int(not opened((r, c), (r + 1, c))) for c in range(n)] for r in range(n)],
+            "solution": m["path"], "start": m["start"], "end": m["end"],
+            "rooms": [{"r": r, "c": c, "icon": name, "parts": maze_icons.ICONS[name]}
+                      for name, (r, c) in zip(maze_icons.ORDER, m["rooms"])]}
 
 
 def see_through(src, dst):
@@ -94,7 +99,7 @@ def main():
                         **word_search(data["tamil_words"], phon)},
         "english_words": {**{k: data["english_words"].get(k, "") for k in ("title_en", "title_ta", "instructions")},
                           **word_search(data["english_words"], phon)},
-        "maze": {**data.get("maze", {}), **make_maze(21, 1511, 200)},
+        "maze": {**data.get("maze", {}), **make_maze(686)},
         "drawing": data.get("drawing", {}),
         "dots_boxes": data.get("dots_boxes", {}),
         "tictactoe": data.get("tictactoe", {}),

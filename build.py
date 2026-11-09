@@ -133,7 +133,20 @@ def letters(word):
     return out
 
 
-def make_word_search(words, rows, cols, seed, dirs):
+def count_word(grid, toks):
+    """How many times a word appears in the grid, reading in any of the 8 directions."""
+    rows, cols, n, hits = len(grid), len(grid[0]), len(toks), 0
+    for dr, dc in DIRECTIONS.values():
+        for r in range(rows):
+            for c in range(cols):
+                er, ec = r + dr * (n - 1), c + dc * (n - 1)
+                if 0 <= er < rows and 0 <= ec < cols and all(grid[r + dr * i][c + dc * i] == t for i, t in enumerate(toks)):
+                    hits += 1
+    return hits // 2 if n == 1 else hits
+
+
+def make_word_search(words, rows, cols, seed, dirs, decoys=0):
+    """decoys = how many near-miss fragments (a word missing its last letter) to hide in the filler."""
     items = [(letters(w), w) for w in words]
     for toks, w in items:
         if len(toks) > max(rows, cols):
@@ -177,10 +190,31 @@ def make_word_search(words, rows, cols, seed, dirs):
     else:
         sys.exit("Could not fit all words - enlarge the grid or allow more directions.")
     pool = [t for toks, _ in items for t in toks]
-    for r in range(rows):
-        for c in range(cols):
-            if grid[r][c] is None:
-                grid[r][c] = rng.choice(pool)
+    base = [row[:] for row in grid]
+    for fill_try in range(200):             # every word must appear exactly once, in any direction
+        frng = random.Random(seed * 7919 + fill_try)
+        grid = [row[:] for row in base]
+        for _ in range(decoys):              # near misses: a word without its last letter
+            toks = frng.choice([t for t, _ in items if len(t) >= 4])[:-1]
+            spots = []
+            for d in DIRECTIONS:
+                dr, dc = DIRECTIONS[d]
+                for r in range(rows):
+                    for c in range(cols):
+                        cells = [(r + dr * i, c + dc * i) for i in range(len(toks))]
+                        if all(0 <= a < rows and 0 <= b < cols and grid[a][b] is None for a, b in cells):
+                            spots.append(cells)
+            if spots:
+                for (a, b), t in zip(frng.choice(spots), toks):
+                    grid[a][b] = t
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] is None:
+                    grid[r][c] = frng.choice(pool)
+        if all(count_word(grid, toks) == 1 for toks, _ in items):
+            break
+    else:
+        sys.exit("Could not fill the grid without repeating a word - try another seed.")
     order = [w for _, w in items]
     placed.sort(key=lambda p: order.index(p["word"]))
     return grid, placed
@@ -430,7 +464,7 @@ def expand_puzzle(group, key, data, tree, answers_layer, key_lines, opts=None):
     words = [w["word"] for w in puzzle_words(cfg)]
     rows, cols = int(cfg.get("rows", 12)), int(cfg.get("cols", 12))
     grid, placed = make_word_search(words, rows, cols, int(cfg.get("seed", 1)),
-                                    cfg.get("directions", ["right", "down"]))
+                                    cfg.get("directions", ["right", "down"]), int(cfg.get("decoys", 0)))
     x, y, w, h = rect_box(area)
     cell = min(w / cols, h / rows)
     gx, gy = x + (w - cell * cols) / 2, y + (h - cell * rows) / 2

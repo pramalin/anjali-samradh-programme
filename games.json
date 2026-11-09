@@ -129,7 +129,7 @@
   "tamil_words": {
     "title_ta": "சொல் தேடல்",
     "title_en": "Tamil Word Search",
-    "instructions": "இடமிருந்து வலம் · மேலிருந்து கீழ் · Left to right or top to bottom",
+    "instructions": "எல்லாத் திசைகளிலும் · Any direction, even diagonal or backwards",
     "words": [
       {
         "word": "திருமணம்",
@@ -152,8 +152,8 @@
         "gloss": "drum"
       },
       {
-        "word": "நாகசுரம்",
-        "gloss": "wind instrument"
+        "word": "வளையல்",
+        "gloss": "bangles"
       },
       {
         "word": "கோலம்",
@@ -185,9 +185,16 @@
     "seed": 1107,
     "directions": [
       "right",
-      "down"
+      "down",
+      "down-right",
+      "up-right",
+      "left",
+      "up",
+      "up-left",
+      "down-left"
     ],
-    "title_en_short": "Word Search"
+    "title_en_short": "Word Search",
+    "decoys": 6
   },
   "english_words": {
     "title_en": "Word Search",
@@ -205,10 +212,14 @@
       "JASMINE",
       "SILK",
       "FEAST",
-      "DANCE"
+      "DANCE",
+      "VOWS",
+      "PROMISE",
+      "TOGETHER",
+      "CELEBRATE"
     ],
-    "rows": 10,
-    "cols": 10,
+    "rows": 11,
+    "cols": 11,
     "seed": 306,
     "directions": [
       "right",
@@ -219,7 +230,8 @@
       "up",
       "up-left",
       "down-left"
-    ]
+    ],
+    "decoys": 6
   },
   "scramble": {
     "title_en": "Word Scramble",
@@ -280,7 +292,7 @@
     "வேள்வி / திருமுறை ஓதுதல்": "Velvi / Thirumurai|Odhudhal",
     "மணவறை வலம்": "Manavarai Valam",
     "சந்தனம்": "sandhanam",
-    "நாகசுரம்": "naagasuram"
+    "வளையல்": "valaiyal"
   },
   "maze": {
     "title_en": [
@@ -290,6 +302,60 @@
     "title_ta": [
       "மணமகன் மணமகளைச்",
       "சென்றடைய உதவுங்கள்"
+    ],
+    "stops_en": "On the way: India, education, engineering, the USA, kindness, cooking, a good meal, our cat, rides and love.",
+    "stops_ta": "வழியில்: இந்தியா, கல்வி, பொறியியல், அமெரிக்கா, கருணை, சமையல், உணவு, பூனை, பயணம், அன்பு.",
+    "stops": [
+      {
+        "icon": "india",
+        "en": "India",
+        "ta": "இந்தியா"
+      },
+      {
+        "icon": "education",
+        "en": "education",
+        "ta": "கல்வி"
+      },
+      {
+        "icon": "engineering",
+        "en": "engineering",
+        "ta": "பொறியியல்"
+      },
+      {
+        "icon": "usa",
+        "en": "the USA",
+        "ta": "அமெரிக்கா"
+      },
+      {
+        "icon": "kindness",
+        "en": "kindness",
+        "ta": "கருணை"
+      },
+      {
+        "icon": "cooking",
+        "en": "cooking together",
+        "ta": "சமையல்"
+      },
+      {
+        "icon": "food",
+        "en": "a good meal",
+        "ta": "உணவு"
+      },
+      {
+        "icon": "cat",
+        "en": "our cat",
+        "ta": "பூனை"
+      },
+      {
+        "icon": "motorcycle",
+        "en": "rides",
+        "ta": "பயணம்"
+      },
+      {
+        "icon": "heart",
+        "en": "love",
+        "ta": "அன்பு"
+      }
     ]
   },
   "drawing": {
@@ -327,5 +393,6 @@
   "tamil_line_breaks": {
     "_help": "Where a Tamil list item is too wide for one line, give it here with '|' at the break.",
     "வேள்வி யாகம் / திருமுறை ஓதுதல் / பூரண ஆகுதி": "வேள்வி யாகம் / திருமுறை ஓதுதல் /|பூரண ஆகுதி"
-  }
+  },
+  "_note_wordsearch": "Word searches: 'directions' = any of right, down, down-right, up-right, left, up, up-left, down-left. 'decoys' = near-miss fragments (a word minus its last letter) hidden in the filler. Each word is checked to appear exactly once."
 }

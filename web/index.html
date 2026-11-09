@@ -87,6 +87,7 @@ nav a:hover{border-color:var(--line)}
 .mazebox{display:grid;grid-template-columns:1fr;justify-items:center;gap:10px}
 .mazewrap{position:relative;width:min(100%,460px)}
 .mazewrap canvas{width:100%;height:auto;display:block;touch-action:none}
+#mzStops .stop{white-space:nowrap} #mzStops .stop.got{color:#b5651d;font-weight:700}
 .pad{display:grid;grid-template-columns:repeat(3,48px);grid-template-rows:repeat(2,44px);gap:6px}
 .pad button{border-radius:10px;padding:0;font-size:20px}
 .pad .u{grid-column:2} .pad .l{grid-column:1;grid-row:2} .pad .d{grid-column:2;grid-row:2} .pad .r{grid-column:3;grid-row:2}
@@ -182,8 +183,9 @@ footer .ta{font-size:20px} footer p{margin:.2em 0}
   <section id="maze">
     <h2><span id="mzTitle"></span><span class="ta" id="mzTitleTa"></span></h2>
     <p class="sub">Use the arrow keys, swipe on the maze, or the buttons below.</p>
+    <p class="sub" id="mzStops"></p>
     <div class="mazebox">
-      <div class="mazewrap"><canvas id="mz" width="920" height="920"></canvas></div>
+      <div class="mazewrap"><canvas id="mz" width="920" height="1100"></canvas></div>
       <div class="pad"><button class="u" data-mv="0,-1" aria-label="up">↑</button><button class="l" data-mv="-1,0" aria-label="left">←</button>
         <button class="d" data-mv="0,1" aria-label="down">↓</button><button class="r" data-mv="1,0" aria-label="right">→</button></div>
       <div class="row"><button id="mzReset">Start again</button><button id="mzShow">Show the way</button></div>
@@ -268,7 +270,8 @@ function wordSearch(key, P) {
   fitCells(); addEventListener('resize', fitCells); document.fonts && document.fonts.ready.then(fitCells);
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); svg.classList.add('marks');
   svg.setAttribute('viewBox', `0 0 ${C} ${R}`); svg.setAttribute('preserveAspectRatio', 'none'); g.prepend(svg);
-  const found = new Set(store.get(key + '-found', []));
+  const sk = key + '-found-' + [...P.grid.flat().join('')].reduce((h, ch) => (h * 31 + ch.codePointAt(0)) >>> 0, 7).toString(36);   // progress belongs to this grid
+  const found = new Set(store.get(sk, []));
   const items = P.words.map(w => { const li = el('li', {}, el('span', { class: 'w', text: w.word }));
     if (w.ph || w.gloss) li.append(el('span', { class: 'g', text: [w.ph, w.gloss].filter(Boolean).join(' · ') })); list.append(li); return li; });
   const mark = (w, i, reveal) => {
@@ -294,7 +297,7 @@ function wordSearch(key, P) {
     const hit = P.words.findIndex((w, i) => { const er = w.row + w.dr * (w.len - 1), ec = w.col + w.dc * (w.len - 1);
       const s = [+a.dataset.r, +a.dataset.c, +b.dataset.r, +b.dataset.c].join();
       return w.len === cur.length && (s === [w.row, w.col, er, ec].join() || s === [er, ec, w.row, w.col].join()); });
-    if (hit >= 0 && !found.has(hit)) { found.add(hit); store.set(key + '-found', [...found]); mark(P.words[hit], hit); items[hit].classList.add('done'); count(); }
+    if (hit >= 0 && !found.has(hit)) { found.add(hit); store.set(sk, [...found]); mark(P.words[hit], hit); items[hit].classList.add('done'); count(); }
     return true;
   };
   let tapStart = null, moved = false;
@@ -308,7 +311,7 @@ function wordSearch(key, P) {
     start = null; };
   g.addEventListener('pointerup', up); g.addEventListener('pointercancel', up);
   document.querySelector(`[data-reset="${key}"]`).onclick = () => {
-    found.clear(); store.set(key + '-found', []); tapStart = null; start = null; paint([]);
+    found.clear(); store.set(sk, []); tapStart = null; start = null; paint([]);
     svg.querySelectorAll('line').forEach(l => l.remove()); items.forEach(li => li.classList.remove('got', 'done')); count(); };
   document.querySelector(`[data-reveal="${key}"]`).onclick = () => P.words.forEach((w, i) => { if (!found.has(i)) { found.add(i); mark(w, i, true); } }) || count();
 }
@@ -319,31 +322,70 @@ wordSearch('tw', D.tamil_words); wordSearch('ew', D.english_words);
 
 /* ---------- maze ---------- */
 (function () {
-  const M = D.maze, n = M.n, cv = $('#mz'), ctx = cv.getContext('2d'), S = cv.width, pad = S * 0.09, cs = (S - 2 * pad) / n;
+  // standard maze; the story stops sit in small rooms on the true route. (M.cat, if present, would mark a
+  // picture hidden in the walls - shaded, with a heavier outline.) Groom top left (M.start), bride bottom right (M.end)
+  const M = D.maze, R = M.rows, C = M.cols, cv = $('#mz'), ctx = cv.getContext('2d');
+  const padX = cv.width * 0.1, cs = (cv.width - 2 * padX) / C;
+  cv.height = Math.round(R * cs + 2 * padX); const S = cv.width, pad = padX;
   const groom = new Image(), bride = new Image(); groom.src = 'assets/groom.svg'; bride.src = 'assets/bride.svg';
-  let pos = [0, 0], trail = [[0, 0]], show = false, won = false;
+  const start = [M.start[1], M.start[0]], end = [M.end[1], M.end[0]];          // [col, row]
+  let pos = [...start], trail = [[...start]], show = false, won = false;
+  const got = new Set();
+  const inside = (c, r) => r >= 0 && c >= 0 && r < R && c < C && M.cells[r][c] === 1;
   txt('#mzTitle', (M.title_en || []).join(' ')); txt('#mzTitleTa', (M.title_ta || []).join(' '));
-  const open = (c, r, dc, dr) => { const nc = c + dc, nr = r + dr; if (nc < 0 || nr < 0 || nc >= n || nr >= n) return false;
+  const stopsLine = () => { const st = M.stops || [];
+    $('#mzStops').innerHTML = '';
+    $('#mzStops').append('On the way: ', ...st.flatMap((s, i) => [el('span', { class: 'stop' + (got.has(i) ? ' got' : ''), text: s.en }), i < st.length - 1 ? ' · ' : '']));
+  };
+  const open = (c, r, dc, dr) => { const nc = c + dc, nr = r + dr; if (!inside(nc, nr) || !inside(c, r)) return false;
     if (dc === 1) return !M.right[r][c]; if (dc === -1) return !M.right[r][nc]; if (dr === 1) return !M.down[r][c]; return !M.down[nr][c]; };
   const X = c => pad + (c + .5) * cs, Y = r => pad + (r + .5) * cs;
+  const ICON = {}; (M.rooms || []).forEach(rm => ICON[rm.icon] = rm.parts.map(p => ({ d: new Path2D(p[0]), kind: p[1], w: p[2], c: p[2], w2: p[3] })));
+  function drawIcon(rm, faded) {
+    const sz = cs * 1.76, x = pad + rm.c * cs + cs * .12, y = pad + rm.r * cs + cs * .12;
+    ctx.save(); ctx.translate(x, y); ctx.scale(sz / 100, sz / 100); ctx.globalAlpha = faded ? .28 : 1;
+    ICON[rm.icon].forEach(p => {
+      if (p.kind === 'fill') { ctx.fillStyle = '#b5651d'; ctx.fill(p.d); }
+      else if (p.kind === 'color') { ctx.fillStyle = p.c; ctx.fill(p.d); }
+      else if (p.kind === 'colorstroke') { ctx.strokeStyle = p.c; ctx.lineWidth = p.w2; ctx.lineCap = 'round'; ctx.stroke(p.d); }
+      else if (p.kind === 'knockfill') { ctx.fillStyle = '#fbf6ec'; ctx.fill(p.d); }
+      else { ctx.strokeStyle = p.kind === 'knock' ? '#fbf6ec' : '#b5651d'; ctx.lineWidth = p.w; ctx.lineCap = ctx.lineJoin = 'round'; ctx.stroke(p.d); } });
+    ctx.restore();
+  }
+  const inRoom = (rm, c, r) => r >= rm.r && r <= rm.r + 1 && c >= rm.c && c <= rm.c + 1;
   function draw() {
-    ctx.clearRect(0, 0, S, S); ctx.fillStyle = 'rgba(255,255,255,.55)'; ctx.fillRect(pad, pad, n * cs, n * cs);
+    ctx.clearRect(0, 0, S, cv.height); ctx.fillStyle = 'rgba(255,255,255,.55)';
+    for (let r = 0; r < R; r++) for (let c = 0; c < C; c++) if (inside(c, r)) ctx.fillRect(pad + c * cs - .5, pad + r * cs - .5, cs + 1, cs + 1);
+    ctx.fillStyle = 'rgba(217,194,160,.45)';                                     // the cat's shading
+    for (let r = 0; r < R; r++) for (let c = 0; c < C; c++) if (M.cat && M.cat[r][c]) ctx.fillRect(pad + c * cs - .5, pad + r * cs - .5, cs + 1, cs + 1);
     const path = (pts, col, w) => { ctx.strokeStyle = col; ctx.lineWidth = w; ctx.lineCap = ctx.lineJoin = 'round'; ctx.beginPath();
       pts.forEach(([c, r], i) => (i ? ctx.lineTo : ctx.moveTo).call(ctx, X(c), Y(r))); ctx.stroke(); };
+    (M.rooms || []).forEach((rm, i) => drawIcon(rm, got.has(i)));
     if (show) path(M.solution.map(([r, c]) => [c, r]), 'rgba(201,162,126,.6)', cs * .55);
     path(trail, '#b5651d', cs * .28);
-    ctx.strokeStyle = '#3a2c24'; ctx.lineWidth = Math.max(3, cs / 7); ctx.lineCap = 'square'; ctx.beginPath();
-    const L = (a, b, c, d) => { ctx.moveTo(a, b); ctx.lineTo(c, d); };
-    L(pad, pad, pad + n * cs, pad); L(pad, pad + n * cs, pad + n * cs, pad + n * cs);
-    L(pad, pad + cs, pad, pad + n * cs); L(pad + n * cs, pad, pad + n * cs, pad + (n - 1) * cs);
-    for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) {
-      if (c < n - 1 && M.right[r][c]) L(pad + (c + 1) * cs, pad + r * cs, pad + (c + 1) * cs, pad + (r + 1) * cs);
-      if (r < n - 1 && M.down[r][c]) L(pad + c * cs, pad + (r + 1) * cs, pad + (c + 1) * cs, pad + (r + 1) * cs); }
-    ctx.stroke();
+    const thin = [], thick = [];
+    const isCat = (c, r) => !!(M.cat && r >= 0 && c >= 0 && r < R && c < C && M.cat[r][c]);
+    const W = (a, b, c, d, heavy) => (heavy ? thick : thin).push([a, b, c, d]);
+    const gate = (c, r, side) => (c === start[0] && r === start[1] && side === 'l') || (c === end[0] && r === end[1] && side === 'r');
+    for (let r = 0; r < R; r++) for (let c = 0; c < C; c++) {
+      if (!inside(c, r)) continue;
+      const x = pad + c * cs, y = pad + r * cs, me = isCat(c, r);
+      if (!inside(c, r - 1)) W(x, y, x + cs, y, me);                               // outer edge
+      if (!inside(c - 1, r) && !gate(c, r, 'l')) W(x, y, x, y + cs, me);
+      if ((!inside(c + 1, r) || M.right[r][c]) && !gate(c, r, 'r')) W(x + cs, y, x + cs, y + cs, inside(c + 1, r) ? me !== isCat(c + 1, r) : me);
+      if (!inside(c, r + 1) || M.down[r][c]) W(x, y + cs, x + cs, y + cs, inside(c, r + 1) ? me !== isCat(c, r + 1) : me);
+    }
+    const strokeAll = (segs, w) => { ctx.strokeStyle = '#3a2c24'; ctx.lineWidth = w; ctx.lineCap = 'square'; ctx.beginPath();
+      segs.forEach(([a, b, c, d]) => { ctx.moveTo(a, b); ctx.lineTo(c, d); }); ctx.stroke(); };
+    strokeAll(thin, Math.max(2.5, cs / 7)); strokeAll(thick, Math.max(4.5, cs / 7 * 1.8));
     const gh = pad * 1.7, gw = gh * .45;
-    if (groom.complete) ctx.drawImage(groom, pad - gw * 1.05, Y(0) - gh * .62, gw, gh);
-    if (bride.complete) ctx.drawImage(bride, pad + n * cs + 4, Y(n - 1) - gh * .55, gw * 1.05, gh);
+    if (groom.complete) ctx.drawImage(groom, pad - gw * 1.05, Y(start[1]) - gh * .62, gw, gh);
+    if (bride.complete) ctx.drawImage(bride, pad + C * cs + 4, Y(end[1]) - gh * .55, gw * 1.05, gh);
     ctx.fillStyle = '#b5651d'; ctx.beginPath(); ctx.arc(X(pos[0]), Y(pos[1]), cs * .33, 0, 7); ctx.fill();
+  }
+  function arrive(c, r) {
+    (M.rooms || []).forEach((rm, i) => { if (!got.has(i) && inRoom(rm, c, r)) { got.add(i); const s = (M.stops || [])[i];
+      if (s) toast(`${s.en[0].toUpperCase() + s.en.slice(1)} · ${s.ta} ✓`); stopsLine(); } });
   }
   function move(dc, dr) {
     if (won) return;
@@ -352,12 +394,14 @@ wordSearch('tw', D.tamil_words); wordSearch('ew', D.english_words);
       if (!open(c, r, dc, dr)) break; c += dc; r += dr; steps++;
       const back = trail.length > 1 && trail[trail.length - 2][0] === c && trail[trail.length - 2][1] === r;
       back ? trail.pop() : trail.push([c, r]);
+      arrive(c, r);
       const exits = [[1,0],[-1,0],[0,1],[0,-1]].filter(([a, b]) => open(c, r, a, b)).length;
-      if (exits !== 2 || (c === n - 1 && r === n - 1)) break;
+      if (exits !== 2 || (c === end[0] && r === end[1]) || (M.rooms || []).some(rm => inRoom(rm, c, r))) break;
       if (!open(c, r, dc, dr)) { const turn = [[1,0],[-1,0],[0,1],[0,-1]].find(([a, b]) => open(c, r, a, b) && !(a === -dc && b === -dr)); if (!turn) break; [dc, dr] = turn; }
     } while (steps < 200);
     pos = [c, r]; draw();
-    if (c === n - 1 && r === n - 1) { won = true; toast('The groom reached his bride! 💐'); }
+    if (c === end[0] && r === end[1]) { won = true;
+      toast(got.size === (M.rooms || []).length ? 'The groom reached his bride, with everything they need for a happy life 💐' : 'The groom reached his bride! 💐'); }
   }
   addEventListener('keydown', e => { const k = { ArrowUp: [0, -1], ArrowDown: [0, 1], ArrowLeft: [-1, 0], ArrowRight: [1, 0] }[e.key];
     if (!k) return; const r = cv.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) return; e.preventDefault(); move(...k); });
@@ -365,8 +409,10 @@ wordSearch('tw', D.tamil_words); wordSearch('ew', D.english_words);
   let sx, sy; cv.addEventListener('pointerdown', e => { sx = e.clientX; sy = e.clientY; });
   cv.addEventListener('pointerup', e => { const dx = e.clientX - sx, dy = e.clientY - sy; if (Math.hypot(dx, dy) < 18) return;
     Math.abs(dx) > Math.abs(dy) ? move(Math.sign(dx), 0) : move(0, Math.sign(dy)); });
-  $('#mzReset').onclick = () => { pos = [0, 0]; trail = [[0, 0]]; won = false; show = false; draw(); };
+  $('#mzReset').onclick = () => { pos = [...start]; trail = [[...start]]; won = false; show = false; got.clear(); stopsLine(); draw(); };
   $('#mzShow').onclick = () => { show = !show; draw(); };
+  stopsLine();
+  window.__mzPos = () => [pos[1], pos[0]];           // [row, col], used by the page tests
   groom.onload = bride.onload = draw; draw();
 })();
 
@@ -500,12 +546,14 @@ wordSearch('tw', D.tamil_words); wordSearch('ew', D.english_words);
   const X = D.crossword; txt('#cwTitle', X.title_ta); txt('#cwTitleEn', X.title_en); txt('#cwInstrTa', X.instructions_ta); txt('#cwInstrEn', X.instructions_en);
   const box = $('#cw'); box.style.gridTemplateColumns = `repeat(${X.cols},auto)`;
   box.style.setProperty('--cs', `min(40px, calc((100vw - 92px) / ${X.cols} - 2px))`);
-  const saved = store.get('cw', {}), inputs = {};
+  // saved letters belong to this grid: a changed grid starts clean
+  const cwKey = 'cw-' + [...X.cells.flat().join('')].reduce((h, ch) => (h * 31 + ch.codePointAt(0)) >>> 0, 7).toString(36);
+  const saved = store.get(cwKey, {}), inputs = {};
   for (let r = 0; r < X.rows; r++) for (let c = 0; c < X.cols; c++) {
     const d = el('div'); box.append(d); if (!X.cells[r][c]) continue;
     if (X.numbers[r][c]) d.append(el('b', { text: X.numbers[r][c] }));
     const i = el('input', { 'aria-label': `row ${r + 1} column ${c + 1}`, autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false' });
-    i.value = saved[r + ',' + c] || ''; i.oninput = () => { i.classList.remove('ok', 'bad'); saved[r + ',' + c] = i.value.trim(); store.set('cw', saved); };
+    i.value = saved[r + ',' + c] || ''; i.oninput = () => { i.classList.remove('ok', 'bad'); saved[r + ',' + c] = i.value.trim(); store.set(cwKey, saved); };
     d.append(i); inputs[r + ',' + c] = i;
   }
   const cellsOf = (e, dir) => [...Array(e.len)].map((_, k) => inputs[dir === 'across' ? `${e.row},${e.col + k}` : `${e.row + k},${e.col}`]);
@@ -516,8 +564,8 @@ wordSearch('tw', D.tamil_words); wordSearch('ew', D.english_words);
   $('#cwCheck').onclick = () => { let ok = 0, all = 0; for (const k in inputs) { const [r, c] = k.split(',').map(Number), i = inputs[k]; if (!i.value) { i.classList.remove('ok', 'bad'); continue; }
       all++; const good = norm(i.value) === norm(X.cells[r][c]); i.classList.toggle('ok', good); i.classList.toggle('bad', !good); ok += good; }
     toast(ok === Object.keys(inputs).length ? 'Crossword complete! 🎉' : `${ok} of ${all} filled boxes are right`); };
-  $('#cwReveal').onclick = () => { for (const k in inputs) { const [r, c] = k.split(',').map(Number); inputs[k].value = X.cells[r][c]; saved[k] = X.cells[r][c]; inputs[k].classList.add('ok'); } store.set('cw', saved); };
-  $('#cwClear').onclick = () => { for (const k in inputs) { inputs[k].value = ''; inputs[k].classList.remove('ok', 'bad'); } store.set('cw', {}); };
+  $('#cwReveal').onclick = () => { for (const k in inputs) { const [r, c] = k.split(',').map(Number); inputs[k].value = X.cells[r][c]; saved[k] = X.cells[r][c]; inputs[k].classList.add('ok'); } store.set(cwKey, saved); };
+  $('#cwClear').onclick = () => { for (const k in inputs) { inputs[k].value = ''; inputs[k].classList.remove('ok', 'bad'); } store.set(cwKey, {}); };
 
   const V = D.verses;
   (V.items || []).forEach(v => $('#verses').append(el('div', { class: 'verse' },
