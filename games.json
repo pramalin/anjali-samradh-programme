@@ -41,38 +41,38 @@
   "crossword": {
     "title_ta": "குறள் குறுக்கெழுத்து",
     "title_en": "Thirukkural Crossword",
-    "instructions_ta": "எல்லா விடைகளும் கீழே உள்ள இரண்டு குறள்களின் சொற்கள் · ஒரு கட்டத்தில் ஓர் எழுத்து",
-    "instructions_en": "Every answer is a word from the two Thirukkural verses below. One Tamil letter per box.",
+    "instructions_ta": "எல்லா விடைகளும் கீழே உள்ள குறள் 48, 93 இன் சொற்கள் · ஒரு கட்டத்தில் ஓர் எழுத்து",
+    "instructions_en": "Every answer is a word from Kurals 48 and 93 below. One Tamil letter per box.",
     "_grid_help": "One row per line, letters separated by spaces, x for an empty square. Numbering is automatic.",
     "grid": [
-      "x எ x x இ x உ ண் ட ற் று x பா",
-      "x ன் x கொ ல் லி x x x x x x த்",
-      "x னு x x x x x மா x x த ம து",
-      "அ ம் x x சே x x x சு டு ம் x x",
-      "ரி x x x ர் x x ஏ x x x x x",
-      "வை x இ ரு ந் து x ம x x x x பு",
-      "x x ன x தா x x x x x x x ணை",
-      "சி ன ம் x ரை x x மு ய க் கு x யை"
+      "x x மு x x x x x இ ழு க் கா x",
+      "x x க x நோ ற் பா ரி ன் x x x x",
+      "அ க த் தா ன் x x x சொ x x நோ x",
+      "ற x தா x மை x x இ ல் வா ழ் க் கை",
+      "ம் x ன் x x x x னி x x x கி x",
+      "x x x அ ம ர் ந் து x x x x x",
+      "x x x ற x x x x உ டை த் து x",
+      "ஆ ற் றி ன் x இ ன தே x x x x x",
+      "ம் x x x x x x x ஒ ழு க் கி x"
     ],
     "clues": {
-      "சினம்": "கோபம் · anger",
-      "என்னும்": "எனப்படும் · so-called",
-      "சேர்ந்தாரை": "சார்ந்தவர்களை · those who come close",
-      "கொல்லி": "அழிப்பது · the killer",
-      "இனம்": "சுற்றம் · one's kin",
-      "ஏம": "பாதுகாப்பான · protecting",
-      "புணையை": "தெப்பத்தை · the raft",
-      "சுடும்": "எரிக்கும் · will burn",
-      "தம்": "தங்களுடைய · one's own",
-      "இல்": "வீடு · home",
-      "இருந்து": "தங்கி · staying",
-      "தமது": "தம்முடைய · their own",
-      "பாத்து": "பகிர்ந்து · sharing out",
-      "உண்டற்று": "உண்டதைப் போன்றது · like having eaten",
-      "அம்": "அழகிய · beautiful",
-      "மா": "மாமை நிறம் · dark-hued",
-      "அரிவை": "இளம்பெண் · young woman",
-      "முயக்கு": "தழுவல் · embrace"
+      "ஆற்றின்": "நெறிப்படி · along the right path",
+      "ஒழுக்கி": "நடக்கச் செய்து · guiding others",
+      "அறன்": "அறம் (செய்யுள் வடிவம்) · virtue (poetic form)",
+      "இழுக்கா": "தவறாத · never slipping",
+      "இல்வாழ்க்கை": "குடும்ப வாழ்க்கை · married life",
+      "நோற்பாரின்": "தவம் செய்பவரின் · of those who do penance",
+      "நோன்மை": "பொறுமை, வலிமை · endurance",
+      "உடைத்து": "உடையது · possesses",
+      "முகத்தான்": "முகத்தால் · with the face",
+      "அமர்ந்து": "விரும்பி · gladly",
+      "இனிது": "இனிமையாக · sweetly",
+      "நோக்கி": "பார்த்து · looking",
+      "அகத்தான்": "உள்ளத்தால் · from the heart",
+      "ஆம்": "ஆகும் · becomes",
+      "இன்சொல்": "இனிய சொல் · sweet words",
+      "இனதே": "அதனுடையதே · its very own",
+      "அறம்": "நல்லொழுக்கம் · virtue"
     }
   },
   "verses": {
@@ -81,43 +81,43 @@
     "_note": "Tamil text verbatim. 'split' = combined words separated (as used in the crossword). 'phonetic' = English pronunciation. 'urai' = Kalaignar Mu. Karunanidhi's explanation (one line per list item). 'english' = G.U. Pope's translation (1886).",
     "items": [
       {
-        "source": "(குறள் எண்: 306, அதிகாரம்: வெகுளாமை, அறத்துப்பால்)",
+        "source": "(குறள் எண்: 48, அதிகாரம்: இல்வாழ்க்கை, அறத்துப்பால்)",
         "ta": [
-          "சினமென்னும் சேர்ந்தாரைக் கொல்லி இனமென்னும்",
-          "ஏமப் புணையைச் சுடும்"
+          "ஆற்றின் ஒழுக்கி அறனிழுக்கா இல்வாழ்க்கை",
+          "நோற்பாரின் நோன்மை உடைத்து."
         ],
-        "split": "சினம் · என்னும் · சேர்ந்தாரை · கொல்லி · இனம் · என்னும் · ஏம · புணையை · சுடும்",
+        "split": "ஆற்றின் · ஒழுக்கி · அறன் · இழுக்கா · இல்வாழ்க்கை · நோற்பாரின் · நோன்மை · உடைத்து",
         "phonetic": [
-          "Sinamennum Saerndhaaraik Kolli Inamennum",
-          "Aemap Punaiyaich Chudum"
+          "Aatrin Ozhukki Aranizhukkaa Ilvaazhkkai",
+          "Noarpaarin Noanmai Udaiththu"
         ],
         "urai": [
-          "சினங்கொண்டவரை அழிக்கக் கூடியதாகச் சினமென்னும் தீயே இருப்பதால், அது அவரை மட்டுமின்றி,",
-          "அவரைப் பாதுகாக்கும் தோணி போன்ற சுற்றத்தையும் அழித்துவிடும்."
+          "தானும் அறவழியில் நடந்து, பிறரையும் அவ்வழியில் நடக்கச் செய்திடுவோரின் இல்வாழ்க்கை,",
+          "துறவிகள் கடைப்பிடிக்கும் நோன்பைவிடப் பெருமையுடையதாகும்."
         ],
         "english": [
-          "Wrath, the fire that slayeth whose draweth near,",
-          "Will burn the helpful 'raft' of kindred dear."
+          "Others it sets upon their way, itself from virtue ne'er declines;",
+          "Than stern ascetics' pains such life domestic brighter shines."
         ]
       },
       {
-        "source": "(அதிகாரம்: புணர்ச்சி மகிழ்தல், குறள் எண்: 1107)",
+        "source": "(குறள் எண்: 93, அதிகாரம்: இனியவை கூறல், அறத்துப்பால்)",
         "ta": [
-          "தம்மில் இருந்து தமதுபாத்து உண்டற்றால்",
-          "அம்மா அரிவை முயக்கு"
+          "முகத்தான் அமர்ந்து இனிதுநோக்கி அகத்தானாம்",
+          "இன்சொ லினதே அறம்."
         ],
-        "split": "தம் · இல் · இருந்து · தமது · பாத்து · உண்டற்று · ஆல் · அம் · மா · அரிவை · முயக்கு",
+        "split": "முகத்தான் · அமர்ந்து · இனிது · நோக்கி · அகத்தான் · ஆம் · இன்சொல் · இனதே · அறம்",
         "phonetic": [
-          "Thammil Irundhu Thamadhupaaththu Undatraal",
-          "Ammaa Arivai Muyakku"
+          "Mugaththaan Amarndhu Inidhu Noakki Agaththaanaam",
+          "Insolinadhae Aram"
         ],
         "urai": [
-          "தானே உழைத்துச் சேர்த்ததைப் பலருக்கும் பகுத்து வழங்கி உண்டு களிப்பதில் ஏற்படும் இன்பம்,",
-          "தனது அழகிய காதல் மனைவியைத் தழுவுகின்ற இன்பத்துக்கு ஒப்பானது."
+          "முகம் மலர நோக்கி, அகம் மலர இனிய சொற்களைக் கூறுவதே",
+          "அறவழியில் அமைந்த பண்பாகும்."
         ],
         "english": [
-          "As when one eats from household store, with kindly grace",
-          "Sharing his meal: such is this golden maid's embrace."
+          "With brightly beaming smile, and kindly light of loving eye,",
+          "And heart sincere, to utter pleasant words is charity."
         ]
       }
     ],
