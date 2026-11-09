@@ -708,7 +708,8 @@ def prepare_crossword(cfg, key):
     return rows, R, C, cell, numbers
 
 
-def expand_crossword(group, key, data, tree, answers_layer, key_lines):
+def expand_crossword(group, key, data, tree, answers_layer, key_lines, opts=None):
+    opts = opts or {}
     cfg = data.root.get(key)
     if not isinstance(cfg, dict) or "across" not in cfg:
         print(f"  ! no crossword '{key}' in JSON")
@@ -720,7 +721,10 @@ def expand_crossword(group, key, data, tree, answers_layer, key_lines):
         sys.exit(f"#crossword {key}: needs a rect labelled 'area'")
     x, y, w, h = rect_box(area)
     size = min(w / C, h / R)
-    gx, gy = x + (w - size * C) / 2, y + (h - size * R) / 2
+    size = min(size, float(opts.get("cell", size)))          # cell=N caps the square size
+    align = str(opts.get("align", "center"))                  # align=left / right / top / top-left ...
+    gx = x if "left" in align else x + w - size * C if "right" in align else x + (w - size * C) / 2
+    gy = y if "top" in align else y + h - size * R if "bottom" in align else y + (h - size * R) / 2
     cst = style_dict(sample["cell"]) if sample["cell"] is not None else {"fill": "#ffffff", "stroke": "#333333", "stroke-width": "1"}
     nst = text_style(sample["number"]) if sample["number"] is not None else {"font-size": "7px", "fill": "#333333"}
     lst = text_style(sample["letter"]) if sample["letter"] is not None else {"fill": "#333333"}
@@ -893,6 +897,95 @@ def load_data(paths):
     return root
 
 
+def _top(el):
+    ys = [num(e.get("y")) for e in el.iter() if e.get("y") not in (None, "")]
+    return min(ys) if ys else None
+
+
+def wrap_text(el, fonts, width, lh):
+    """'[wrap=W,LH]': break a (possibly mixed-style) text into lines no wider than W, LH apart.
+    Returns the extra height added."""
+    base = style_dict(el)
+    runs = ([(dict(base), el.text)] if (el.text or "").strip() else []) + \
+           [({**base, **style_dict(c)}, c.text) for c in el if c.tag == SVG + "tspan" and (c.text or "")]
+    own = ([None] if (el.text or "").strip() else []) + [c.get("style") for c in el if c.tag == SVG + "tspan" and (c.text or "")]
+    def w(txt, st):
+        return fonts.width(txt, st.get("font-family", ""), num(st.get("font-size"), 16),
+                           "italic" in st.get("font-style", ""), weight_of(st))
+    lines, cur, cw = [], [], 0.0
+    for i, (st, txt) in enumerate(runs):
+        for tok in re.findall(r"\S+\s*", txt):
+            tw_, word = w(tok, st), w(tok.rstrip(), st)
+            if cur and cw + word > width:
+                lines.append(cur); cur, cw = [], 0.0
+            cur.append((i, tok)); cw += tw_
+    if cur:
+        lines.append(cur)
+    if len(lines) <= 1:
+        return 0.0
+    x, y = el.get("x"), num(el.get("y"))
+    el.text = None
+    for c in list(el):
+        el.remove(c)
+    for n, line in enumerate(lines):
+        lt = ET.SubElement(el, SVG + "tspan", {"x": x, "y": f"{y + n * lh:.2f}"})
+        groups = []
+        for i, tok in line:
+            if groups and groups[-1][0] == i:
+                groups[-1][1] += tok
+            else:
+                groups.append([i, tok])
+        groups[-1][1] = groups[-1][1].rstrip()
+        for i, txt in groups:
+            sp = ET.SubElement(lt, SVG + "tspan")
+            if own[i]:
+                sp.set("style", own[i])
+            sp.text = txt
+    return (len(lines) - 1) * lh
+
+
+def record_stacks(root):
+    """Before optional elements are removed: remember each '#stack' child's gap to the child above it."""
+    info = []
+    for g in root.iter(SVG + "g"):
+        if label(g).split()[:1] == ["#stack"]:
+            kids, prev = [], None
+            for c in list(g):
+                y = _top(c)
+                if y is None:
+                    continue
+                kids.append((c, 0.0 if prev is None else y - prev))
+                prev = y
+            info.append((g, kids))
+    return info
+
+
+def _inner(el, shrink):
+    """How much the outermost '#stack' groups at or inside el shrank (negative = grew)."""
+    if id(el) in shrink:
+        return shrink[id(el)]
+    return sum(_inner(c, shrink) for c in el)
+
+
+def restack(info, grow=None):
+    """Pull everything below a removed line up by that line's gap, and push lines below a wrapped
+    paragraph down by its extra lines (inner stacks first)."""
+    grow = grow or {}
+    shrink = {}
+    for g, kids in reversed(info):           # iter() is document order, so reversed = deepest first
+        shift = 0.0
+        present = set(map(id, g))
+        for c, gap in kids:
+            if id(c) not in present:
+                shift -= gap
+                continue
+            if shift:
+                c.set("transform", (f"translate(0,{shift:.2f}) " + (c.get("transform") or "")).strip())
+            shift -= _inner(c, shrink)
+            shift += grow.get(id(c), 0.0)
+        shrink[id(g)] = -shift
+
+
 def build(template, data_paths, out_path):
     if isinstance(data_paths, (str, Path)):
         data_paths = [data_paths]
@@ -918,7 +1011,8 @@ def build(template, data_paths, out_path):
         vb = [float(v) for v in (root.get("viewBox") or "0 0 1000 1000").replace(",", " ").split()]
         pages = [tuple(vb)]
 
-    # 1. optional elements
+    # 1. optional elements ('#stack' groups close up the gaps they leave)
+    stacks = record_stacks(root)
     for el in list(root.iter()):
         if label(el).startswith("?"):
             content = " ".join(t for e in el.iter() for t in (e.text, e.tail) if t)
@@ -943,7 +1037,7 @@ def build(template, data_paths, out_path):
             expand_list(g, k, data, o)
         elif lab.startswith("#crossword "):
             k, o = parse_marker(lab)
-            expand_crossword(g, k, data, tree, answers, key_lines)
+            expand_crossword(g, k, data, tree, answers, key_lines, o)
     tree.reindex()
 
     # 3. placeholders, then 4. fit text that received content
@@ -958,11 +1052,18 @@ def build(template, data_paths, out_path):
                     hit = True
         if hit or re.search(r"\[w=", label(t)):
             filled.append(t)
+    grow = {}
+    for t in root.iter(SVG + "text"):
+        m = re.search(r"\[wrap=([\d.]+),([\d.]+)\]", label(t))
+        if m:
+            grow[id(t)] = wrap_text(t, fonts, float(m.group(1)), float(m.group(2)))
+    restack(stacks, grow)
     for t in filled:
-        fit_text(t, tree, fonts, pages)
-    for el in root.iter():  # tidy fit markers out of labels
-        if "[w=" in label(el) or "[nofit]" in label(el):
-            el.set(LABEL, re.sub(r"\s*\[(w=[\d.]+|nofit)\]", "", label(el)))
+        if "[wrap=" not in label(t):
+            fit_text(t, tree, fonts, pages)
+    for el in root.iter():  # tidy fit / wrap markers out of labels
+        if re.search(r"\[(w=|nofit|wrap=)", label(el)):
+            el.set(LABEL, re.sub(r"\s*\[(w=[\d.]+|nofit|wrap=[\d.,]+)\]", "", label(el)))
 
     out = Path(out_path)
     out.parent.mkdir(parents=True, exist_ok=True)

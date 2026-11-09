@@ -478,7 +478,7 @@ wordSearch('tw', D.tamil_words); wordSearch('ew', D.english_words);
   const V = D.verses;
   (V.items || []).forEach(v => $('#verses').append(el('div', { class: 'verse' },
     el('div', { class: 'src', text: v.source }), el('div', { class: 'k', text: v.ta.join('\n') }),
-    el('div', { class: 'sp', text: v.split }), el('div', { class: 'ph', text: v.phonetic.join(' / ') }),
+    el('div', { class: 'sp', text: [].concat(v.split).join(' ') }), el('div', { class: 'ph', text: v.phonetic.join(' / ') }),
     el('div', { class: 'ur' }, el('b', { text: V.urai_label || '' }), v.urai.join(' ')),
     el('div', { class: 'en' }, el('b', { text: V.english_label || '' }), el('i', { text: v.english.join(' / ') })))));
   document.querySelectorAll('.verse .k').forEach(k => k.style.whiteSpace = 'pre-line');

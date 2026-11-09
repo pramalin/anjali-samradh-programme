@@ -41,47 +41,51 @@
   "crossword": {
     "title_ta": "குறள் குறுக்கெழுத்து",
     "title_en": "Thirukkural Crossword",
-    "instructions_ta": "எல்லா விடைகளும் கீழே உள்ள குறள் 48, 93 இன் சொற்கள் · ஒரு கட்டத்தில் ஓர் எழுத்து",
+    "instructions_ta": "கீழே உள்ள குறள் 48, 93 இன் சொற்களே விடைகள்",
     "instructions_en": "Every answer is a word from Kurals 48 and 93 below. One Tamil letter per box.",
     "_grid_help": "One row per line, letters separated by spaces, x for an empty square. Numbering is automatic.",
     "grid": [
-      "x x மு x x x x x இ ழு க் கா x",
-      "x x க x நோ ற் பா ரி ன் x x x x",
-      "அ க த் தா ன் x x x சொ x x நோ x",
-      "ற x தா x மை x x இ ல் வா ழ் க் கை",
-      "ம் x ன் x x x x னி x x x கி x",
-      "x x x அ ம ர் ந் து x x x x x",
-      "x x x ற x x x x உ டை த் து x",
-      "ஆ ற் றி ன் x இ ன தே x x x x x",
-      "ம் x x x x x x x ஒ ழு க் கி x"
+      "x x அ ற ம் x x ஆ ம்",
+      "x x க x x x x ற் x",
+      "மு க த் தா ன் x x றி x",
+      "x x தா x x அ ற ன் x",
+      "x நோ ன் மை x ம x x x",
+      "x ற் x x x ர் x இ x",
+      "x பா x x x ந் x ன x",
+      "x ரி x இ னி து x தே x",
+      "இ ன் சொ ல் x x உ x ஒ",
+      "ழு x x வா x x டை x ழு",
+      "க் x x ழ் x x த் x க்",
+      "கா x நோ க் கி x து x கி",
+      "x x x கை x x x x x"
     ],
     "clues": {
-      "ஆற்றின்": "நெறிப்படி · along the right path",
-      "ஒழுக்கி": "நடக்கச் செய்து · guiding others",
-      "அறன்": "அறம் (செய்யுள் வடிவம்) · virtue (poetic form)",
+      "ஆற்றின்": "நெறிப்படி · rightly",
+      "ஒழுக்கி": "வழிநடத்தி · guiding",
+      "அறன்": "அறம் · virtue (poetic form)",
       "இழுக்கா": "தவறாத · never slipping",
-      "இல்வாழ்க்கை": "குடும்ப வாழ்க்கை · married life",
-      "நோற்பாரின்": "தவம் செய்பவரின் · of those who do penance",
-      "நோன்மை": "பொறுமை, வலிமை · endurance",
+      "இல்வாழ்க்கை": "இல்லறம் · married life",
+      "நோற்பாரின்": "தவசிகளின் · of ascetics",
+      "நோன்மை": "பொறுமை · endurance",
       "உடைத்து": "உடையது · possesses",
       "முகத்தான்": "முகத்தால் · with the face",
       "அமர்ந்து": "விரும்பி · gladly",
       "இனிது": "இனிமையாக · sweetly",
       "நோக்கி": "பார்த்து · looking",
-      "அகத்தான்": "உள்ளத்தால் · from the heart",
+      "அகத்தான்": "உள்ளத்தால் · heartfelt",
       "ஆம்": "ஆகும் · becomes",
-      "இன்சொல்": "இனிய சொல் · sweet words",
-      "இனதே": "அதனுடையதே · its very own",
+      "இன்சொல்": "இனிய சொல் · kind talk",
+      "இனதே": "அதனுடையதே · its own",
       "அறம்": "நல்லொழுக்கம் · virtue"
     }
   },
   "verses": {
     "title_ta": "குறள்கள்",
     "title_en": "The verses",
-    "_note": "Tamil text verbatim. 'split' = combined words separated (as used in the crossword). 'phonetic' = English pronunciation. 'urai' = Kalaignar Mu. Karunanidhi's explanation (one line per list item). 'english' = G.U. Pope's translation (1886).",
+    "_note": "Tamil text verbatim. 'split' = combined words separated (as used in the crossword). 'phonetic' = English pronunciation. 'urai' = Kalaignar Mu. Karunanidhi's explanation. 'english' = G.U. Pope's translation (1886). Long lines wrap automatically in print.",
     "items": [
       {
-        "source": "(குறள் எண்: 48, அதிகாரம்: இல்வாழ்க்கை, அறத்துப்பால்)",
+        "source": "(குறள் 48 · இல்வாழ்க்கை · அறத்துப்பால்)",
         "ta": [
           "ஆற்றின் ஒழுக்கி அறனிழுக்கா இல்வாழ்க்கை",
           "நோற்பாரின் நோன்மை உடைத்து."
@@ -92,8 +96,7 @@
           "Noarpaarin Noanmai Udaiththu"
         ],
         "urai": [
-          "தானும் அறவழியில் நடந்து, பிறரையும் அவ்வழியில் நடக்கச் செய்திடுவோரின் இல்வாழ்க்கை,",
-          "துறவிகள் கடைப்பிடிக்கும் நோன்பைவிடப் பெருமையுடையதாகும்."
+          "தானும் அறவழியில் நடந்து, பிறரையும் அவ்வழியில் நடக்கச் செய்திடுவோரின் இல்வாழ்க்கை, துறவிகள் கடைப்பிடிக்கும் நோன்பைவிடப் பெருமையுடையதாகும்."
         ],
         "english": [
           "Others it sets upon their way, itself from virtue ne'er declines;",
@@ -101,7 +104,7 @@
         ]
       },
       {
-        "source": "(குறள் எண்: 93, அதிகாரம்: இனியவை கூறல், அறத்துப்பால்)",
+        "source": "(குறள் 93 · இனியவை கூறல் · அறத்துப்பால்)",
         "ta": [
           "முகத்தான் அமர்ந்து இனிதுநோக்கி அகத்தானாம்",
           "இன்சொ லினதே அறம்."
@@ -112,8 +115,7 @@
           "Insolinadhae Aram"
         ],
         "urai": [
-          "முகம் மலர நோக்கி, அகம் மலர இனிய சொற்களைக் கூறுவதே",
-          "அறவழியில் அமைந்த பண்பாகும்."
+          "முகம் மலர நோக்கி, அகம் மலர இனிய சொற்களைக் கூறுவதே அறவழியில் அமைந்த பண்பாகும்."
         ],
         "english": [
           "With brightly beaming smile, and kindly light of loving eye,",
