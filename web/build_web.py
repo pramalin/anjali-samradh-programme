@@ -10,6 +10,8 @@ word searches and crossword (same seeds, so web and print match), a maze, and wr
     docs/assets/...      images
 Then publish docs/ with GitHub Pages (see README: "Website").
 """
+import hashlib
+from datetime import datetime
 import json
 import shutil
 import sys
@@ -48,6 +50,19 @@ def make_maze(size, seed, tries):
     _, right, down, path = best
     return {"n": size, "right": [[int(v) for v in r] for r in right],
             "down": [[int(v) for v in r] for r in down], "solution": path}
+
+
+def see_through(src, dst):
+    """Copy a line drawing on white with the white made transparent (soft edges kept)."""
+    from PIL import Image
+    im = Image.open(src).convert("RGBA")
+    px = im.load()
+    for y in range(im.height):
+        for x in range(im.width):
+            r, g, b, a = px[x, y]
+            light = min(r, g, b)
+            px[x, y] = (r, g, b, min(a, max(0, round((255 - light) * 255 / 120))) if light > 135 else a)
+    im.save(dst, optimize=True)
 
 
 def main():
@@ -96,12 +111,18 @@ def main():
             svg = (ROOT / "assets" / a).read_text(encoding="utf-8")
             (DOCS / "assets" / a).write_text(svg.replace("#000000", "#3a2c24").replace("fill:#000;", "fill:#3a2c24;"),
                                              encoding="utf-8")
+        elif a == "drawing-frame.png":   # the drawing shows through: white becomes transparent
+            see_through(ROOT / "assets" / a, DOCS / "assets" / a)
         else:
             shutil.copy2(ROOT / "assets" / a, DOCS / "assets" / a)
     # the content goes inside index.html, so the page is one self-contained file plus its images
     page = Path(__file__).with_name("index.html").read_text(encoding="utf-8")
     payload = json.dumps(out, ensure_ascii=False).replace("</", "<\\/")
     page = page.replace('<script src="data.js"></script>', f"<script>window.PROGRAMME = {payload};</script>")
+    for a in ASSETS:     # ?v=<content hash> so browsers fetch an image again whenever it changes
+        v = hashlib.sha1((DOCS / "assets" / a).read_bytes()).hexdigest()[:8]
+        page = page.replace(f"assets/{a}", f"assets/{a}?v={v}")
+    page = page.replace("__BUILD__", datetime.now().strftime("%d %b %Y %H:%M"))
     (DOCS / "index.html").write_text(page, encoding="utf-8")
     (DOCS / "data.js").unlink(missing_ok=True)
     (DOCS / ".nojekyll").write_text("")

@@ -93,10 +93,14 @@ nav a:hover{border-color:var(--line)}
 
 /* drawing */
 .drawwrap{position:relative;max-width:620px;margin:0 auto}
-.drawwrap img{width:100%;display:block;pointer-events:none;position:relative;z-index:2}
-.drawwrap canvas{position:absolute;left:5%;top:7%;width:90%;height:86%;background:#fff;touch-action:none;z-index:1;cursor:crosshair}
+.drawwrap img{width:100%;display:block;pointer-events:none;position:relative;z-index:3}
+.drawwrap canvas{position:absolute;left:3%;top:4.5%;width:94%;height:91%;background:#fff;touch-action:none;z-index:2;cursor:crosshair}
 .swatch{width:28px;height:28px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px var(--line);padding:0}
 .swatch.on{box-shadow:0 0 0 2px var(--ink)}
+.tools{gap:6px!important} .tools button{padding:6px 11px;font-size:15px} .tools button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.tools .sep{width:1px;align-self:stretch;background:var(--line);margin:0 2px}
+.tools .sz{width:32px;height:32px;padding:0;display:inline-flex;align-items:center;justify-content:center}
+.tools .sz i{display:block;border-radius:50%;background:currentColor}
 
 /* dots & boxes */
 .dbwrap{max-width:560px;margin:0 auto}
@@ -172,7 +176,7 @@ footer .ta{font-size:20px} footer p{margin:.2em 0}
     <h2><span class="ta" style="display:inline;font-size:1em;color:var(--ink);font-weight:600" id="twTitle"></span> <i class="brown" style="font-size:.7em" id="twTitleEn"></i></h2>
     <p class="sub ta" id="twInstr"></p>
     <div class="ws"><div class="grid ta" id="twGrid"></div><div><ul class="words" id="twWords"></ul><div class="count" id="twCount"></div>
-      <div class="row" style="margin-top:10px"><button data-reveal="tw">Show answers</button></div></div></div>
+      <div class="row" style="margin-top:10px"><button data-reveal="tw">Show answers</button><button data-reset="tw">Reset</button></div></div></div>
   </section>
 
   <section id="maze">
@@ -189,10 +193,15 @@ footer .ta{font-size:20px} footer p{margin:.2em 0}
   <section id="draw">
     <h2><span id="drTitle"></span><span class="ta" id="drTitleTa"></span></h2>
     <p class="sub">Draw with your finger or mouse, then save your picture.</p>
+    <div class="row tools" style="justify-content:center;margin-bottom:8px">
+      <button id="drPen" class="on" aria-pressed="true">✏️ Pen</button><button id="drEraser" aria-pressed="false">🧽 Eraser</button>
+      <span class="sep"></span>
+      <button data-size="2" class="sz" aria-label="thin" aria-pressed="false"><i style="width:4px;height:4px"></i></button><button data-size="4" class="sz on" aria-label="medium" aria-pressed="true"><i style="width:8px;height:8px"></i></button><button data-size="8" class="sz" aria-label="thick" aria-pressed="false"><i style="width:14px;height:14px"></i></button>
+    </div>
     <div class="row" id="palette" style="justify-content:center;margin-bottom:10px"></div>
     <div class="drawwrap"><canvas id="dr"></canvas><img src="assets/drawing-frame.png" alt=""></div>
     <div class="row" style="justify-content:center;margin-top:12px">
-      <button id="drSize">Thin pen</button><button id="drUndo">Undo</button><button id="drClear">Clear</button><button class="primary" id="drSave">Save picture</button>
+      <button id="drUndo">Undo</button><button id="drClear">Clear</button><button class="primary" id="drSave">Save picture</button>
     </div>
   </section>
 
@@ -208,7 +217,7 @@ footer .ta{font-size:20px} footer p{margin:.2em 0}
     <h2><span id="ewTitle"></span><span class="ta" id="ewTitleTa"></span></h2>
     <p class="sub" id="ewInstr"></p>
     <div class="ws"><div class="grid en" id="ewGrid"></div><div><ul class="words en" id="ewWords"></ul><div class="count" id="ewCount"></div>
-      <div class="row" style="margin-top:10px"><button data-reveal="ew">Show answers</button></div></div></div>
+      <div class="row" style="margin-top:10px"><button data-reveal="ew">Show answers</button><button data-reset="ew">Reset</button></div></div></div>
   </section>
 
   <section id="ttt">
@@ -227,7 +236,7 @@ footer .ta{font-size:20px} footer p{margin:.2em 0}
     <div id="verses"></div>
   </section>
 
-  <footer><p class="ta" id="thTa"></p><p id="thEn"></p></footer>
+  <footer><p class="ta" id="thTa"></p><p id="thEn"></p><p class="ver" style="font-size:12px;opacity:.5">version __BUILD__</p></footer>
 </div>
 <div class="toast" id="toast"></div>
 
@@ -298,6 +307,9 @@ function wordSearch(key, P) {
     } else { check(); setTimeout(() => paint([]), 200); tapStart = null; }
     start = null; };
   g.addEventListener('pointerup', up); g.addEventListener('pointercancel', up);
+  document.querySelector(`[data-reset="${key}"]`).onclick = () => {
+    found.clear(); store.set(key + '-found', []); tapStart = null; start = null; paint([]);
+    svg.querySelectorAll('line').forEach(l => l.remove()); items.forEach(li => li.classList.remove('got', 'done')); count(); };
   document.querySelector(`[data-reveal="${key}"]`).onclick = () => P.words.forEach((w, i) => { if (!found.has(i)) { found.add(i); mark(w, i, true); } }) || count();
 }
 txt('#twTitle', D.tamil_words.title_ta); txt('#twTitleEn', D.tamil_words.title_en_short); txt('#twInstr', D.tamil_words.instructions);
@@ -361,22 +373,54 @@ wordSearch('tw', D.tamil_words); wordSearch('ew', D.english_words);
 /* ---------- drawing ---------- */
 (function () {
   txt('#drTitle', D.drawing.title_en); txt('#drTitleTa', D.drawing.title_ta);
-  const cv = $('#dr'), ctx = cv.getContext('2d'), cols = ['#3a2c24', '#a3223a', '#d18a2c', '#e8b923', '#4f7a3a', '#2f6f8f', '#c7579a', '#ffffff'];
-  let col = cols[0], size = 3, strokes = [], curS = null;
-  const fit = () => { const r = cv.getBoundingClientRect(); cv.width = r.width * 2; cv.height = r.height * 2; redraw(); };
-  const redraw = () => { ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, cv.width, cv.height);
-    strokes.forEach(s => { ctx.strokeStyle = s.c; ctx.lineWidth = s.w * cv.width / 1000; ctx.lineCap = ctx.lineJoin = 'round'; ctx.beginPath();
-      s.p.forEach(([x, y], i) => (i ? ctx.lineTo : ctx.moveTo).call(ctx, x * cv.width, y * cv.height)); ctx.stroke(); }); };
+  const cv = $('#dr'), ctx = cv.getContext('2d'), cols = ['#3a2c24', '#a3223a', '#d18a2c', '#e8b923', '#4f7a3a', '#2f6f8f', '#c7579a'];
+  let col = cols[0], size = 4, erasing = false, strokes = [], curS = null;     // size in screen pixels
+  const fit = () => { const r = cv.getBoundingClientRect(); if (!r.width || !r.height) return;
+    cv.width = Math.round(r.width * 2); cv.height = Math.round(r.height * 2); redraw(); };
+  if (window.ResizeObserver) new ResizeObserver(fit).observe(cv);
+  const redraw = () => { ctx.clearRect(0, 0, cv.width, cv.height);   // see-through layer above the frame; widths scale on resize
+    strokes.forEach(s => { ctx.globalCompositeOperation = s.e ? 'destination-out' : 'source-over'; ctx.strokeStyle = s.e ? '#000' : s.c; ctx.lineWidth = s.w * cv.width / s.cw; ctx.lineCap = ctx.lineJoin = 'round'; ctx.beginPath();
+      s.p.forEach(([x, y], i) => (i ? ctx.lineTo : ctx.moveTo).call(ctx, x * cv.width, y * cv.height));
+      if (s.p.length === 1) ctx.lineTo(s.p[0][0] * cv.width + .01, s.p[0][1] * cv.height);   // a tap leaves a dot
+      ctx.stroke(); }); ctx.globalCompositeOperation = 'source-over'; };
+  const cursor = () => {   // eraser: a circle the size it rubs out; pen: crosshair
+    if (!erasing) { cv.style.cursor = 'crosshair'; return; }
+    const d = Math.max(10, size * 4) + 2, r = d / 2;
+    const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='${d}' height='${d}'><circle cx='${r}' cy='${r}' r='${r - 1}' fill='rgba(255,255,255,.6)' stroke='#3a2c24' stroke-width='1.2'/></svg>`;
+    cv.style.cursor = `url("data:image/svg+xml,${encodeURIComponent(svg)}") ${Math.round(r)} ${Math.round(r)}, cell`; };
+  const setTool = er => { erasing = er; $('#drPen').classList.toggle('on', !er); $('#drEraser').classList.toggle('on', er);
+    $('#drPen').setAttribute('aria-pressed', !er); $('#drEraser').setAttribute('aria-pressed', er); cv.classList.toggle('erasing', er); cursor(); };
   cols.forEach((c, i) => { const b = el('button', { class: 'swatch' + (i ? '' : ' on'), 'aria-label': 'colour ' + c }); b.style.background = c;
-    b.onclick = () => { col = c; document.querySelectorAll('.swatch').forEach(s => s.classList.remove('on')); b.classList.add('on'); }; $('#palette').append(b); });
+    b.onclick = () => { col = c; setTool(false); document.querySelectorAll('.swatch').forEach(s => s.classList.remove('on')); b.classList.add('on'); }; $('#palette').append(b); });
+  $('#drPen').onclick = () => setTool(false);
+  $('#drEraser').onclick = () => setTool(true);
+  document.querySelectorAll('[data-size]').forEach(b => b.onclick = () => { size = +b.dataset.size;
+    document.querySelectorAll('[data-size]').forEach(x => { x.classList.toggle('on', x === b); x.setAttribute('aria-pressed', x === b); }); cursor(); });
   const pt = e => { const r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; };
-  cv.addEventListener('pointerdown', e => { cv.setPointerCapture(e.pointerId); curS = { c: col, w: col === '#ffffff' ? size * 5 : size, p: [pt(e)] }; strokes.push(curS); redraw(); });
-  cv.addEventListener('pointermove', e => { if (!curS) return; curS.p.push(pt(e)); redraw(); });
-  ['pointerup', 'pointercancel'].forEach(t => cv.addEventListener(t, () => curS = null));
-  $('#drSize').onclick = e => { size = size === 3 ? 8 : 3; e.target.textContent = size === 3 ? 'Thin pen' : 'Thick pen'; };
+  // start / move / end work the same for pointer, touch and mouse events (whichever the browser has)
+  const begin = e => { const cw = cv.getBoundingClientRect().width || 1;
+    curS = { e: erasing, c: col, w: (erasing ? size * 4 : size) * cv.width / cw, cw: cv.width, p: [pt(e)] }; strokes.push(curS); redraw(); };
+  const extend = e => { if (!curS) return; curS.p.push(pt(e)); redraw(); };
+  const finish = () => { curS = null; };
+  if (window.PointerEvent) {
+    cv.addEventListener('pointerdown', e => { if (e.button > 0) return; e.preventDefault();
+      try { cv.setPointerCapture(e.pointerId); } catch (_) { /* some browsers refuse; drawing still works */ }
+      begin(e); });
+    cv.addEventListener('pointermove', e => { if (curS) { e.preventDefault(); extend(e); } });
+    ['pointerup', 'pointercancel'].forEach(t => cv.addEventListener(t, finish));
+    addEventListener('pointerup', finish);
+  } else {
+    const tp = e => e.touches[0] || e.changedTouches[0];
+    cv.addEventListener('touchstart', e => { e.preventDefault(); begin(tp(e)); }, { passive: false });
+    cv.addEventListener('touchmove', e => { e.preventDefault(); extend(tp(e)); }, { passive: false });
+    cv.addEventListener('touchend', finish); cv.addEventListener('touchcancel', finish);
+    cv.addEventListener('mousedown', e => { begin(e); }); addEventListener('mousemove', extend); addEventListener('mouseup', finish);
+  }
   $('#drUndo').onclick = () => { strokes.pop(); redraw(); };
   $('#drClear').onclick = () => { strokes = []; redraw(); };
-  $('#drSave').onclick = () => { const a = el('a', { download: 'anjali-samradh-drawing.png', href: cv.toDataURL('image/png') }); document.body.append(a); a.click(); a.remove(); };
+  $('#drSave').onclick = () => { const o = document.createElement('canvas'); o.width = cv.width; o.height = cv.height;
+    const c2 = o.getContext('2d'); c2.fillStyle = '#fff'; c2.fillRect(0, 0, o.width, o.height); c2.drawImage(cv, 0, 0);
+    const a = el('a', { download: 'anjali-samradh-drawing.png', href: o.toDataURL('image/png') }); document.body.append(a); a.click(); a.remove(); };
   addEventListener('resize', fit); fit();
 })();
 
