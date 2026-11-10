@@ -42,20 +42,17 @@ def word_search(cfg, phon):
     }
 
 
-def make_maze(seed, n=25):
-    """The standard maze with story stops (same as the booklet's): python3 maze.py --story --size 25 --seed 409 --report"""
-    import maze_icons
-    m = maze.story_maze(seed, n)
-    edges = m["edges"]
+def make_maze(seed):
+    """The even-textured 20 x 23 maze (same as the booklet's): python3 maze.py --even --seed 648 --report"""
+    m = maze.kruskal_maze(seed)
+    R, C, edges = m["rows"], m["cols"], m["edges"]
     opened = lambda a, b: frozenset((a, b)) in edges
-    print("maze: story,", len(m["path"]), "squares on the route")
-    return {"rows": n, "cols": n,
-            "cells": [[1] * n for _ in range(n)],
-            "right": [[int(not opened((r, c), (r, c + 1))) for c in range(n)] for r in range(n)],
-            "down": [[int(not opened((r, c), (r + 1, c))) for c in range(n)] for r in range(n)],
-            "solution": m["path"], "start": m["start"], "end": m["end"],
-            "rooms": [{"r": r, "c": c, "icon": name, "parts": maze_icons.ICONS[name]}
-                      for name, (r, c) in zip(maze_icons.ORDER, m["rooms"])]}
+    print("maze: even,", len(m["path"]), "squares on the route")
+    return {"rows": R, "cols": C,
+            "cells": [[1] * C for _ in range(R)],
+            "right": [[int(not opened((r, c), (r, c + 1))) for c in range(C)] for r in range(R)],
+            "down": [[int(not opened((r, c), (r + 1, c))) for c in range(C)] for r in range(R)],
+            "solution": m["path"], "start": m["start"], "end": m["end"], "rooms": []}
 
 
 def see_through(src, dst):
@@ -100,7 +97,7 @@ def main():
                         **word_search(data["tamil_words"], phon)},
         "english_words": {**{k: data["english_words"].get(k, "") for k in ("title_en", "title_ta", "instructions")},
                           **word_search(data["english_words"], phon)},
-        "maze": {**data.get("maze", {}), **make_maze(409)},
+        "maze": {**data.get("maze", {}), **make_maze(648)},
         "drawing": data.get("drawing", {}),
         "dots_boxes": data.get("dots_boxes", {}),
         "tictactoe": data.get("tictactoe", {}),

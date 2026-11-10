@@ -9,7 +9,8 @@ plus a solution version.
     python3 maze.py --size 27 --hardest 300 # try 300 mazes, keep the trickiest (see below)
     python3 maze.py --size 27 --seed 1964 --branchy 0.95 --color "#3a2c24"   # the booklet's maze
     python3 maze.py --size 27 --seed 1964 --branchy 0.95 --report            # how tricky is it?
-    python3 maze.py --story --size 25 --seed 409 --color "#3a2c24" --stroke 4   # the booklet + web maze (no icons)
+    python3 maze.py --even --seed 648 --color "#3a2c24" --stroke 4             # the booklet + web maze (20 x 23)
+    python3 maze.py --story --size 25 --seed 857 --color "#3a2c24" --stroke 4   # long-dead-end style (not used now)
     python3 maze.py --story --icons --size 25 --seed 37 --color "#3a2c24" --stroke 4   # same style with the story icons
     python3 maze.py --cat --size 25 --seed 1027 --color "#3a2c24" --stroke 4    # a cat hidden in the walls (not used now)
 
@@ -273,7 +274,54 @@ def cat_picture_maze(seed=1027, n=25, newest=0.9, stops=5, with_cat=True):
     if len({find(p) for p in allc}) != 1: return None
     return dict(n=n, cells=allc, cat=cat, region=region, edges=keep, start=start, end=end, path=path, rooms=rooms, doors=doors)
 
-def story_maze(seed=409, n=25, newest=1.0, stops=0):
+def loose_route(n, rng, lo, hi, budget=200000):
+    """Self-avoiding route from (0,0) to (n-1,n-1) that never runs beside its own earlier stretches."""
+    start, goal = (0, 0), (n - 1, n - 1)
+    path, onp = [start], {start}
+    stack = [iter(rng.sample(N4, 4))]
+    steps = 0
+    while stack and steps < budget:
+        steps += 1
+        cur = path[-1]
+        if cur == goal:
+            if lo <= len(path) <= hi:
+                return path
+            onp.discard(path.pop()); stack.pop(); continue
+        moved = False
+        for a, b in stack[-1]:
+            q = (cur[0] + a, cur[1] + b)
+            if not (0 <= q[0] < n and 0 <= q[1] < n) or q in onp: continue
+            # spacing: q may touch only the current cell among route cells
+            if any((q[0] + x, q[1] + y) in onp and (q[0] + x, q[1] + y) != cur for x, y in N4): continue
+            if len(path) > hi: break
+            path.append(q); onp.add(q); stack.append(iter(rng.sample(N4, 4))); moved = True; break
+        if not moved:
+            stack.pop(); onp.discard(path.pop())
+            if not path: return None
+    return None
+
+def loose_maze(seed=857, n=25, lo=150, hi=210, newest=0.9):
+    """A route that wanders the grid without running beside itself (so every stretch has room for openings),
+    the rest grown off it as long winding trails, then reshaped: a choice every few squares, and wrong turns
+    that run 10-20 squares (and branch) before they end, including the first and last ones."""
+    rng = random.Random(seed)
+    path = loose_route(n, rng, lo, hi)
+    if not path: return None
+    cells = {(r, c) for r in range(n) for c in range(n)}
+    edges = {frozenset(e) for e in zip(path, path[1:])}
+    seen = set(path); active = list(path); rng.shuffle(active)
+    while active:
+        k = len(active) - 1 if rng.random() < newest else rng.randrange(len(active))
+        p = active[k]
+        nb = [(p[0] + a, p[1] + b) for a, b in N4 if (p[0] + a, p[1] + b) in cells and (p[0] + a, p[1] + b) not in seen]
+        if not nb: active.pop(k); continue
+        q = rng.choice(nb); edges.add(frozenset((p, q))); seen.add(q); active.append(q)
+    m = dict(n=n, cells=cells, cat=set(), region={p: 0 for p in cells}, edges=edges, start=path[0], end=path[-1],
+             path=path, rooms=[], doors=[])
+    return improve(m, random.Random(seed), 3500, gap=4, deep="deeper", ends=40, run_w=6)
+
+
+def story_maze(seed=113, n=25, newest=1.0, stops=0):
     """The standard square maze (groom top left, bride bottom right) with a long route that wanders across
     the grid, and the rest reshaped into fewer, long dead ends: a wrong turn typically runs 10-20 squares
     before it ends. stops=None puts a 2x2 room with a story icon (maze_icons.ORDER) on the route for each
@@ -284,7 +332,27 @@ def story_maze(seed=409, n=25, newest=1.0, stops=0):
     m = cat_picture_maze(seed, n, newest, stops, with_cat=False)
     if not m:
         return None
-    return improve(m, random.Random(seed), 4000, gap=12, deep="deeper")
+    return improve(m, random.Random(seed), 3000, gap=12, deep="deeper", ends=0 if stops else 60)
+
+
+def wrong_turn_positions(m, edges):
+    """(route step, depth) for every wrong turn off the route."""
+    adj = {p: [] for p in m['cells']}
+    for e in edges:
+        a, b = tuple(e); adj[a].append(b); adj[b].append(a)
+    path = m['path']; on = set(path)
+    room = {(r0 + i, c0 + j) for r0, c0 in m['rooms'] for i in (0, 1) for j in (0, 1)}
+    out = []
+    for i, p in enumerate(path):
+        for q in adj[p]:
+            if q in on or q in room: continue
+            st, deep, seen = [(q, 1)], 0, {p} | on | room
+            while st:
+                x, d = st.pop()
+                if x in seen: continue
+                seen.add(x); deep = max(deep, d); st += [(y, d + 1) for y in adj[x] if y not in seen]
+            out.append((i, deep))
+    return out
 
 
 def route_analysis(m, edges):
@@ -313,7 +381,19 @@ def route_analysis(m, edges):
     runs.append(cur)
     return depths, runs
 
-def route_score(m, edges, gap=5, deep=False):
+def _turn_value(x):
+    return -14 if x <= 3 else -6 if x <= 6 else 0 if x <= 9 else 7 if x <= 13 else 12 if x <= 18 else 15
+
+
+def route_score(m, edges, gap=5, deep=False, ends=0, run_w=1):
+    """ends=N: wrong turns within N steps of the groom or the bride count three times as much, so the first
+    and last choices - the ones solvers try first, and work back from - lead into the longest false trails."""
+    if ends:
+        L = len(m["path"])
+        pos = wrong_turn_positions(m, edges)
+        w = sum(_turn_value(x) * (3 if (i < ends or i > L - ends) else 1) for i, x in pos)
+        _, runs = route_analysis(m, edges)
+        return w - run_w * (3 * max(runs) + sum(max(0, r - gap) for r in runs)), [x for _, x in pos], runs
     """Many openings along the route, none of them giveaway stubs, and no long stretch without a choice.
     deep=True favours fewer, deeper wrong turns (for long routes that leave less room for branches)."""
     d, runs = route_analysis(m, edges)
@@ -547,7 +627,7 @@ def cat_main(a):
     best = None
     for seed in range(a.seed, a.seed + max(1, a.hardest)):
         if a.story:
-            m = story_maze(seed, a.size, a.branchy or 1.0, None if a.icons else 0)
+            m = story_maze(seed, a.size, a.branchy or 1.0, None) if a.icons else loose_maze(seed, a.size)
         else:
             m = cat_picture_maze(seed, a.size, a.branchy or 0.9)
             m = deepen(m, random.Random(seed)) if m else None
@@ -577,6 +657,90 @@ def cat_main(a):
     print(f"Wrote {out} and {sol}: {info}")
 
 
+
+# ---------------------------------------------------------------- even-textured rectangular maze (the booklet's)
+def kruskal_maze(seed=648, rows=23, cols=20):
+    """Randomly knock down walls between unconnected areas until everything joins (Kruskal). The texture is
+    even - short dead ends and long walls everywhere, so the true route doesn't stand out - and choices come
+    every few steps. Seed 648 gives a long route (118 squares) that winds at both ends.
+    Groom: left of the top-left square; bride: right of the bottom-right square."""
+    rng = random.Random(seed)
+    walls = [((r, c), (r, c + 1)) for r in range(rows) for c in range(cols - 1)] + \
+            [((r, c), (r + 1, c)) for r in range(rows - 1) for c in range(cols)]
+    rng.shuffle(walls)
+    parent = {(r, c): (r, c) for r in range(rows) for c in range(cols)}
+    def find(x):
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]; x = parent[x]
+        return x
+    edges = set()
+    for a, b in walls:
+        ra, rb = find(a), find(b)
+        if ra != rb:
+            parent[ra] = rb; edges.add(frozenset((a, b)))
+    adj = {}
+    for e in edges:
+        x, y = tuple(e); adj.setdefault(x, []).append(y); adj.setdefault(y, []).append(x)
+    start, end = (0, 0), (rows - 1, cols - 1)
+    prev, q = {start: None}, deque([start])
+    while q:
+        p = q.popleft()
+        for x in adj.get(p, []):
+            if x not in prev: prev[x] = p; q.append(x)
+    path, p = [], end
+    while p is not None: path.append(p); p = prev[p]
+    cells = {(r, c) for r in range(rows) for c in range(cols)}
+    return dict(rows=rows, cols=cols, n=max(rows, cols), cells=cells, edges=edges, start=start, end=end,
+                path=path[::-1], rooms=[])
+
+
+def svg_grid(m, cell, stroke, color, margin, solution=False, sol_color="#C05C27"):
+    """Draw a rectangular maze: entrance left of the top-left square, exit right of the bottom-right one."""
+    R, C, edges = m["rows"], m["cols"], m["edges"]
+    W, H = C * cell + 2 * margin, R * cell + 2 * margin
+    X = lambda c: margin + c * cell
+    Y = lambda r: margin + r * cell
+    segs = [(X(0), Y(0), X(C), Y(0)), (X(0), Y(R), X(C), Y(R)), (X(0), Y(1), X(0), Y(R)), (X(C), Y(0), X(C), Y(R - 1))]
+    for r in range(R):
+        for c in range(C):
+            if c + 1 < C and frozenset(((r, c), (r, c + 1))) not in edges:
+                segs.append((X(c + 1), Y(r), X(c + 1), Y(r + 1)))
+            if r + 1 < R and frozenset(((r, c), (r + 1, c))) not in edges:
+                segs.append((X(c), Y(r + 1), X(c + 1), Y(r + 1)))
+    d = " ".join(f"M {a:.1f},{b:.1f} L {c_:.1f},{e:.1f}" for a, b, c_, e in segs)
+    a = cell * 0.45
+    ey, xy = Y(0) + cell / 2, Y(R - 1) + cell / 2
+    arrows = (f'<path d="M {X(0) - a*1.6:.1f},{ey - a/2:.1f} L {X(0) - a*0.5:.1f},{ey:.1f} L {X(0) - a*1.6:.1f},{ey + a/2:.1f} Z" '
+              f'style="fill:{color}" inkscape:label="Entrance arrow"/>'
+              f'<path d="M {X(C) + a*0.5:.1f},{xy - a/2:.1f} L {X(C) + a*1.6:.1f},{xy:.1f} L {X(C) + a*0.5:.1f},{xy + a/2:.1f} Z" '
+              f'style="fill:{color}" inkscape:label="Exit arrow"/>')
+    sol = ""
+    if solution:
+        pts = [(X(0) - cell * .4, ey)] + [(X(c) + cell / 2, Y(r) + cell / 2) for r, c in m["path"]] + [(X(C) + cell * .4, xy)]
+        sol = (f'<path d="M ' + " L ".join(f"{x:.1f},{y:.1f}" for x, y in pts) + f'" style="fill:none;stroke:{sol_color};'
+               f'stroke-width:{cell*.3:.1f};stroke-linecap:round;stroke-linejoin:round;stroke-opacity:.8" inkscape:label="Solution"/>')
+    return (f'<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" '
+            f'xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="{W:.1f}px" height="{H:.1f}px" '
+            f'viewBox="0 0 {W:.1f} {H:.1f}">\n  <title>Maze {C}x{R}</title>\n  {sol}\n'
+            f'  <path d="{d}" style="fill:none;stroke:{color};stroke-width:{stroke};stroke-linecap:square" inkscape:label="Walls"/>\n'
+            f'  {arrows}\n</svg>\n')
+
+
+def even_main(a):
+    m = kruskal_maze(a.seed, a.rows, a.cols)
+    d, runs = route_analysis(m, m["edges"])
+    info = f"{a.cols}x{a.rows} even maze, seed {a.seed}: route {len(m['path'])}, {len(d)} openings along it, longest stretch without one {max(runs)}"
+    if a.report:
+        print(info); return
+    cell = a.cell or 960 / (max(a.rows, a.cols) + 3)
+    stroke = a.stroke or max(2.0, cell / 8)
+    out = Path(a.out); out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(svg_grid(m, cell, stroke, a.color, cell * 1.5), encoding="utf-8")
+    sol = out.with_name(out.stem + "-solution.svg")
+    sol.write_text(svg_grid(m, cell, stroke, a.color, cell * 1.5, solution=True), encoding="utf-8")
+    print(f"Wrote {out} and {sol}: {info}")
+
+
 def main():
     ap = argparse.ArgumentParser(description="Generate an original square maze (SVG).")
     ap.add_argument("--size", type=int, default=21, help="cells per side (default 21)")
@@ -588,6 +752,9 @@ def main():
     ap.add_argument("--branchy", type=float, default=None, metavar="P",
                     help="growing-tree carving, P = 0.5..1 (e.g. 0.95); omit for the long-corridor style")
     ap.add_argument("--report", action="store_true", help="only print how tricky the maze is")
+    ap.add_argument("--even", action="store_true", help="even-textured rectangular maze (uses --seed, --rows, --cols)")
+    ap.add_argument("--rows", type=int, default=23)
+    ap.add_argument("--cols", type=int, default=20)
     ap.add_argument("--story", action="store_true",
                     help="standard maze with the story icons on the true route (uses --size, --seed)")
     ap.add_argument("--cat", action="store_true",
@@ -599,6 +766,8 @@ def main():
     a = ap.parse_args()
     if a.size < 3:
         sys.exit("size must be at least 3")
+    if a.even:
+        return even_main(a)
     if a.cat or a.story:
         return cat_main(a)
     best = None
