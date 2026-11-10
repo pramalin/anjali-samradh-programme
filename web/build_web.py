@@ -32,11 +32,12 @@ def word_search(cfg, phon):
                                           int(cfg["seed"]), cfg.get("directions", ["right", "down"]),
                                           int(cfg.get("decoys", 0)))
     gl = {w["word"]: w for w in words}
+    placed = sorted(placed, key=lambda p: bool(gl[p["word"]].get("bonus")))
     return {
         "grid": grid,
         "words": [{"word": p["word"], "row": p["row"], "col": p["col"],
                    "dr": build.DIRECTIONS[p["dir"]][0], "dc": build.DIRECTIONS[p["dir"]][1], "len": len(p["toks"]),
-                   "gloss": gl[p["word"]].get("gloss", ""),
+                   "gloss": gl[p["word"]].get("gloss", ""), "bonus": bool(gl[p["word"]].get("bonus")),
                    "ph": phon.get(p["word"], "").replace("|", " ")} for p in placed],
     }
 
@@ -95,7 +96,7 @@ def main():
             "items": [{"ta": it["ta"], "en": it.get("en", ""),
                        "ph": phon.get(it["ta"], "").replace("|", " ")} for it in data["programme"]["items"]],
         },
-        "tamil_words": {**{k: data["tamil_words"].get(k, "") for k in ("title_ta", "title_en_short", "instructions")},
+        "tamil_words": {**{k: data["tamil_words"].get(k, "") for k in ("title_ta", "title_en_short", "instructions", "bonus_label")},
                         **word_search(data["tamil_words"], phon)},
         "english_words": {**{k: data["english_words"].get(k, "") for k in ("title_en", "title_ta", "instructions")},
                           **word_search(data["english_words"], phon)},

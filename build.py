@@ -221,9 +221,12 @@ def make_word_search(words, rows, cols, seed, dirs, decoys=0):
 
 
 def puzzle_words(section):
+    """Words to hide: the listed 'words' plus any 'bonus' words (hidden too, listed elsewhere)."""
     out = []
     for w in section.get("words", []):
         out.append(w if isinstance(w, dict) else {"word": w})
+    for w in section.get("bonus", []):
+        out.append(dict(w, bonus=True) if isinstance(w, dict) else {"word": w, "bonus": True})
     return out
 
 
@@ -508,8 +511,8 @@ def expand_puzzle(group, key, data, tree, answers_layer, key_lines, opts=None):
             if FONTS is not None:   # shrink only letters too wide for their box (e.g. லை, கோ)
                 fam = lst.get("font-family", "")
                 wdt = FONTS.width(grid[r][c], fam, size, "italic" in lst.get("font-style", ""), weight_of(lst))
-                if wdt > cell * 0.86:
-                    st_cell = dict(lst, **{"font-size": f"{size * cell * 0.86 / wdt:.2f}px"})
+                if wdt > cell * 0.86:   # ...but never below the 11 px minimum (or the base size, if that is smaller)
+                    st_cell = dict(lst, **{"font-size": f"{max(min(size, 11.0), size * cell * 0.86 / wdt):.2f}px"})
             t = ET.SubElement(rg, SVG + "text", {
                 "x": f"{gx + cell*(c+.5):.2f}", "y": f"{gy + cell*(r+.5) + size*0.36:.2f}",
                 "style": style_str(st_cell), "{http://www.w3.org/XML/1998/namespace}space": "preserve"})
@@ -928,6 +931,10 @@ def load_data(paths):
     root = {}
     for p in paths:
         merge(root, json.loads(Path(p).read_text(encoding="utf-8")))
+    for sec in root.values():       # word-search list = its words, then a divider, then its bonus words
+        if isinstance(sec, dict) and isinstance(sec.get("words"), list):
+            sec["list"] = list(sec["words"]) + ([sec["list_heading"]] if sec.get("bonus") and sec.get("list_heading") else []) \
+                + list(sec.get("bonus", []))
     return root
 
 

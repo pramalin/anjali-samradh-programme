@@ -1,28 +1,35 @@
 TAMIL WORDS
 
-  ண   து  ல்  ள்  ம்  மெ  ன   த   ந்  ச  
-  ப   ம   ச   ய   ண   ல   ட்  ச   ப   த  
-  மா  ஞ்  ண   தி  ளை  ந்  ல்  டி  ஞ்  ம் 
-  ம   ஞ்  ஞ்  ம்  ள   வ   த   ம்  ந்  ம  
-  ட்  தி  ரு  ம   ண   ம்  ந்  ரு  தோ  ன  
-  ம்  ன   த   ந்  ச   ய   ப   ந்  ரு  த  
-  வி  ரு  ந்  து  ளை  ப   லை  ட்  ம்  ந் 
-  வி  ரு  ந்  வ   ல்  மே  ந்  ண   டு  ச  
-  ள   தோ  ஞ்  ம   ள   ட்  ர   த   டி  லை 
-  தோ  கோ  ல   ம்  தி  தோ  ர   ன   மா  ஞ் 
+  ச   ம்  ல்  ள்  வு  ம்  ம்  உ   வ   கை 
+  ஞ்  ச   ச   ய   ண்  நா  க   ன   வு  மே 
+  ம   ஞ்  ன   ஞ்  ளை  கா  ல்  த   ள்  ள  
+  ம   நெ  ளை  ன   தி  வ   த   த   ந்  ம் 
+  தோ  தி  ரு  ம   ண   ம்  ந்  ல்  ர   ப  
+  ம்  ன   த   ந்  ச   த   ப   ந்  ல்  ந  
+  வி  ரு  ந்  து  டு  ஞ்  லை  வி  ம்  கை 
+  ண   ர   தோ  கோ  ட்  மா  வ   ண   ரு  டி 
+  ம   ள்  ல   ஞ்  ப   ண   ர   ளை  ட்  ந் 
+  ல்  ம்  ள   ள்  உ   தோ  த   மெ  ய   ந் 
 
   திருமணம்       row  5, col  2, right
   சந்தனம்        row  6, col  5, left
-  மாலை           row 10, col  9, up-right
+  மாலை           row  8, col  6, up-right
   மஞ்சள்         row  4, col  1, up-right
-  மேளம்          row  8, col  6, down-left
+  மேளம்          row  2, col 10, down
   வளையல்         row  4, col  6, up-left
-  கோலம்          row 10, col  2, right
+  கோலம்          row  8, col  4, down-left
   தோரணம்         row 10, col  6, up-right
   விருந்து       row  7, col  1, right
   பந்தல்         row  6, col  7, up
-  மெட்டி         row  1, col  6, down-right
-  பட்டு          row  6, col  7, down-right
+  மெட்டி         row 10, col  8, up-right
+  பட்டு          row  9, col  5, up
+  காதல்          row  3, col  6, down-right
+  நெஞ்சம்        row  4, col  2, up
+  உள்ளம்         row 10, col  5, left
+  கனவு           row  2, col  7, right
+  உவகை           row  1, col  8, right
+  நாண்           row  2, col  6, left
+  நகை            row  6, col 10, down
 
 
 ENGLISH WORDS

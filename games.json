@@ -137,7 +137,7 @@
       },
       {
         "word": "சந்தனம்",
-        "gloss": "sandal paste"
+        "gloss": "sandal"
       },
       {
         "word": "மாலை",
@@ -194,7 +194,44 @@
       "down-left"
     ],
     "title_en_short": "Word Search",
-    "decoys": 6
+    "decoys": 6,
+    "bonus": [
+      {
+        "word": "காதல்",
+        "gloss": "love"
+      },
+      {
+        "word": "நெஞ்சம்",
+        "gloss": "heart"
+      },
+      {
+        "word": "உள்ளம்",
+        "gloss": "inner mind"
+      },
+      {
+        "word": "கனவு",
+        "gloss": "dream"
+      },
+      {
+        "word": "உவகை",
+        "gloss": "joy"
+      },
+      {
+        "word": "நாண்",
+        "gloss": "bashfulness"
+      },
+      {
+        "word": "நகை",
+        "gloss": "smile"
+      }
+    ],
+    "_note_bonus": "'bonus' words are hidden in the grid and listed after the 'list_heading' divider. They all occur in the Akananuru poems (checked against the Project Madurai text).",
+    "bonus_label": "அகநானூற்றுச் சொற்கள் · Feelings from the Akananuru",
+    "list_heading": {
+      "word": "அகநானூறு",
+      "ph": "Akananuru",
+      "gloss": "poems"
+    }
   },
   "english_words": {
     "title_en": "Word Search",
@@ -292,7 +329,14 @@
     "வேள்வி / திருமுறை ஓதுதல்": "Velvi / Thirumurai|Odhudhal",
     "மணவறை வலம்": "Manavarai Valam",
     "சந்தனம்": "sandhanam",
-    "வளையல்": "valaiyal"
+    "வளையல்": "valaiyal",
+    "காதல்": "kaadhal",
+    "நெஞ்சம்": "nenjam",
+    "உள்ளம்": "ullam",
+    "கனவு": "kanavu",
+    "உவகை": "uvagai",
+    "நாண்": "naan",
+    "நகை": "nagai"
   },
   "maze": {
     "title_en": [

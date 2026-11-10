@@ -87,6 +87,7 @@ nav a:hover{border-color:var(--line)}
 .mazebox{display:grid;grid-template-columns:1fr;justify-items:center;gap:10px}
 .mazewrap{position:relative;width:min(100%,460px)}
 .mazewrap canvas{width:100%;height:auto;display:block;touch-action:none}
+.words .bonushead{grid-column:1/-1;margin-top:8px;font-size:13px;font-style:italic;color:#6c5d53;list-style:none}
 #mzStops .stop{white-space:nowrap} #mzStops .stop.got{color:#b5651d;font-weight:700}
 .pad{display:grid;grid-template-columns:repeat(3,48px);grid-template-rows:repeat(2,44px);gap:6px}
 .pad button{border-radius:10px;padding:0;font-size:20px}
@@ -272,8 +273,12 @@ function wordSearch(key, P) {
   svg.setAttribute('viewBox', `0 0 ${C} ${R}`); svg.setAttribute('preserveAspectRatio', 'none'); g.prepend(svg);
   const sk = key + '-found-' + [...P.grid.flat().join('')].reduce((h, ch) => (h * 31 + ch.codePointAt(0)) >>> 0, 7).toString(36);   // progress belongs to this grid
   const found = new Set(store.get(sk, []));
-  const items = P.words.map(w => { const li = el('li', {}, el('span', { class: 'w', text: w.word }));
-    if (w.ph || w.gloss) li.append(el('span', { class: 'g', text: [w.ph, w.gloss].filter(Boolean).join(' · ') })); list.append(li); return li; });
+  const items = P.words.map((w, i) => {
+    if (w.bonus && !(i && P.words[i - 1].bonus))                            // heading before the bonus words
+      list.append(el('li', { class: 'bonushead', text: P.bonus_label || 'Bonus' }));
+    const li = el('li', w.bonus ? { class: 'bonus' } : {}, el('span', { class: 'w', text: w.word }));
+    const g = w.bonus ? w.ph : [w.ph, w.gloss].filter(Boolean).join(' · ');
+    if (g) li.append(el('span', { class: 'g', text: g })); list.append(li); return li; });
   const mark = (w, i, reveal) => {
     const l = document.createElementNS('http://www.w3.org/2000/svg', 'line');
     const x2 = w.col + w.dc * (w.len - 1), y2 = w.row + w.dr * (w.len - 1);
