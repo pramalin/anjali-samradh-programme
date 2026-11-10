@@ -438,5 +438,11 @@
     "_help": "Where a Tamil list item is too wide for one line, give it here with '|' at the break.",
     "வேள்வி யாகம் / திருமுறை ஓதுதல் / பூரண ஆகுதி": "வேள்வி யாகம் / திருமுறை ஓதுதல் /|பூரண ஆகுதி"
   },
-  "_note_wordsearch": "Word searches: 'directions' = any of right, down, down-right, up-right, left, up, up-left, down-left. 'decoys' = near-miss fragments (a word minus its last letter) hidden in the filler. Each word is checked to appear exactly once."
+  "_note_wordsearch": "Word searches: 'directions' = any of right, down, down-right, up-right, left, up, up-left, down-left. 'decoys' = near-miss fragments (a word minus its last letter) hidden in the filler. Each word is checked to appear exactly once.",
+  "online": {
+    "scan_ta": "கைபேசியில் விளையாட ஸ்கேன் செய்யுங்கள்",
+    "scan_en": "Scan to play these games on your phone",
+    "url": "https://pramalin.github.io/anjali-samradh-games/",
+    "_note": "QR code: assets/qr-games.svg (make a new one if the url changes - see README)."
+  }
 }
