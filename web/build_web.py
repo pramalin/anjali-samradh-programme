@@ -42,8 +42,8 @@ def word_search(cfg, phon):
     }
 
 
-def make_maze(seed, n=21):
-    """The standard maze with story stops (same as the booklet's): python3 maze.py --story --size 21 --seed 686 --report"""
+def make_maze(seed, n=25):
+    """The standard maze with story stops (same as the booklet's): python3 maze.py --story --size 25 --seed 409 --report"""
     import maze_icons
     m = maze.story_maze(seed, n)
     edges = m["edges"]
@@ -100,7 +100,7 @@ def main():
                         **word_search(data["tamil_words"], phon)},
         "english_words": {**{k: data["english_words"].get(k, "") for k in ("title_en", "title_ta", "instructions")},
                           **word_search(data["english_words"], phon)},
-        "maze": {**data.get("maze", {}), **make_maze(686)},
+        "maze": {**data.get("maze", {}), **make_maze(409)},
         "drawing": data.get("drawing", {}),
         "dots_boxes": data.get("dots_boxes", {}),
         "tictactoe": data.get("tictactoe", {}),

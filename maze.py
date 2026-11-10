@@ -9,7 +9,8 @@ plus a solution version.
     python3 maze.py --size 27 --hardest 300 # try 300 mazes, keep the trickiest (see below)
     python3 maze.py --size 27 --seed 1964 --branchy 0.95 --color "#3a2c24"   # the booklet's maze
     python3 maze.py --size 27 --seed 1964 --branchy 0.95 --report            # how tricky is it?
-    python3 maze.py --story --size 21 --seed 686 --color "#3a2c24" --stroke 4   # standard maze + story stops (booklet + web)
+    python3 maze.py --story --size 25 --seed 409 --color "#3a2c24" --stroke 4   # the booklet + web maze (no icons)
+    python3 maze.py --story --icons --size 25 --seed 37 --color "#3a2c24" --stroke 4   # same style with the story icons
     python3 maze.py --cat --size 25 --seed 1027 --color "#3a2c24" --stroke 4    # a cat hidden in the walls (not used now)
 
 --branchy P carves with a "growing tree" (P = how often it keeps extending the newest corridor;
@@ -272,17 +273,18 @@ def cat_picture_maze(seed=1027, n=25, newest=0.9, stops=5, with_cat=True):
     if len({find(p) for p in allc}) != 1: return None
     return dict(n=n, cells=allc, cat=cat, region=region, edges=keep, start=start, end=end, path=path, rooms=rooms, doors=doors)
 
-def story_maze(seed=686, n=21, newest=1.0, stops=None):
+def story_maze(seed=409, n=25, newest=1.0, stops=0):
     """The standard square maze (groom top left, bride bottom right) with a long route that wanders across
-    about half the grid, 'stops' 2x2 rooms on it holding the story icons (maze_icons.ORDER), and the rest
-    reshaped into branches so there is an opening every few squares and wrong turns lead somewhere."""
+    the grid, and the rest reshaped into fewer, long dead ends: a wrong turn typically runs 10-20 squares
+    before it ends. stops=None puts a 2x2 room with a story icon (maze_icons.ORDER) on the route for each
+    icon (seed 37 suits that); stops=0 (the default) has no icons."""
     if stops is None:
         import maze_icons
         stops = len(maze_icons.ORDER)
     m = cat_picture_maze(seed, n, newest, stops, with_cat=False)
     if not m:
         return None
-    return improve(m, random.Random(seed), 3000, gap=8, deep=True)
+    return improve(m, random.Random(seed), 4000, gap=12, deep="deeper")
 
 
 def route_analysis(m, edges):
@@ -315,7 +317,9 @@ def route_score(m, edges, gap=5, deep=False):
     """Many openings along the route, none of them giveaway stubs, and no long stretch without a choice.
     deep=True favours fewer, deeper wrong turns (for long routes that leave less room for branches)."""
     d, runs = route_analysis(m, edges)
-    if deep:
+    if deep == "deeper":
+        w = sum(-14 if x <= 3 else -6 if x <= 6 else 0 if x <= 9 else 7 if x <= 13 else 12 if x <= 18 else 15 for x in d)
+    elif deep:
         w = sum(-10 if x <= 2 else -4 if x == 3 else 1 if x <= 5 else 5 if x <= 8 else 9 for x in d)
     else:
         w = sum(-6 if x <= 2 else -2 if x == 3 else 3 if x <= 6 else 6 if x <= 9 else 9 for x in d)
@@ -543,7 +547,7 @@ def cat_main(a):
     best = None
     for seed in range(a.seed, a.seed + max(1, a.hardest)):
         if a.story:
-            m = story_maze(seed, a.size, a.branchy or 1.0)
+            m = story_maze(seed, a.size, a.branchy or 1.0, None if a.icons else 0)
         else:
             m = cat_picture_maze(seed, a.size, a.branchy or 0.9)
             m = deepen(m, random.Random(seed)) if m else None
@@ -589,6 +593,7 @@ def main():
     ap.add_argument("--cat", action="store_true",
                     help="square maze with a cat hidden in it, 5 story icons on the true route (uses --size, --seed)")
     ap.add_argument("--icon-color", default="#b5651d")
+    ap.add_argument("--icons", action="store_true", help="with --story: put the story icons on the route")
     ap.add_argument("--color", default="#000000")
     ap.add_argument("--out", default=str(HERE / "output" / "maze.svg"))
     a = ap.parse_args()

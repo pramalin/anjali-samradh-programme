@@ -338,7 +338,8 @@ wordSearch('tw', D.tamil_words); wordSearch('ew', D.english_words);
   const got = new Set();
   const inside = (c, r) => r >= 0 && c >= 0 && r < R && c < C && M.cells[r][c] === 1;
   txt('#mzTitle', (M.title_en || []).join(' ')); txt('#mzTitleTa', (M.title_ta || []).join(' '));
-  const stopsLine = () => { const st = M.stops || [];
+  const stopsLine = () => { const st = (M.rooms || []).length ? (M.stops || []) : [];
+    $('#mzStops').hidden = !st.length;
     $('#mzStops').innerHTML = '';
     $('#mzStops').append('On the way: ', ...st.flatMap((s, i) => [el('span', { class: 'stop' + (got.has(i) ? ' got' : ''), text: s.en }), i < st.length - 1 ? ' · ' : '']));
   };
@@ -406,7 +407,7 @@ wordSearch('tw', D.tamil_words); wordSearch('ew', D.english_words);
     } while (steps < 200);
     pos = [c, r]; draw();
     if (c === end[0] && r === end[1]) { won = true;
-      toast(got.size === (M.rooms || []).length ? 'The groom reached his bride, with everything they need for a happy life 💐' : 'The groom reached his bride! 💐'); }
+      toast((M.rooms || []).length && got.size === M.rooms.length ? 'The groom reached his bride, with everything they need for a happy life 💐' : 'The groom reached his bride! 💐'); }
   }
   addEventListener('keydown', e => { const k = { ArrowUp: [0, -1], ArrowDown: [0, 1], ArrowLeft: [-1, 0], ArrowRight: [1, 0] }[e.key];
     if (!k) return; const r = cv.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) return; e.preventDefault(); move(...k); });
