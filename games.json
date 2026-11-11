@@ -1,43 +1,5 @@
 {
-  "_help": "Content for the games booklet (templates/games-booklet.svg), loaded together with wedding.json.",
-  "welcome": {
-    "line_en": "WELCOME TO THE WEDDING OF",
-    "line_ta": "எங்கள் திருமணத்திற்கு அன்புடன் வரவேற்கிறோம்",
-    "names_en": "Anjali & Samradh",
-    "names_ta": "அஞ்சலி & சம்ரத்",
-    "line_en_short": "Welcome to the wedding of"
-  },
-  "match": {
-    "title_en": "Match the Words",
-    "title_ta": "பொருத்துக",
-    "instructions": "Draw a line from each Tamil word to its meaning.",
-    "pairs": [
-      {
-        "ta": "தாலி",
-        "en": "sacred wedding necklace"
-      },
-      {
-        "ta": "மாலை",
-        "en": "flower garland"
-      },
-      {
-        "ta": "மஞ்சள்",
-        "en": "turmeric"
-      },
-      {
-        "ta": "மேளம்",
-        "en": "drum"
-      },
-      {
-        "ta": "விருந்து",
-        "en": "feast"
-      },
-      {
-        "ta": "பந்தல்",
-        "en": "wedding canopy"
-      }
-    ]
-  },
+  "_help": "Content for the programme booklet (templates/programme-booklet.svg) and the website, loaded together with wedding.json.",
   "crossword": {
     "title_ta": "குறள் குறுக்கெழுத்து",
     "title_en": "Thirukkural Crossword",
@@ -269,18 +231,6 @@
       "down-left"
     ],
     "decoys": 6
-  },
-  "scramble": {
-    "title_en": "Word Scramble",
-    "title_ta": "கலைந்த சொற்கள்",
-    "words": [
-      "BRIDE",
-      "GROOM",
-      "GARLAND",
-      "TURMERIC",
-      "BLESSING",
-      "JASMINE"
-    ]
   },
   "thanks": {
     "title_en": "Thank You",

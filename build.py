@@ -3,7 +3,7 @@
 Fill an SVG template with the content of a JSON file.
 
     python3 build.py                                   # defaults below
-    python3 build.py -t templates/programme-a5.svg -d wedding.json -o output/wedding-programme.svg
+    python3 build.py --pdf --bw                         # colour + black-ink PDFs
 
 The design lives entirely in the template (edit it in Inkscape). This script
 knows nothing about weddings. It only understands these template conventions:
@@ -38,6 +38,7 @@ import json
 import math
 import random
 import re
+import shutil
 import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -1119,6 +1120,63 @@ def build(template, data_paths, out_path):
     return out
 
 
+XLINK = "{http://www.w3.org/1999/xlink}"
+
+
+def make_bw(svg_path):
+    """Black-ink version: no parchment background, every colour black (white stays white),
+    pictures turned to greyscale. Writes <name>-bw.svg beside the original, with its pictures in bw-assets/."""
+    src = Path(svg_path)
+    out = src.with_name(src.stem + "-bw.svg")
+    assets = src.parent / "bw-assets"
+    assets.mkdir(exist_ok=True)
+    def ink(text):
+        def fix(m):
+            h = m.group(0)[1:]
+            if len(h) == 3:
+                h = "".join(ch * 2 for ch in h)
+            r, g, b = int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
+            return m.group(0) if min(r, g, b) >= 0xF0 else "#000000"     # keep white / near-white
+        return re.sub(r"#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3}\b", fix, text)
+    t = ET.parse(src)
+    root = t.getroot()
+    parents = {c: p for p in root.iter() for c in p}
+    for el in list(root.iter()):
+        href = el.get(XLINK + "href") or el.get("href")
+        if el.tag == SVG + "image" and href:
+            if "parchment" in href:
+                parents[el].remove(el)
+                continue
+            f = (src.parent / href).resolve()
+            if not f.exists():
+                continue
+            dst = assets / f.name
+            ready = f.with_name(f.stem + "-bw" + f.suffix)          # a hand-made black version, if there is one
+            if ready.exists():
+                shutil.copy2(ready, dst)
+                for k in (XLINK + "href", "href"):
+                    if el.get(k):
+                        el.set(k, f"bw-assets/{dst.name}")
+                continue
+            if f.suffix.lower() == ".svg":
+                dst.write_text(ink(f.read_text(encoding="utf-8")), encoding="utf-8")
+            else:
+                try:
+                    from PIL import Image
+                    Image.open(f).convert("LA" if f.suffix.lower() == ".png" else "L").save(dst)
+                except Exception:
+                    shutil.copy2(f, dst)
+            for k in (XLINK + "href", "href"):
+                if el.get(k):
+                    el.set(k, f"bw-assets/{dst.name}")
+        for k in ("style", "fill", "stroke", "stop-color", "color"):
+            if el.get(k):
+                el.set(k, ink(el.get(k)))
+    t.write(out, encoding="UTF-8", xml_declaration=True)
+    print(f"Wrote {out} (black ink, no background)")
+    return out
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description="Fill an SVG template from JSON.")
     ap.add_argument("-t", "--template", default=HERE / "templates" / "programme-booklet.svg")
@@ -1134,6 +1192,8 @@ if __name__ == "__main__":
                     help="also export a PDF with Inkscape (1.2+; Windows Inkscape works from WSL)")
     ap.add_argument("--text-to-path", action="store_true",
                     help="with --pdf: convert text to outlines (for print shops)")
+    ap.add_argument("--bw", action="store_true",
+                    help="also make a black-ink version (no background, black text and lines, greyscale pictures)")
     a = ap.parse_args()
     if not a.data:
         a.data = [HERE / "wedding.json"] + ([HERE / "games.json"] if (HERE / "games.json").exists() else [])
@@ -1154,3 +1214,7 @@ if __name__ == "__main__":
     out = build(a.template, a.data, a.output)
     if a.pdf:
         to_pdf(out, a.text_to_path)
+    if a.bw:
+        bw = make_bw(out)
+        if a.pdf:
+            to_pdf(bw, a.text_to_path)

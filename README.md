@@ -1,14 +1,14 @@
 # Anjali & Samradh — Wedding Programme (Tamil + English)
 
-**The final design is `templates/programme-booklet.svg`** — one A4 sheet folded to four A5 pages:
+**The design is `templates/programme-booklet.svg`** — one A4 sheet folded to four A5 pages:
 1. Cover: AS monogram, *Ceremony & Celebrations*, order of ceremony, kuthuvilakku drawing
 2. Tamil word search + maze ("Help the groom reach his bride") + cat
-3. Draw-the-couple frame with paw prints, Dots & Boxes, English word search, Tic-Tac-Toe
-4. Thirukkural crossword, both verses (separated words, phonetics, Kalaignar உரை, G.U. Pope), thank-you
+3. Draw-the-couple frame, Dots & Boxes, English word search, Tic-Tac-Toe
+4. Thirukkural crossword, both verses (separated words, phonetics, Kalaignar உரை, G.U. Pope), QR code for the website, thank-you
 
 ```bash
-python3 build.py --pdf          # builds the final booklet -> output/programme-booklet.svg + .pdf
-python3 build.py --all --pdf    # builds every design in templates/
+python3 build.py --pdf          # output/programme-booklet.svg + .pdf (colour, on parchment)
+python3 build.py --pdf --bw     # also output/programme-booklet-bw.svg + .pdf (black ink, no background)
 ```
 
 Content comes from `wedding.json` (order of ceremony) and `games.json` (everything else).
@@ -46,129 +46,70 @@ The site appears at `https://<your-github-username>.github.io/anjali-samradh-gam
 To update it later: rebuild, copy `docs/` across again, then `git add -A && git commit -m update && git push`
 in the site folder.
 
----
-
-
-This is a 4-page A5 booklet made from an **Inkscape template** and a **JSON content file**. You don't need to touch the code to change the design or the wording.
-
-![preview](preview.png)
+## Project layout
 
 ```
-templates/programme-a5.svg   ← the design: edit in Inkscape
-wedding.json                 ← the words: names, ceremony, puzzle words
-build.py                     ← fills the template (no changes needed)
-output/                      ← generated: SVG, answer key, proof PDF
-fonts/                       ← OFL fonts used by the template
+templates/programme-booklet.svg  ← the design: edit in Inkscape
+wedding.json                     ← order of ceremony (yours; not in the bundles)
+games.json                       ← puzzles, verses, phonetics, website text
+build.py                         ← fills the template, makes the PDFs
+maze.py                          ← makes assets/maze.svg (the same maze is used on the website)
+web/                             ← the website source; builds docs/
+assets/                          ← images the booklet and website use
+fonts/                           ← OFL fonts the booklet uses
+output/                          ← generated: SVGs, PDFs, answer key
 ```
 
-```bash
-python3 build.py             # template + wedding.json  →  output/wedding-programme.svg
-python3 build.py --all       # every templates/*.svg     →  output/<template-name>.svg
-```
-
-### Designs in `templates/`
-
-| Template | Look |
-|---|---|
-| `programme-a5.svg` | Classic: maroon and gold, mango-leaf thoranam, kolam dividers |
-| `modern-minimal.svg` | Black on warm white, light sans-serif, thin rules |
-| `modern-arch.svg` | Terracotta, blush and sage, arch-framed cover, tiled puzzle grid |
-| `modern-editorial.svg` | Deep green colour blocks, mustard accents, large serif names |
-
-| `programme-booklet.svg` | **Final booklet** (based on Anjali's layout): parchment pages · 1: AS monogram, welcome, order of ceremony · 2: Tamil word search + "help the groom reach his bride" maze · 3: drawing frame, Match the Words, English word search · 4: Thirukkural crossword, verses with phonetics, Kalaignar urai and Pope translation |
-| `games-booklet.svg` | **Games booklet**: one A4 sheet folded to four A5 pages. 1: order of ceremony · 2: Thirukkural crossword, its clues, and both verses in Tamil with English phonetics · 3: Tamil word search and Tamil–English matching · 4: English word search, word scramble, thank-you, answers upside down |
-
-The games booklet reads `wedding.json` (the order of ceremony) and **`games.json`** (everything else, including the verses and their phonetics under `verses`). By default `build.py` loads both files; you can also name them yourself with `-d wedding.json -d games.json`.
-
-**Phonetics:** `games.json` → `phonetics` maps Tamil text to its English pronunciation, for example `"தாலி": "thaali"`. Inside any `#list` entry, `{{ph}}` shows the phonetic form of the item's `ta` or `word`, and `{{ph_paren}}` shows the same with a leading space and brackets (empty when there is none). The ceremony steps in `wedding.json` are looked up the same way, so that file needs no changes. If an entry uses `{{ph}}` and a word has no phonetic form, the build lists the missing words.
-
-**Crossword:** in `games.json` → `crossword.grid`, write one row per line, letters separated by spaces, and `x` for an empty square. Numbering is automatic. Clues are matched by answer word in `crossword.clues`, and the build warns about any answer with no clue. The answers go to the hidden Answer Keys layer and to `output/games-booklet-answer-key.txt`.
-
-The new template markers:
-- `#list path.to.list` repeats an `entry` for every item.
-  - Inside the entry, use the item's fields (`{{q}}`, `{{a}}`, …) and `{{n}}`.
-  - `{{letter}}` gives A, B, C… and `{{scrambled}}` gives the item's `word` with its letters shuffled.
-  - The `shuffle=11` option mixes the order; the matching game uses it.
-  - Answer strings appear automatically, such as `{{trivia.questions_answers}}`, `{{match.pairs_match}}` and `{{scramble.words_answers}}`.
-- `#crossword key` draws the grid, using the samples labelled `cell`, `number` and `letter`. Its clue lists are `#list key.across` and `#list key.down`.
-
-The modern booklet templates read the same `wedding.json`. The modern ones also use `cover.bride_en`, `cover.groom_en` and `cover.date_short`. Build one design on its own with `python3 build.py -t templates/modern-arch.svg -o output/modern-arch.svg`.
-
-Puzzle styling belongs to each template and goes in the marker label. Settings there override `wedding.json`:
-- `#puzzle tamil_puzzle lines=off scale=0.36 inset=0.06`: no grid lines, letter size relative to the cell, and the gap around each tile.
-- Inside the `#puzzle` group:
-  - a rect labelled `cell` is drawn behind every letter (rounded tiles);
-  - a line labelled `cell line` sets the grid-line style;
-  - a shape labelled `answer` sets the answer-key colour.
-- `#wordlist tamil_puzzle columns=3` sets the number of word-list columns.
-
-Run `python3 build.py --help` to use another template or data file, for example a second design or a different couple.
+![preview](programme-booklet-preview.png)
 
 ## Editing the design (template)
 
-Open `templates/programme-a5.svg` in Inkscape 1.2+ after installing the fonts in `fonts/`. Move, restyle, recolour, add artwork or delete anything, then save and rebuild. The template follows a few simple conventions.
+Open `templates/programme-booklet.svg` in Inkscape 1.2+ after installing the fonts in `fonts/`. Move, restyle or add anything, then save and rebuild. `build.py` only writes to `output/` and never changes the template. The template follows a few conventions:
 
 | In the template | What build.py does |
 |---|---|
-| Text containing `{{cover.bride_ta}}` | Replaces it with that value from `wedding.json`. Lists count from 0: `{{programme.items.2.en}}`. Mixing placeholders with fixed text is fine: `Date: {{cover.date_en}}`. |
+| Text containing `{{programme.items.2.en}}` | Replaces it with that value from the JSON files (lists count from 0). Mixing placeholders with fixed text is fine. |
 | Label starting with `?` (for example `?Item 7`) | Removes the object when its placeholders have no value, so unused ceremony slots vanish. |
-| Text label containing `[w=200]` | Shrinks the text to fit 200 units wide. Other filled-in text is automatically kept within its page margins. |
-| Group labelled `#puzzle tamil_puzzle` | Draws the word-search grid inside its rect labelled `area`, using the font and colour of its text labelled `letter`. |
-| Group labelled `#wordlist tamil_puzzle` | Repeats its group labelled `entry` for every word, in `list_columns` columns across its rect labelled `area`. Inside the entry, `{{word}}` and `{{gloss}}` are filled per word. |
+| Text label containing `[w=200]` | Shrinks the text to fit 200 units wide (never below 11 px). `[wrap=W,LH]` wraps it instead; `[nofit]` leaves it alone. |
+| Group labelled `#stack` | Closes up the gap when a line inside it is removed or wraps onto more lines. |
+| Group labelled `#puzzle KEY` | Draws the word-search grid for `games.json` → `KEY` inside its rect labelled `area`, using the font and colour of its text labelled `letter`. |
+| Group labelled `#list path.to.list` | Repeats its `entry` group for every item (`columns=`, `rows=` options). Inside it, use the item's fields (`{{word}}`, `{{gloss}}`, `{{ph}}`, …) and `{{n}}`. |
+| Group labelled `#crossword key` | Draws the crossword using the samples labelled `cell`, `number` and `letter`. Its clue lists are `#list key.across` and `#list key.down`. |
 
 Labels are the names in Inkscape's **Layers and Objects** panel (Ctrl+Shift+L); double-click a name to rename it.
 
-### Common changes
+## Editing the words
 
-- **More ceremony steps:** duplicate the `?Item 8` group (Ctrl+D), move it down, and change its placeholders to `items.8`. Then add the item to `wedding.json`.
-- **Show a new field:** add it to `wedding.json` (for example `"cover": { "hashtag": "#AnjaliWedsSamradh" }`), then add a text in Inkscape that says `{{cover.hashtag}}`.
-- **Move or resize a puzzle:** move or resize its `area` rect. The grid is fitted inside it with square cells.
-- **Restyle puzzle letters:** change the font or colour of the `letter` sample text.
-- **Restyle the word list:** edit the sample `entry` (tick box, word and gloss styles, and their positions).
-- **Answer-key colour:** add any small shape labelled `answer` inside the `#puzzle` group; its colour is used.
-- **Other page sizes or layouts:** copy the template, redesign it, and build with `-t templates/your-template.svg`.
+- **Order of ceremony:** `wedding.json` → `programme.items`, each with `_ta` and `_en` versions.
+- **Word searches:** `games.json` → `tamil_words` / `english_words`: `words`, `bonus`, `rows`, `cols`, `seed` (a different shuffle), `directions` (any of `right down left up down-right up-right down-left up-left`) and `decoys`. Each word is checked to appear exactly once. Tamil words are split into letters as readers see them, so க், கா and கொ each take one box.
+- **Crossword:** `games.json` → `crossword.grid`, one row per line, letters separated by spaces, `x` for an empty square. Numbering is automatic. Clues are matched by answer word in `crossword.clues`; the build warns about any answer with no clue.
+- **Phonetics:** `games.json` → `phonetics` maps Tamil text to its pronunciation, for example `"தாலி": "thaali"`. `{{ph}}` shows it; the build lists any word that has none.
 
-Running `build.py` only writes to `output/` and never changes the template.
+The answers go to the hidden **Answer Keys** layer and to `output/programme-booklet-answer-key.txt`. After a build, the script lists any placeholder with no matching value, which helps catch typos.
 
-## Editing the words (`wedding.json`)
+## Images
 
-- **Text on the card:** each item on the card is a named value, usually with `_ta` and `_en` versions.
-- **Puzzle settings:**
-  - `rows` and `cols` set the grid size; `seed` gives a different shuffle; `directions` are any of `right down left up down-right up-right down-left up-left`.
-  - `letter_scale` sets letter size relative to the box; `cell_lines` turns the grid lines on or off; `list_columns` sets the number of word-list columns.
-- **Tamil word splitting:** Tamil words are split into letters as readers see them, so க், கா and கொ each take one box.
-- **Word counts:** `{{tamil_puzzle.count}}` gives the number of words automatically.
-
-After a build, the script lists any placeholder with no matching value, which helps catch typos.
-
-## Images used by the booklet
-
-`assets/` holds the images the final booklet links to (the template and output refer to them as `../assets/...`, so keep the folders side by side):
-- `parchment.jpg` - background (from Rawpixel: "Simple tribal pattern in doodle style frame" by Yanin - check its licence on rawpixel.com)
-- `drawing-frame.png` - the ornate frame for the drawing box
-- `maze.svg` / `maze-solution.svg` - regenerate with `python3 maze.py --size 27 --hardest 300 --color "#3a2c24" --out assets/maze.svg`
-
-The AS monogram and the groom/bride silhouettes are drawn inside the template itself.
+`assets/` holds the images the booklet links to as `../assets/...` (keep the folders side by side):
+- `parchment-plain.jpg` - the paper; `border-open-left.png` / `border-open-right.png` - the stitched border, open at the fold so the top and bottom run on across the sheet (`-bw` versions are black, for the black-ink booklet). All made from `parchment.jpg` (Rawpixel: "Simple tribal pattern in doodle style frame" by Yanin - check its licence on rawpixel.com), which the website still uses.
+- `kuthuvilakku.png`, `couple-drawing.png`, `cat-drawing.png`, `drawing-frame.png`, `monogram.svg`, `groom.svg`, `bride.svg`
+- `qr-games.svg` - QR code for the website
+- `maze.svg` / `maze-solution.svg` - regenerate with `python3 maze.py --color "#3a2c24" --stroke 4 --out assets/maze.svg`
 
 ## PDF from the command line
 
 ```bash
-python3 build.py --pdf                        # output/wedding-programme.svg + .pdf
-python3 build.py --all --pdf                  # a PDF for every template
-python3 build.py --all --pdf --text-to-path   # text as outlines, for a print shop
+python3 build.py --pdf --bw                   # colour + black-ink PDFs
+python3 build.py --pdf --bw --text-to-path    # text as outlines, for a print shop
 ```
 
-This uses Inkscape 1.2 or newer. Under WSL it automatically uses the Windows install in `C:\Program Files\Inkscape` and the fonts installed in Windows. If Inkscape is somewhere else, point to it: `export INKSCAPE="/mnt/d/Apps/Inkscape/bin/inkscape.com"`. Before exporting, the build warns about any font a template uses that isn't in `fonts/`.
+This uses Inkscape 1.2 or newer. Under WSL it automatically uses the Windows install in `C:\Program Files\Inkscape` and the fonts installed in Windows. If Inkscape is somewhere else, point to it: `export INKSCAPE="/mnt/d/Apps/Inkscape/bin/inkscape.com"`. Before exporting, the build warns about any font the template uses that isn't in `fonts/`.
 
 ## Printing
 
-> **Page sizes.** Inkscape uses the document's own size as page 1. When the template is saved in Inkscape, page 1 can get stretched to the whole 4-page canvas, and the PDF then has a giant first page. `build.py` repairs this in the output automatically. `python3 build.py --fix-template` also repairs the template file itself. To check, open Inkscape's **Pages** tool (Shift+F7) and click page 1: the toolbar should show A5 (148 × 210 mm).
+The PDF has the four A5 pages in reading order. Print on A4 in **Booklet** mode (double-sided, flip on short edge) and fold. Use the `-bw` PDF to print in black ink only.
 
-1. Open `output/wedding-programme.svg` in Inkscape.
-2. Use File → Save a Copy → PDF and choose *Convert text to paths* for the print shop. You get 4 A5 pages in reading order.
-3. Print on A4 in **Booklet** mode and fold.
-4. The **Answer Keys (hidden)** layer is off by default. Turn it on to check the puzzles.
+> **Page sizes.** If Inkscape stretches page 1 to the whole canvas when you save the template, `build.py` repairs it in the output automatically; `python3 build.py --fix-template` repairs the template itself. Check with the **Pages** tool (Shift+F7): page 1 should be A5 (148 × 210 mm).
 
 ## Requirements
 
-Python 3 is enough. With Pillow installed (`pip install pillow`), text fitting measures the real fonts instead of estimating.
+Python 3 with Pillow (`pip install pillow`), so text fitting measures the real fonts instead of estimating.
